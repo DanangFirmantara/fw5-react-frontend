@@ -13,6 +13,7 @@ export default class LoginPage extends Component{
 	// static propTypes ={
 	// 	onLogin: PropTypes.string.isRequired,
 	// }
+	
 	componentDidUpdate(){
 		console.log(this.state)
 	}

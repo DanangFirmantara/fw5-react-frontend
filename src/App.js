@@ -1,24 +1,29 @@
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 
-
 export default class App extends Component{
 	state ={
-		islogged:false
+		isLogged:false
 	}
 	componentDidUpdate(){
-		console.log(this.state)
-		console.log('Login berhasil')
+		if(!this.isLogged){
+			console.log('Login Gagal')
+		} else{
+			console.log('Login Berhasil')
+		}
+	}
+	componentDidMount(){
+		console.log(this.state.isLogged)
 	}
 	render(){
 		return (
-			<React.Fragment>
-				<div>
-					{!this.state.isLogged && <LoginPage onLogin={(value)=>{this.setState({isLogged: value})}} />}
-					{this.state.islogged && <HomePage />}
-				</div>
-			</React.Fragment>
+			<div>
+				{this.state.isLogged && <HomePage />}
+				{!this.state.isLogged && <LoginPage onLogin={(value)=>{this.setState({isLogged: value})}} />}
+			</div>
+			
 		)
 	}
 }
