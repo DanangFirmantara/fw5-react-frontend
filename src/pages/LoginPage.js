@@ -3,6 +3,18 @@ import Footer from '../components/Footer'
 
 
 export default class LoginPage extends Component{
+	state = {
+		email:'',
+		password:''
+	}
+	handleChange(event){
+		this.setState({
+			email: event.target.email
+		})
+	}
+	componentDidUpdate(){
+		console.log(this.state)
+	}
 	render(){
 		return (
 			<React.Fragment>
@@ -32,10 +44,12 @@ export default class LoginPage extends Component{
 									</div>
 									<div className="col">
 										<div className="pt-7">
-											<form action="">
+											<form >
 												<input
 													type="email"
 													placeholder="Email"
+													value={this.state.email}
+													onChange={this.handleChange}
 													className="button-light w-100 py-4 fw-bold fs-4 ps-5 shadow-dark mb-4"
 												/>
 												<input
