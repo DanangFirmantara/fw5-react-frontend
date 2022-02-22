@@ -1,19 +1,31 @@
+/* eslint-disable react/prop-types */
 import React, {Component } from 'react'
 import Footer from '../components/Footer'
+import google from '../assets/image/google.png'
 
 
 export default class LoginPage extends Component{
 	state = {
 		email:'',
-		password:''
+		password:'',
+		islogged:false,
 	}
-	handleChange(event){
-		this.setState({
-			email: event.target.email
-		})
-	}
+	// static propTypes ={
+	// 	onLogin: PropTypes.string.isRequired,
+	// }
 	componentDidUpdate(){
 		console.log(this.state)
+	}
+	onLogin = (event)=>{
+		event.preventDefault()
+		if(this.state.email==='admin@mail.com' && this.state.password==='123456'){
+			this.setState({isLogged:true})
+			this.props.onLogin(true)
+		} else{
+			window.alert('wrong email or username!')
+			this.setState({islogged:false})
+			this.props.onLogin(false)
+		}	
 	}
 	render(){
 		return (
@@ -48,13 +60,13 @@ export default class LoginPage extends Component{
 												<input
 													type="email"
 													placeholder="Email"
-													value={this.state.email}
-													onChange={this.handleChange}
+													onChange={(event)=>{this.setState({email:event.target.value})}}
 													className="button-light w-100 py-4 fw-bold fs-4 ps-5 shadow-dark mb-4"
 												/>
 												<input
 													type="password"
 													placeholder="Password"
+													onChange={(event)=>{this.setState({password:event.target.value})}}
 													className="button-light w-100 py-4 fw-bold fs-4 ps-5 shadow-dark mb-3"
 												/>
 												<div className="mb-5">
@@ -67,6 +79,7 @@ export default class LoginPage extends Component{
 												<div className="mb-4">
 													<button
 														className="button-yellow fw-bolder fs-4 py-4 text-center w-100 shadow-yellow"
+														onClick={this.onLogin}
 													>
                                        Login
 													</button>
@@ -76,7 +89,7 @@ export default class LoginPage extends Component{
 														className="button-yellow fw-bolder fs-4 py-4 d-flex w-100 shadow-light bg-light text-dark justify-content-center"
 													>
 														<img
-															src="/assets/image/google.png"
+															src={google}
 															alt=""
 															className="me-3"
 														/>
