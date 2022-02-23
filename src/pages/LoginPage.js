@@ -83,9 +83,7 @@ export default class LoginPage extends Component{
 													</button>
 												</div>
 												<div className="">
-													<button
-														className="button-yellow fw-bolder fs-4 py-4 d-flex w-100 shadow-light bg-light text-dark justify-content-center"
-													>
+													<button className="button-yellow fw-bolder fs-4 py-4 d-flex w-100 shadow-light bg-light text-dark justify-content-center">
 														<img
 															src={google}
 															alt=""
@@ -94,7 +92,6 @@ export default class LoginPage extends Component{
 														<Link to='../loginGoogle'>
 															<div className='text-dark'>Login with Google</div>
 														</Link>
-														
 													</button>
 												</div>
 											</form>

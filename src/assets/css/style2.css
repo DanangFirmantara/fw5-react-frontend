@@ -68,6 +68,10 @@ body{
    color: rgba(184, 190, 205, 1);
 }
 
+.grey-3{
+   color: rgba(57, 57, 57, 1);
+}
+
 .bg-grey{
    background-color: rgba(203, 203, 212, 0.2);
 }
@@ -128,6 +132,13 @@ body{
    color: white;
    border:none;
 }
+.button-grey{
+   border-radius: 10px;
+   background-color: rgba(218, 218, 218, 0.28);
+   color: rgba(57, 57, 57, 1);
+   border: 0.5px solid rgba(78, 78, 78, 0.5);
+}
+
 .button-white{
    border-radius: 10px;
    background-color: white;
@@ -150,7 +161,9 @@ body{
 .shadow-yellow{
    box-shadow: 0 0 10px rgba(255, 205, 97, 0.3);
 }
-
+.shadow-yellow-2{
+   box-shadow: 0 0 10px rgba(255, 205, 97, 0.7);
+}
 .shadow-dark{
    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
@@ -229,6 +242,14 @@ a:hover{
    min-height: 409px;
    background-position: center;
    background-size: cover;
+}
+
+.img-side{
+   height: 100%;
+   width: 100%;
+   background-position: right;
+   background-size: cover;
+   background-repeat: no-repeat;
 }
 
 .img-banner-4{
@@ -425,6 +446,10 @@ ul{
 input::placeholder{
    color: white;
 }
+
+.button-grey::placeholder{
+   color: rgba(57, 57, 57, 1);
+}
 .explore input::placeholder{
    color: rgba(57, 57, 57, 1) !important;
    
@@ -434,4 +459,8 @@ input:focus{
 }
 .lh-2{
    line-height: 80px;
+}
+.mx-6{
+   margin-left: 5rem;
+   margin-right: 5rem;
 }
