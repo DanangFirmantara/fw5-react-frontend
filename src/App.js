@@ -8,6 +8,10 @@ import VehicleType from './pages/VehicleType'
 import History from './pages/History'
 import About from './pages/About'
 import LoginGoogle from './pages/LoginGoogle'
+import Profile from './pages/Profile'
+import VehicleDetail from './pages/VehicleDetail'
+import Reservation from './pages/Reservation'
+import Payment from './pages/Payment'
 
 export default class App extends Component{
 	state ={
@@ -31,8 +35,13 @@ export default class App extends Component{
 					<Route path='loginGoogle' element={<LoginGoogle />}/>
 					<Route path='signUp' element={<SignUp />}/>
 					<Route path='vehiclesType' element={<VehicleType />}/>
+					<Route path='vehicleDetail' element={<VehicleDetail />}/>
+					<Route path='reservation' element={<Reservation />}/>
+					<Route path='payment' element={<Payment />}/>
 					<Route path='history' element={<History />}/>
 					<Route path='about' element={<About />}/>
+					<Route path='profile' element={<Profile />}/>
+
 				</Routes>
 			</BrowserRouter>
 		)
