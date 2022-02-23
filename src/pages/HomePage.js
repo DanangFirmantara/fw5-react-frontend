@@ -1,17 +1,15 @@
 import React, { Component }  from 'react'
-import NavbarHome from '../components/NavbarHome'
-import Footer from '../components/Footer'
+import LayoutHome from '../components/LayoutHome'
 
 
 export default class HomePage extends Component{
 	render(){
 		return(
-			<React.Fragment>
-				<NavbarHome />
+			<LayoutHome>
 				<header>
 					<div className="img-banner-4 img-13">
 						<div className="img-banner-4 cover-dark">
-							<div className="container py-7">
+							<div className="container container-md py-7">
 								<div className="pd-heading fs-0-0 lh-2 mb-5">
                             Explore and <br />Travel
 								</div>
@@ -142,8 +140,7 @@ export default class HomePage extends Component{
 						</div>
 					</div>
 				</main>
-				<Footer />
-			</React.Fragment>
+			</LayoutHome>
 		)
 	}
 }

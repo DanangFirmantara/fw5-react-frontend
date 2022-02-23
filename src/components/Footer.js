@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import logo from '../assets/image/logo.png'
+import { Link } from 'react-router-dom'
 
 export default class Footer extends Component{
 	
@@ -11,7 +12,9 @@ export default class Footer extends Component{
 						<div className="pt-6">
 							<div className="row d-flex justify-content-between mb-6">
 								<div className="col-5">
-									<div className="mb-5"><img src={logo} alt="logo" className="brand" /></div>
+									<Link to='/'>
+										<div className="mb-5"><img src={logo} alt="logo" className="brand" /></div>
+									</Link>
 									<div className="mb-3">
 										<h5 className="mulish mulish-normal text-muted">Plan and book your perfect trip with <br/>expert advice, travel tips for vehicle <br/>
                               information from us

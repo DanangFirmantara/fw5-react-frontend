@@ -2,7 +2,7 @@
 import React, {Component } from 'react'
 import Footer from '../components/Footer'
 import google from '../assets/image/google.png'
-
+import { Link } from 'react-router-dom'
 
 export default class LoginPage extends Component{
 	state = {
@@ -10,9 +10,6 @@ export default class LoginPage extends Component{
 		password:'',
 		islogged:false,
 	}
-	// static propTypes ={
-	// 	onLogin: PropTypes.string.isRequired,
-	// }
 	
 	componentDidUpdate(){
 		console.log(this.state)
@@ -40,13 +37,13 @@ export default class LoginPage extends Component{
 										<div className="pd-heading fs-0-0 mb-4">Let&rsquo;s Explore <br />The World
 										</div>
 										<div href="" className="text-white fs-4 fw-bold mb-4">Don&rsquo;t have account</div>
-										<a href="/sign-up.html">
+										<Link to="../signUp">
 											<div
 												className="fw-bolder button-dark w-75 text-center py-4 shadow-light fs-4"
 											>
                               Sign up
 											</div>
-										</a>
+										</Link>
 									</div>
 									<div className="col-2">
 										<div className="d-flex flex-column align-items-center">
@@ -94,7 +91,10 @@ export default class LoginPage extends Component{
 															alt=""
 															className="me-3"
 														/>
-														<div>Login with Google</div>
+														<Link to='../loginGoogle'>
+															<div className='text-dark'>Login with Google</div>
+														</Link>
+														
 													</button>
 												</div>
 											</form>
