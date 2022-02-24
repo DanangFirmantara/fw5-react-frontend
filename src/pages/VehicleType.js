@@ -114,7 +114,7 @@ export const VehicleType = () => {
 								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 									<div className='d-flex position-relative mb-4'>
 										<img src={data.image} alt={data.className} className="img-fluid rounded"></img>
-										<div className='bg-white position-absolute bottom-0 start-0 p-3 fs-6 fw-bold'>{data.name} {data.id}</div>
+										<div className='bg-white position-absolute bottom-0 start-0 p-3 fs-6 fw-bold'>{data.name}</div>
 									</div>
 									
 								</div>
