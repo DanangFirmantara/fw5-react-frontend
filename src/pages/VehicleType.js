@@ -1,9 +1,38 @@
-import React from 'react'
+/* eslint-disable react/jsx-key */
+/* eslint-disable no-unused-vars */
+import React , {useState, useEffect} from 'react'
 import LayoutLogin from '../components/LayoutLogin'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import {default as axios} from 'axios'
+ 
 // rafc
 
 export const VehicleType = () => {
+	// const [searchParam, setSearchParam] = useSearchParams()
+	const [ character,setCharacter ] = useState([])
+	const [ page,setPage ] = useState({})
+
+	useEffect(()=>{
+		getCharacter()
+	}, [])
+
+	const getCharacter = async() =>{
+		// const {data} = await axios.get('https://rickandmortyapi.com/api/character')
+		const {data} = await axios.get('http://localhost:5000/list?filterBy=Car')
+		console.log(data.results)
+		console.log(data.pageInfo)
+		setCharacter(data.results)
+		setPage(data.pageInfo)
+	}
+
+	const getNextCharacter = async(url) =>{
+		const {data} = await axios.get(url)
+		setCharacter([
+			...character,
+			...data.results
+		])
+		setPage(data.info)
+	}
 	return (
 		<LayoutLogin>
 			<main>
@@ -22,6 +51,30 @@ export const VehicleType = () => {
 								></a>
 							</div>
 						</form>
+					</div>
+					<div>
+
+					</div>
+					<div className="d-flex justify-content-between align-items-center mb-5">
+						<h1 className="pd-heading">Rick and Morty</h1>
+						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+					</div>
+					<div className='row row-cols-4'>
+						{ character.map((data,idx) =>{
+							return(
+								<div className='col'>
+									<div key={String(data.id)} className='d-flex position-relative mb-4'>
+										<img src={data.image} alt={data.className} className="img-thumbnail rounded"></img>
+										<div className='bg-white position-absolute bottom-0 start-0 p-3 fs-6 fw-bold'>{data.name} {data.id}</div>
+									</div>
+									
+								</div>
+							)})}
+					</div>
+					<div className='row'>
+						<div className='col text-center'>
+							<button className='btn btn-primary' onClick={()=>getNextCharacter(page.next)}> Load More</button>
+						</div>
 					</div>
 					<div className="d-flex justify-content-between align-items-center mb-5">
 						<h1 className="pd-heading">Popular In Town</h1>
