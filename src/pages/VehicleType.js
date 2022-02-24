@@ -57,6 +57,7 @@ export const VehicleType = () => {
 							</div>
 						</div>
 					</div>
+					{/* sad */}
 					<div className="d-flex justify-content-between align-items-center mb-5">
 						<h1 className="pd-heading">Cars</h1>
 						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
