@@ -2,80 +2,130 @@
 /* eslint-disable no-unused-vars */
 import React , {useState, useEffect} from 'react'
 import LayoutLogin from '../components/LayoutLogin'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import {default as axios} from 'axios'
  
 // rafc
 
 export const VehicleType = () => {
-	// const [searchParam, setSearchParam] = useSearchParams()
+	const [ errorMsg, setErrorMsg] = useState(null)
 	const [ character,setCharacter ] = useState([])
 	const [ page,setPage ] = useState({})
 
+	const navigate = useNavigate()
+	let [searchParams, setSearchParams] = useSearchParams()
+	// didmount
 	useEffect(()=>{
-		getCharacter()
+		const name = searchParams.get('name')
+		const gender = searchParams.get('gender')
+
+		if( name || gender ){
+			const url = (name,gender) => `https://rickandmortyapi.com/api/character?name=${name}&gender=${gender}`
+			document.getElementById('search').elements('name').value = name
+			document.getElementById('search').elements('gender').value = gender
+			console.log(name,gender)
+			getNextData(url(name,gender), true)
+		} else{
+			getCharacter()
+		}
 	}, [])
 
+	// didUpdate
 	const getCharacter = async() =>{
-		// const {data} = await axios.get('https://rickandmortyapi.com/api/character')
-		const {data} = await axios.get('http://localhost:5000/list?filterBy=Car')
-		console.log(data.results)
-		console.log(data.pageInfo)
+		const {data} = await axios.get('https://rickandmortyapi.com/api/character')
+		// const {data} = await axios.get('http://localhost:5000/list?filterBy=Car')
 		setCharacter(data.results)
-		setPage(data.pageInfo)
+		setPage(data.info)
 	}
 
-	const getNextCharacter = async(url) =>{
-		const {data} = await axios.get(url)
-		setCharacter([
-			...character,
-			...data.results
-		])
-		setPage(data.info)
+	//did update
+	const getNextData = async(url, replace=false) =>{
+		try{
+			setErrorMsg(null)
+			console.log(replace)
+			console.log(url)
+			const {data} = await axios.get(url)
+			if(replace){
+				setCharacter(data.results)
+			} else{
+				setCharacter([
+					...character,
+					...data.results
+				])
+			}
+			setPage(data.info)
+		} catch(err){
+			console.log(err)
+			if(err.message.includes('404')){
+				setErrorMsg('Data not found!')
+				setCharacter([])
+				setPage({
+					next:null
+				})
+			}
+		}
+	}
+
+	const onSearch = async(event)=>{
+		event.preventDefault()
+		const name = event.target.elements['name'].value
+		const gender = event.target.elements['gender'].value
+		const url = (name,gender)=>`https://rickandmortyapi.com/api/character?name=${name}&gender=${gender}`
+		setSearchParams({name,gender})
+		await getNextData(url(name,gender), true)
+	}
+
+	const goToDetail = (id) =>{
+		navigate(`/vehiclesType/${id}`)
 	}
 	return (
 		<LayoutLogin>
 			<main>
 				<div className="container g-0">
 					<div className="mb-6">
-						<form action="" className="">
-							<div className="d-flex position-relative">
-								<input
-									type="search"
-									placeholder="Search vehicle (ex. cars, cars name)"
-									className="form-control rounded button-height"
-								/>
-								<a
-									href="/vehicle-detail.html"
-									className="fa-solid fa-magnifying-glass icon position-absolute icon-search text-dark"
-								></a>
+						<form className="" onSubmit={onSearch} id='search'>
+							<div className='input-group d-flex align-items-center'>
+								<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height"/>
+								<select name='gender' className='px-3 form-select rounded button-height'>
+									<option value=''  style={{display: 'none'}}>Select a gender</option>
+									<option value='male'>Male</option>
+									<option value='female'>Female</option>
+									<option value='genderless'>Gender-Less</option>
+									<option value='unknown'>Unknown</option>
+								</select>
+								<button className="px-3 fa-solid fa-magnifying-glass icon icon-search text-dark bg-white border border-0" type='submit' ></button>
 							</div>
 						</form>
 					</div>
-					<div>
-
-					</div>
-					<div className="d-flex justify-content-between align-items-center mb-5">
-						<h1 className="pd-heading">Rick and Morty</h1>
-						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
-					</div>
-					<div className='row row-cols-4'>
+					{errorMsg !==null && 
+						<div className="alert alert-warning alert-dismissible fade show" role="alert">
+							{errorMsg}
+							<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					}
+					{ errorMsg == null &&
+						<div className="d-flex justify-content-between align-items-center mb-5">
+							<h1 className="pd-heading">Cars</h1>
+							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+						</div>}
+					<div className='row row-cols-md-4'>
 						{ character.map((data,idx) =>{
 							return(
-								<div className='col'>
-									<div key={String(data.id)} className='d-flex position-relative mb-4'>
-										<img src={data.image} alt={data.className} className="img-thumbnail rounded"></img>
+								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+									<div className='d-flex position-relative mb-4'>
+										<img src={data.image} alt={data.className} className="img-fluid rounded"></img>
 										<div className='bg-white position-absolute bottom-0 start-0 p-3 fs-6 fw-bold'>{data.name} {data.id}</div>
 									</div>
 									
 								</div>
 							)})}
 					</div>
-					<div className='row'>
+					
+					{page.next!==null &&<div className='row'>
 						<div className='col text-center'>
-							<button className='btn btn-primary' onClick={()=>getNextCharacter(page.next)}> Load More</button>
+							<button className='btn btn-primary' onClick={()=>getNextData(page.next)}> Load More</button>
 						</div>
-					</div>
+					</div>}
 					<div className="d-flex justify-content-between align-items-center mb-5">
 						<h1 className="pd-heading">Popular In Town</h1>
 						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
@@ -205,7 +255,7 @@ export const VehicleType = () => {
 								<div className="text-muted">Malang</div>
 							</div>
 						</div>
-						<Link to="../vehicleDetail">
+						<div to="../vehicleDetail">
 							<div className="position-relative d-flex">
 								<div className="img-thumbnail rounded img-12"></div>
 								<div className="card-name">
@@ -213,7 +263,7 @@ export const VehicleType = () => {
 									<div className="text-muted">Yogyakarta</div>
 								</div>
 							</div>
-						</Link>
+						</div>
 					</div>
 				</div>
 			</main>

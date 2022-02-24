@@ -35,7 +35,7 @@ export default class App extends Component{
 					<Route path='loginGoogle' element={<LoginGoogle />}/>
 					<Route path='signUp' element={<SignUp />}/>
 					<Route path='vehiclesType' element={<VehicleType />}/>
-					<Route path='vehicleDetail' element={<VehicleDetail />}/>
+					<Route path='vehiclesType/:id' element={<VehicleDetail />}/>
 					<Route path='reservation' element={<Reservation />}/>
 					<Route path='payment' element={<Payment />}/>
 					<Route path='history' element={<History />}/>
