@@ -42,8 +42,7 @@ export const VehicleDetail = (props) => {
 						<div className="col-7 g-0">
 							<div className="pe-5">
 								<div className="mb-5 text-center">
-									{/* <div className="img-banner img-12 rounded"></div> */}
-									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-fluid rounded'></img>
+									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-banner-5 rounded'></img>
 								</div>
 								<div className="d-flex justify-content-between align-items-center">
 									<i className="fa-solid fa-chevron-left icon dark"></i>

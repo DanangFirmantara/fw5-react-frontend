@@ -14,6 +14,8 @@ import VehicleDetail from './pages/VehicleDetail'
 import Reservation from './pages/Reservation'
 import Payment from './pages/Payment'
 import { createBrowserHistory } from 'history'
+import VehicleEdit from './pages/VehicleEdit'
+import VehicleCreate from './pages/VehicleCreate'
 
 export default class App extends Component{
 	state ={
@@ -44,6 +46,8 @@ export default class App extends Component{
 					<Route path='history' element={<History />}/>
 					<Route path='about' element={<About />}/>
 					<Route path='profile' element={<Profile />}/>
+					<Route path='vehicle' element={<VehicleCreate />}/>
+					<Route path='vehicle/:id' element={<VehicleEdit />}/>
 				</Routes>
 				{/* </BrowserRouter> */}
 			</HistoryRouter>

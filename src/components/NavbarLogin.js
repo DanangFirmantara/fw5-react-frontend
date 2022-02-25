@@ -34,6 +34,10 @@ export default class NavbarLogin extends Component {
 									>Vehicle Type</Link>
 								</li>
 								<li className="nav-item">
+									<Link className="nav-link link-secondary mx-3 active" to="../vehicle"
+									>Vehicle Create</Link>
+								</li>
+								<li className="nav-item">
 									<Link className="nav-link link-secondary mx-3" to="../history">History</Link>
 								</li>
 								<li className="nav-item">
