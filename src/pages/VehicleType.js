@@ -4,13 +4,33 @@ import React , {useState, useEffect} from 'react'
 import LayoutLogin from '../components/LayoutLogin'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {default as axios} from 'axios'
+import defaultImage from '../assets/image/defaultImage.png'
  
 // rafc
 
 export const VehicleType = () => {
 	const [ errorMsg, setErrorMsg] = useState(null)
-	const [ character,setCharacter ] = useState([])
-	const [ page,setPage ] = useState({})
+
+	// car list
+	// const [ character,setCharacter ] = useState([])
+	// const [ page,setPage ] = useState({})
+
+	//car list
+	const [ vehicleCar, setVehicleCar] = useState([])
+	const [ pageCar,setPageCar ] = useState({})
+
+	//motorbike list
+	const [ vehicleMotorbike, setVehicleMotorbike] = useState([])
+	const [ pageMotorbike,setPageMotorbike ] = useState({})
+
+	//bike list
+	const [ vehicleBike, setVehicleBike] = useState([])
+	const [ pageBike,setPageBike ] = useState({})
+
+	//popular list
+	const [ vehiclePopular, setVehiclePopular] = useState([])
+	const [ pagePopular,setPagePopular ] = useState({})
+
 
 	const navigate = useNavigate()
 	let [searchParams, setSearchParams] = useSearchParams()
@@ -18,48 +38,89 @@ export const VehicleType = () => {
 	useEffect(()=>{
 		const name = searchParams.get('name')
 		const gender = searchParams.get('gender')
+		document.getElementById('search').elements['name'].value = name
+		document.getElementById('search').elements['gender'].value = gender
 
 		if( name || gender ){
 			const url = (name,gender) => `https://rickandmortyapi.com/api/character?name=${name}&gender=${gender}`
-			document.getElementById('search').elements('name').value = name
-			document.getElementById('search').elements('gender').value = gender
-			console.log(name,gender)
 			getNextData(url(name,gender), true)
 		} else{
-			getCharacter()
+			getVehicle()
+			getVehiclePopular()
 		}
 	}, [])
 
+	// useEffect(()=>{
+	// 	// console.log(pageCar.next , 'next page')
+	// })
 	// didUpdate
-	const getCharacter = async() =>{
-		const {data} = await axios.get('https://rickandmortyapi.com/api/character')
-		// const {data} = await axios.get('http://localhost:5000/list?filterBy=Car')
-		setCharacter(data.results)
-		setPage(data.info)
+	const getVehicle = () =>{
+		// const {data} = await axios.get('https://rickandmortyapi.com/api/character')
+		const filterBy = ['car', 'motorbike', 'bike']
+		filterBy.map(async obj=>{
+			try{
+				let {data} = await axios.get(`http://localhost:5000/list?filterBy=${obj}`)
+				if(data){
+					if(obj=='car'){
+						setVehicleCar(data.results)
+						setPageCar(data.pageInfo)
+					} else if(obj == 'motorbike'){
+						setVehicleMotorbike(data.results)
+						setPageMotorbike(data.pageInfo)
+					} else if(obj== 'bike'){
+						setVehicleBike(data.results)
+						setPageBike(data.pageInfo)
+					}
+				}
+				
+			} catch (err){
+				console.log(err)
+			}
+		})
+	}
+
+	const getVehiclePopular = async()=>{
+		try{
+			let {data} = await axios.get('http://localhost:5000/popular')
+			console.log(data.results)
+			setVehiclePopular(data.results)
+			setPagePopular(data.pageInfo)
+		} catch (err){
+			console.log(err)
+		}
+		
 	}
 
 	//did update
 	const getNextData = async(url, replace=false) =>{
 		try{
 			setErrorMsg(null)
-			console.log(replace)
-			console.log(url)
+			console.log(url.split('filterBy=')[1])
+			const filterBy=url.split('filterBy=')[1]
 			const {data} = await axios.get(url)
 			if(replace){
-				setCharacter(data.results)
+				setVehicleCar(data.results)
 			} else{
-				setCharacter([
-					...character,
-					...data.results
-				])
+				if(filterBy=='car'){
+					setVehicleCar(data.results)
+					setPageCar(data.pageInfo)
+				} else if(filterBy =='motorbike'){
+					setVehicleMotorbike(data.results)
+					setPageMotorbike(data.pageInfo)
+				} else if(filterBy =='bike'){
+					setVehicleBike(data.results)
+					setPageBike(data.pageInfo)
+				} else{
+					setVehiclePopular(data.results)
+					setPagePopular(data.pageInfo)
+				}
 			}
-			setPage(data.info)
 		} catch(err){
 			console.log(err)
 			if(err.message.includes('404')){
 				setErrorMsg('Data not found!')
-				setCharacter([])
-				setPage({
+				setVehicleCar([])
+				setPageCar({
 					next:null
 				})
 			}
@@ -105,165 +166,120 @@ export const VehicleType = () => {
 					}
 					{ errorMsg == null &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading">Cars</h1>
+							<h1 className="pd-heading">Popular in Town</h1>
 							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
 						</div>}
-					<div className='row row-cols-md-4'>
-						{ character.map((data,idx) =>{
+					<div className='row '>
+						{pagePopular.prev!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pagePopular.prev)}></button>
+						</div>
+						}
+						{ vehiclePopular.map((data,idx) =>{
 							return(
 								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 									<div className='d-flex position-relative mb-4'>
-										<img src={data.image} alt={data.className} className="img-fluid rounded"></img>
-										<div className='bg-white position-absolute bottom-0 start-0 p-3 fs-6 fw-bold'>{data.name}</div>
+										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+										<div className='card-name px-3'>
+											<div>{data.name}</div>
+											<div className='text-muted'>{data.location} {idx}</div>
+										</div>
 									</div>
-									
 								</div>
 							)})}
+						{pagePopular.next!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pagePopular.next)}></button>
+						</div>
+						}
+					</div>
+					{ errorMsg == null &&
+						<div className="d-flex justify-content-between align-items-center mb-5">
+							<h1 className="pd-heading">Cars</h1>
+							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+						</div>}
+					<div className='row '>
+						{pageCar.prev!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageCar.prev)}></button>
+						</div>
+						}
+						{ vehicleCar.map((data,idx) =>{
+							return(
+								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+									<div className='d-flex position-relative mb-4'>
+										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+										<div className='card-name px-3'>
+											<div>{data.name}</div>
+											<div className='text-muted'>{data.location} {idx}</div>
+										</div>
+									</div>
+								</div>
+							)})}
+						{pageCar.next!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageCar.next)}></button>
+						</div>
+						}
+					</div>
+					{ errorMsg == null &&
+						<div className="d-flex justify-content-between align-items-center mb-5">
+							<h1 className="pd-heading">Motorbike</h1>
+							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+						</div>}
+					<div className='row '>
+						{pageMotorbike.prev!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageMotorbike.prev)}></button>
+						</div>
+						}
+						{ vehicleMotorbike.map((data,idx) =>{
+							return(
+								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+									<div className='d-flex position-relative mb-4'>
+										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+										<div className='card-name px-3'>
+											<div>{data.name}</div>
+											<div className='text-muted'>{data.location} {idx}</div>
+										</div>
+									</div>
+								</div>
+							)})}
+						{pageMotorbike.next!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageMotorbike.next)}></button>
+						</div>
+						}
 					</div>
 					
-					{page.next!==null &&<div className='row'>
-						<div className='col text-center'>
-							<button className='btn btn-primary' onClick={()=>getNextData(page.next)}> Load More</button>
+					{ errorMsg == null &&
+						<div className="d-flex justify-content-between align-items-center mb-5">
+							<h1 className="pd-heading">Bike</h1>
+							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+						</div>}
+					<div className='row '>
+						{pageBike.prev!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageBike.prev)}></button>
 						</div>
-					</div>}
-					<div className="d-flex justify-content-between align-items-center mb-5">
-						<h1 className="pd-heading">Popular In Town</h1>
-						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
-					</div>
-					<div className="d-flex justify-content-between mb-6">
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-1"></div>
-							<div className="card-name">
-								<div>Merapi</div>
-								<div className="text-muted">Yogyakarta</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-2"></div>
-							<div className="card-name">
-								<div>Teluk Bogam</div>
-								<div className="text-muted">Kalimantan</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-3"></div>
-							<div className="card-name">
-								<div>Bromo</div>
-								<div className="text-muted">Malang</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-4"></div>
-							<div className="card-name">
-								<div>Malioboro</div>
-								<div className="text-muted">Yogyakarta</div>
-							</div>
-						</div>
-					</div>
-					{/* sad */}
-					<div className="d-flex justify-content-between align-items-center mb-5">
-						<h1 className="pd-heading">Cars</h1>
-						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
-					</div>
-					<div className="d-flex justify-content-between mb-6">
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-1"></div>
-							<div className="card-name">
-								<div>Van</div>
-								<div className="text-muted">Yogyakarta</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-5"></div>
-							<div className="card-name">
-								<div>Lamborghini</div>
-								<div className="text-muted">South Jakarta</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-3"></div>
-							<div className="card-name">
-								<div>Jeep</div>
-								<div className="text-muted">Malang</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-6"></div>
-							<div className="card-name">
-								<div>White Jeep</div>
-								<div className="text-muted">Kalimantan</div>
-							</div>
-						</div>
-					</div>
-					<div className="d-flex justify-content-between align-items-center mb-5">
-						<h1 className="pd-heading">Motorbike</h1>
-						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
-					</div>
-					<div className="d-flex justify-content-between mb-6">
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-7"></div>
-							<div className="card-name">
-								<div>Vespa</div>
-								<div className="text-muted">Yogyakarta</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-2"></div>
-							<div className="card-name">
-								<div>Honda KLX</div>
-								<div className="text-muted">Kalimantan</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-8"></div>
-							<div className="card-name">
-								<div>Honda</div>
-								<div className="text-muted">Malang</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-4"></div>
-							<div className="card-name">
-								<div>Matic Bike</div>
-								<div className="text-muted">Yogyakarta</div>
-							</div>
-						</div>
-					</div>
-					<div className="d-flex justify-content-between align-items-center mb-5">
-						<h1 className="pd-heading">Bike</h1>
-						<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
-					</div>
-					<div className="d-flex justify-content-between mb-2">
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-9"></div>
-							<div className="card-name">
-								<div>Fixie</div>
-								<div className="text-muted">Yogyakarta</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-10"></div>
-							<div className="card-name">
-								<div>Sport Bike</div>
-								<div className="text-muted">Kalimantan</div>
-							</div>
-						</div>
-						<div className="position-relative d-flex">
-							<div className="img-thumbnail rounded img-11"></div>
-							<div className="card-name">
-								<div>Onthel</div>
-								<div className="text-muted">Malang</div>
-							</div>
-						</div>
-						<div to="../vehicleDetail">
-							<div className="position-relative d-flex">
-								<div className="img-thumbnail rounded img-12"></div>
-								<div className="card-name">
-									<div className="text-dark">Fixie Gray</div>
-									<div className="text-muted">Yogyakarta</div>
+						}
+						{ vehicleBike.map((data,idx) =>{
+							return(
+								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+									<div className='d-flex position-relative mb-4'>
+										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+										<div className='card-name px-3'>
+											<div>{data.name}</div>
+											<div className='text-muted'>{data.location} {idx}</div>
+										</div>
+									</div>
 								</div>
-							</div>
+							)})}
+						{pageBike.next!==null &&
+						<div className='col-1 d-flex justify-content-center align-items-center'>
+							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageBike.next)}></button>
 						</div>
+						}
 					</div>
 				</div>
 			</main>

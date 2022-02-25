@@ -4,19 +4,22 @@ import React, { useState,useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import LayoutLogin from '../components/LayoutLogin'
 import {getData} from '../helpers/http'
+import defaultImage from '../assets/image/defaultImage.png'
 
 export const VehicleDetail = (props) => {
-	const [vehicle,setVehicle] = useState({})
+	const [vehicle,setVehicle] = useState([])
 	const {id} = useParams()
 
 	useEffect(()=>{
 		getDataComponent(id)
 	},[])
+
 	const getDataComponent = async(id)=>{
 		try{
-			const {data} = await getData(`https://rickandmortyapi.com/api/character/${id}`, props.history)
-			console.log(data)
-			setVehicle(data)
+			// const {data} = await getData(`https://rickandmortyapi.com/api/character/${id}`, props.history)
+			const {data} = await getData(`http://localhost:5000/vehicles?id=${id}`, props.history)
+			console.log(data.results)
+			setVehicle(data.results[0])
 		} catch(err){
 			console.log(err)
 		}
@@ -34,36 +37,35 @@ export const VehicleDetail = (props) => {
 							<div className="pe-5">
 								<div className="mb-5 text-center">
 									{/* <div className="img-banner img-12 rounded"></div> */}
-									<img src={vehicle?.image} alt='VehicleImage' className='img-fluid rounded'></img>
+									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-fluid rounded'></img>
 								</div>
 								<div className="d-flex justify-content-between align-items-center">
 									<i className="fa-solid fa-chevron-left icon dark"></i>
 									{/* <div className="img-slide img-12 rounded"></div>
 									<div className="img-slide img-12 rounded"></div> */}
-									<img src={vehicle?.image} alt='VehicleImage' className='img-slide rounded '></img>
-									<img src={vehicle?.image} alt='VehicleImage' className='img-slide rounded '></img>
+									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-slide rounded '></img>
+									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-slide rounded '></img>
 									<i className="fa-solid fa-chevron-right icon dark"></i>
 								</div>
 							</div>
 						</div>
 						<div className="col">
 							<h1 className="pd-bolder mb-3">{vehicle?.name}</h1>
-							<h3 className="pd-bolder fw-normal fs-2 mb-3">{vehicle?.gender}</h3>
+							<h3 className="pd-bolder fw-normal fs-2 mb-3">{vehicle?.location}</h3>
 							<div className="fs-4 green fw-bold">{vehicle?.status}</div>
-							<div className="fs-4 text-danger fw-light mb-3">{vehicle?.species}</div>
+							<div className="fs-4 text-danger fw-light mb-3">No prepayment</div>
 							<ul className="lh-base fs-4 fw-light mb-4">
-								<li>Capacity : {vehicle?.id}</li>
-								<li>Type : {vehicle?.type}</li>
-								<li>Total episode :</li>
-
+								<li>Capacity : {vehicle?.stock}</li>
+								<li>Type : {vehicle?.category}</li>
+								<li>{vehicle.description}</li>
 							</ul>
 							<div className="pd-bolder fs-1 d-flex justify-content-center pt-2 mb-6">
-								Rp. 78.000/day
+								Rp. {new Intl.NumberFormat('de-DE').format(vehicle.price)}/day
 							</div>
 							<div className="d-flex justify-content-between">
-								<button className="icon-plus rounded bg-yellow">+</button>
+								<button className="icon-plus button-dark rounded bg-yellow fw-bolder fs-1">-</button>
 								<div className="fw-bolder fs-0">2</div>
-								<button className="icon-plus rounded bg-yellow">+</button>
+								<button className="icon-plus rounded bg-yellow fw-bolder fs-1">+</button>
 							</div>
 						</div>
 					</div>

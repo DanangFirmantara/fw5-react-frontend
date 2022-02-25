@@ -14,6 +14,8 @@ body{
 
 .icon{
    font-size: 40px;
+   background-color: unset ;
+   border: unset;
 }
 
 .icon-image{
@@ -221,6 +223,13 @@ a:hover{
    border: unset;
    background-size: cover;
    background-position: center;
+}
+
+.img-thumbnail-2{
+   width: 100%;
+   height: 332px;
+   object-position:center;
+   object-fit:cover;
 }
 
 .img-banner-2{
@@ -463,4 +472,11 @@ input:focus{
 .mx-6{
    margin-left: 5rem;
    margin-right: 5rem;
+}
+
+.item-img{
+   width: 500px;
+   height: 500px;
+   object-fit: cover;
+
 }
