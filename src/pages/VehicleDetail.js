@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState,useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import LayoutLogin from '../components/LayoutLogin'
 import {getData} from '../helpers/http'
 import defaultImage from '../assets/image/defaultImage.png'
@@ -9,6 +9,8 @@ import defaultImage from '../assets/image/defaultImage.png'
 export const VehicleDetail = (props) => {
 	const [vehicle,setVehicle] = useState([])
 	const {id} = useParams()
+	
+	const navigate = useNavigate()
 
 	useEffect(()=>{
 		getDataComponent(id)
@@ -23,6 +25,10 @@ export const VehicleDetail = (props) => {
 		} catch(err){
 			console.log(err)
 		}
+	}
+
+	const goToReservation = (id)=>{
+		navigate(`/reservation?id=${id}`)
 	}
 	return (
 		<LayoutLogin>
@@ -76,11 +82,9 @@ export const VehicleDetail = (props) => {
 							</button>
 						</div>
 						<div className="col-4">
-							<Link to="../reservation">
-								<button className="button-height button-yellow w-100 fw-bolder fs-4 shadow-yellow">
+							<button className="button-height button-yellow w-100 fw-bolder fs-4 shadow-yellow" onClick={()=>goToReservation(vehicle.id)}>
 									Reservation
-								</button>
-							</Link>
+							</button>
 						</div>
 						<div className="col-3">
 							<button className="button-height button-dark w-100 fw-bolder fs-4 shadow-dark">

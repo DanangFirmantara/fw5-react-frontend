@@ -8,10 +8,9 @@ export class Reservation extends Component {
 			<LayoutLogin>
 				<div className="container">
 					<div className="d-flex align-items-center mb-5" href="./vehicle-type.html">
-						<Link
+						<button
 							className="fa-solid fa-chevron-left icon dark fs-0 me-3"
-							to="../vehicleDetail"
-						></Link>
+						></button>
 						<div className="fs-1 fw-bold text-dark">Reservation</div>
 					</div>
 					<div className="row mb-5">

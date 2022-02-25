@@ -11,10 +11,6 @@ import defaultImage from '../assets/image/defaultImage.png'
 export const VehicleType = () => {
 	const [ errorMsg, setErrorMsg] = useState(null)
 
-	// car list
-	// const [ character,setCharacter ] = useState([])
-	// const [ page,setPage ] = useState({})
-
 	//car list
 	const [ vehicleCar, setVehicleCar] = useState([])
 	const [ pageCar,setPageCar ] = useState({})
