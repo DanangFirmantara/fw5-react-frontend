@@ -12,7 +12,7 @@ export default class NavbarHome extends Component{
 							<img src={logo} alt="logo" className="brand" />
 						</Link>
 						<button
-							className="navbar-toggler"
+							className="navbar-toggler "
 							type="button"
 							data-bs-toggle="collapse"
 							data-bs-target="#navbarSupportedContent"
@@ -20,33 +20,33 @@ export default class NavbarHome extends Component{
 							aria-expanded="false"
 							aria-label="Toggle navigation"
 						>
-							<span className="navbar-toggler-icon"></span>
+							<span className="navbar-toggler-icon "></span>
 						</button>
 						<div className="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul className="navbar-nav ms-auto mb-lg-0">
-								<li className="nav-item">
-									<Link className="nav-link link-secondary mx-3" aria-current="page" to="/" >Home</Link>
+							<ul className="navbar-nav ms-md-auto mb-md-0 mb-4">
+								<li className="nav-item text-center">
+									<Link className="nav-link link-secondary mx-md-3" aria-current="page" to="/" >Home</Link>
 								</li>
-								<li className="nav-item">
-									<Link className="nav-link link-secondary mx-3 active" to="vehiclesType"
+								<li className="nav-item text-center">
+									<Link className="nav-link link-secondary mx-md-3 active" to="vehiclesType"
 									>Vehicle Type
 									</Link>							
 								</li>
-								<li className="nav-item">
-									<Link className="nav-link link-secondary mx-3" to="history">History</Link>
+								<li className="nav-item text-center">
+									<Link className="nav-link link-secondary mx-md-3" to="history">History</Link>
 								</li>
-								<li className="nav-item">
-									<Link className="nav-link link-secondary mx-3" to="about">About</Link>
+								<li className="nav-item text-center">
+									<Link className="nav-link link-secondary mx-md-3" to="about">About</Link>
 								</li>
 							</ul>
-							<div className="ms-5">
-								<div className="d-flex align-items-center">
-									<Link to="login">
-										<div className="button-white py-2 text-center button-width mx-4">
+							<div className="">
+								<div className="d-flex align-items-center justify-content-around">
+									<Link to="login w-100">
+										<div className="button-white py-2 text-center button-width mx-md-5">
                         Login
 										</div>
 									</Link>
-									<Link to="signUp">
+									<Link to="signUp w-100">
 										<div className="button-yellow py-2 text-center button-width">
                         Register
 										</div>
