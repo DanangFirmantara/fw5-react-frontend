@@ -488,3 +488,9 @@ input:focus{
    object-fit: cover;
 
 }
+.form-select{
+   background-image: unset;
+}
+.custom-select{
+   pointer-events: none;
+}
