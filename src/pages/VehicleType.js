@@ -53,7 +53,6 @@ export const VehicleType = () => {
 	}, [])
 
 	const getVehicle = () =>{
-		// const {data} = await axios.get('https://rickandmortyapi.com/api/character')
 		const filterBy = ['car', 'motorbike', 'bike']
 		filterBy.map(async obj=>{
 			try{
@@ -185,8 +184,8 @@ export const VehicleType = () => {
 	return (
 		<LayoutLogin>
 			<main>
-				<div className="container g-0">
-					<div className="mb-6">
+				<div className="container g-0 my-md-5 my-4">
+					<div className="mb-5">
 						<form className="" onSubmit={onSearch} id='search'>
 							<div className='input-group d-flex align-items-center'>
 								<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height" autoComplete='off'/>
@@ -229,7 +228,7 @@ export const VehicleType = () => {
 										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
 										<div className='card-name px-3'>
 											<div>{data.name}</div>
-											<div className='text-muted'>{data.location} {idx}</div>
+											<div className='text-muted'>{data.location}</div>
 										</div>
 									</div>
 								</div>
@@ -258,7 +257,7 @@ export const VehicleType = () => {
 										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
 										<div className='card-name px-3'>
 											<div>{data.name}</div>
-											<div className='text-muted'>{data.location} {idx}</div>
+											<div className='text-muted'>{data.location} </div>
 										</div>
 									</div>
 								</div>
@@ -287,7 +286,7 @@ export const VehicleType = () => {
 										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
 										<div className='card-name px-3'>
 											<div>{data.name}</div>
-											<div className='text-muted'>{data.location} {idx}</div>
+											<div className='text-muted'>{data.location}</div>
 										</div>
 									</div>
 								</div>
@@ -316,7 +315,7 @@ export const VehicleType = () => {
 										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
 										<div className='card-name px-3'>
 											<div>{data.name}</div>
-											<div className='text-muted'>{data.location} {idx}</div>
+											<div className='text-muted'>{data.location}</div>
 										</div>
 									</div>
 								</div>
@@ -346,7 +345,7 @@ export const VehicleType = () => {
 										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
 										<div className='card-name px-3'>
 											<div>{data.name}</div>
-											<div className='text-muted'>{data.location} {idx}</div>
+											<div className='text-muted'>{data.location}</div>
 										</div>
 									</div>
 								</div>

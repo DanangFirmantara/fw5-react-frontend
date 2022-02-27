@@ -8,7 +8,7 @@ export const Reservation = () => {
 	}
 	return (
 		<LayoutLogin>
-			<div className="container">
+			<div className="container my-5">
 				<div className="d-flex align-items-center mb-5">
 					<button
 						className="fa-solid fa-chevron-left icon dark fs-0 me-3" onClick={goBack}
@@ -69,7 +69,7 @@ Total : Rp. 178.000
 				</div>
 				<Link to="../payment">
 					<div
-						className="button-yellow text-center w-100 shadow-yellow p-4 fw-bolder fs-4 mb-4"
+						className="button-third text-center w-100 shadow-yellow p-4 fw-bolder fs-4 mb-4"
 					>
  Go To Payment
 					</div>

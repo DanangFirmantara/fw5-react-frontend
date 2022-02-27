@@ -1,15 +1,58 @@
 
+:root{
+   --base-color:#353535;
+   --second-color:#dbcaa5;
+   --third-color:#636363;
+   --fourth-color:#F2ECFF;
+   --fiveth-color:#A3C8BC;
+};
+
 body{
    font-family: 'Nunito', Times, serif;
 }
 
+.bg-primer{
+   background-color: var(--base-color);
+}
+
+.bg-second{
+   background-color: var(--second-color);
+}
+
+.bg-third{
+   background-color: var(--third-color);
+}
+
+.bg-fourth{
+   background-color: var(--fourth-color);
+}
+
+.bg-fiveth{
+   background-color: var(--fiveth-color);
+}
+
+.primer{
+   color: var(--base-color);
+}
+.second{
+   color: var(--second-color);
+}
+.third{
+   color: var(--third-color);
+}
+.fourth{
+   color: var(--fourth-color);
+}
+.fiveth{
+   color: var(--fiveth-color);
+}
 .navbar-content{
    padding: 82px 0;
 }
 
 .brand{
-   width: 41px;
-   height: 41px;
+   width: 5rem;
+   height: 5rem;
 }
 
 .icon{
@@ -95,14 +138,15 @@ body{
    position: absolute;
    width: 20px;
    height: 20px;
-   background-color: rgba(255, 205, 97, 1);
-   color: black;
+   background-color: var(--fiveth-color);
+   color: var(--base-color);
    top: -5px;
    left: -10px;
    border-radius: 10px;
    align-items: center;
    justify-content: center;
    font-size: 10px;
+   font-weight: 900;
    border: none;
 }
 
@@ -146,6 +190,32 @@ body{
    background-color: white;
    border: 1px solid rgba(255, 205, 97, 1);
    color: rgba(57, 57, 57, 1);
+}
+
+.button-primer{
+   border-radius: 10px;
+   background-color: var(--third-color);
+   border: none;
+   color: var(--second-color);
+}
+
+.button-second{
+   border-radius: 10px;
+   background-color: var(--second-color);
+   border: none;
+   color: var(--base-color);
+}
+.button-third{
+   border-radius: 10px;
+   background-color: var(--base-color);
+   border: none;
+   color: var(--second-color);
+}
+.button-fourth{
+   border-radius: 10px;
+   background-color: var(--fiveth-color);
+   border: none;
+   color: black;
 }
 
 .button-width{

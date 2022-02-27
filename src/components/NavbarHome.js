@@ -6,7 +6,7 @@ export default class NavbarHome extends Component{
 	render(){
 		return (
 			<React.Fragment>
-				<nav className="navbar navbar-expand-lg p-0">
+				<nav className="navbar navbar-expand-lg p-0 bg-primer">
 					<div className="container navbar-content">
 						<Link className="navbar-brand" to="/">
 							<img src={logo} alt="logo" className="brand" />
@@ -25,29 +25,29 @@ export default class NavbarHome extends Component{
 						<div className="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul className="navbar-nav ms-md-auto mb-md-0 mb-4">
 								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3" aria-current="page" to="/" >Home</Link>
+									<Link className="nav-link link-secondary mx-md-3 second" aria-current="page" to="/" >Home</Link>
 								</li>
 								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3 active" to="vehiclesType"
+									<Link className="nav-link link-secondary mx-md-3 second" to="vehiclesType"
 									>Vehicle Type
 									</Link>							
 								</li>
 								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3" to="history">History</Link>
+									<Link className="nav-link link-secondary mx-md-3 second" to="history">History</Link>
 								</li>
 								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3" to="about">About</Link>
+									<Link className="nav-link link-secondary mx-md-3 second" to="about">About</Link>
 								</li>
 							</ul>
 							<div className="">
 								<div className="d-flex align-items-center justify-content-around">
 									<Link to="login w-100">
-										<div className="button-white py-2 text-center button-width mx-md-5">
+										<div className="button-second py-2 text-center button-width mx-md-5">
                         Login
 										</div>
 									</Link>
 									<Link to="signUp w-100">
-										<div className="button-yellow py-2 text-center button-width">
+										<div className="button-primer py-2 text-center button-width">
                         Register
 										</div>
 									</Link>

@@ -7,7 +7,7 @@ export class Payment extends Component {
 		return (
 			<LayoutLogin>
 				<main>
-					<div className="container">
+					<div className="container my-5">
 						<div className="d-flex align-items-center mb-5" href="./vehicle-type.html">
 							<Link className="fa-solid fa-chevron-left icon dark fs-0 me-3" to="../reservation"></Link>
 							<div className="fs-1 fw-bold text-dark">Payment</div>
@@ -30,7 +30,7 @@ export class Payment extends Component {
 								<div className="pd-heading fw-light fs-1 mb-3">Yogyakarta</div>
 								<div className="grey-2 fw-bold fs-4 mb-3">No Prepayment</div>
 								<div className="pd-heading fs-1 mb-3">#FG1209878YZS</div>
-								<button className="button-yellow fw-bold fs-4 p-1 mb-4">
+								<button className="button-third fw-bold fs-4 p-1 mb-4">
 									<div className="px-2">Copy booking code</div>
 								</button>
 								<div className="border border-3 py-4 border-grey rounded mb-4 ">
@@ -53,20 +53,20 @@ export class Payment extends Component {
 								<div className="fw-bold fs-2 ">Payment code :</div>  
 							</div>
 							<div className="col">
-								<div className="border border-grey border-3 fs-4 fw-bold d-flex justify-content-between py-4 rounded d-flex align-items-center px-5">
-									<div className="">#FG1209878YZS</div>
-									<div className="button-dark px-4"> Copy</div>
+								<div className='d-flex position-relative align-items-center'>
+									<div className="border border-grey border-3 fs-4 fw-bold py-4 rounded d-flex align-items-center px-5 w-100">#FG1209878YZS</div>
+									<div className="button-fourth text-center py-2 px-4 position-absolute end-0 me-4"> Copy</div>
 								</div>
 							</div>
 							<div className="col-4">
-								<div className="border border-grey border-3 fs-4 fw-bold px-5 py-4 d-flex justify-content-between align-items-center rounded">
-									<div className="grey-2">Select payment method</div>
-									<div className="fa-solid fa-chevron-down"></div>
+								<div className='d-flex position-relative align-items-center'>
+									<div className="border border-grey border-3 w-100 rounded fs-4 py-4 px-4">Select payment method</div>
+									<div className="fa-solid fa-chevron-down position-absolute fs-2 end-0 me-3 third"></div>
 								</div>
 							</div>
 						</div>
 						<Link to="../history">
-							<div className="button-yellow shadow-yellow py-4 d-flex justify-content-center fw-bolder fs-4">
+							<div className="button-third shadow-yellow py-4 d-flex justify-content-center fw-bolder fs-4">
 								<div className="fw-bolder">Finish payment :</div>
 								<div className="text-danger fw-bolder">59:30</div>
 							</div>

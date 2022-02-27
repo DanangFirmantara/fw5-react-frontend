@@ -6,7 +6,7 @@ export class History extends Component {
 		return (
 			<LayoutLogin>
 				<main>
-					<div className="container">
+					<div className="container my-5">
 						<div className="row d-flex justify-content-between g-0">
 							<div className="col">
 								<div className="row g-0 mb-4">

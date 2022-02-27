@@ -9,11 +9,13 @@ import defaultImage from '../assets/image/defaultImage.png'
 export const VehicleDetail = (props) => {
 	const [vehicle,setVehicle] = useState([])
 	const {id} = useParams()
+	let [count, setCount] = useState(1)
 	
 	const navigate = useNavigate()
 
 	useEffect(()=>{
 		getDataComponent(id)
+		console.log(count,'count')
 	},[])
 
 	const getDataComponent = async(id)=>{
@@ -27,6 +29,16 @@ export const VehicleDetail = (props) => {
 		}
 	}
 
+	const increament = ()=>{
+		setCount(count+1)
+	}
+
+	const decreament = ()=>{
+		if(count>1){
+			setCount(count-1)
+		}
+	}
+
 	const goToReservation = (id)=>{
 		navigate(`/reservation?id=${id}`)
 	}
@@ -34,7 +46,7 @@ export const VehicleDetail = (props) => {
 		<LayoutLogin>
 			<main>
 				<div className="container">
-					<Link className="d-flex align-items-center mb-5" to="../vehiclesType">
+					<Link className="d-flex align-items-center my-md-5 my-4" to="../vehiclesType">
 						<i className="fa-solid fa-chevron-left icon dark fs-0 me-3"></i>
 						<div className="fs-1 fw-bold text-dark">Detail</div>
 					</Link>
@@ -68,25 +80,25 @@ export const VehicleDetail = (props) => {
 								Rp. {new Intl.NumberFormat('de-DE').format(vehicle.price)}/day
 							</div>
 							<div className="d-flex justify-content-between">
-								<button className="icon-plus button-dark rounded bg-yellow fw-bolder fs-1">-</button>
-								<div className="fw-bolder fs-0">2</div>
-								<button className="icon-plus rounded bg-yellow fw-bolder fs-1">+</button>
+								<button className="icon-plus button-third rounded bg-yellow fw-bolder fs-1" onClick={decreament}>-</button>
+								<div className="fw-bolder fs-0">{count}</div>
+								<button className="icon-plus rounded fw-bolder fs-1 bg-fiveth" onClick={increament}>+</button>
 							</div>
 						</div>
 					</div>
-					<div className="d-flex justify-content-between row">
+					<div className="d-flex justify-content-between row mb-md-5">
 						<div className="col-5">
-							<button className="button-height button-dark w-100 fw-bolder fs-4 shadow-dark">
+							<button className="button-height button-third w-100 fw-bolder fs-4 shadow-dark">
 								Chat Admin
 							</button>
 						</div>
 						<div className="col-4">
-							<button className="button-height button-yellow w-100 fw-bolder fs-4 shadow-yellow" onClick={()=>goToReservation(vehicle.id)}>
+							<button className="button-height w-100 fw-bolder fs-4 shadow-yellow button-fourth" onClick={()=>goToReservation(vehicle.id)}>
 									Reservation
 							</button>
 						</div>
 						<div className="col-3">
-							<button className="button-height button-dark w-100 fw-bolder fs-4 shadow-dark">
+							<button className="button-height button-third w-100 fw-bolder fs-4 shadow-dark">
 								<div className="d-flex align-items-center justify-content-center"><i className="fa-solid fa-heart me-4 fs-0"></i>Like</div>
 							</button>
 						</div>
