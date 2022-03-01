@@ -4,7 +4,7 @@ import React , {useState, useEffect} from 'react'
 import LayoutLogin from '../components/LayoutLogin'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {default as axios} from 'axios'
-import defaultImage from '../assets/image/defaultImage.png'
+import defaultImage from '../assets/image/image 6.png'
  
 // rafc
 
@@ -96,7 +96,6 @@ export const VehicleType = () => {
 			if(replace){
 				setVehicleList(data.results)
 				setPageList(data.pageInfo)
-				console.log(data.pageInfo)
 				setList(true)
 			} else{
 				if(filterBy=='car'){
@@ -128,15 +127,13 @@ export const VehicleType = () => {
 	const getDataSearch = async(url)=>{
 		try{
 			setErrorMsg(null)
-			console.log(url)
 			const {data} = await axios.get(url)
-			console.log(data.results)
-			console.log(data.pageInfo)
 			setVehicleList(data.results)
 			setPageList(data.pageInfo)
 			setList(true)
 		} catch (err){
-			console.log(err)
+			// setErrorMsg(err.response.data.message)
+			setErrorMsg('Data not found')
 		}
 	}
 
@@ -174,7 +171,7 @@ export const VehicleType = () => {
 			}
 			await getDataSearch(url(data))
 		} catch(err){
-			console.log(err)
+			console.log('error bro 3')
 		}
 	}
 
@@ -236,7 +233,7 @@ export const VehicleType = () => {
 					{ list && errorMsg == null &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Vehicles List</h1>
-							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div> }
 					<div className='row '>
 						{ list && errorMsg == null && pageList.prev!==null &&
@@ -262,18 +259,18 @@ export const VehicleType = () => {
 							</div>
 						}
 					</div>
-					{ errorMsg == null &&
+					{ !list && errorMsg == null &&
 						<div className="d-md-flex justify-content-between align-items-center mb-5 ">
 							<h1 className="pd-heading text-center text-md-start primer">Popular in Town</h1>
 							<a href="#"><h5 className="third text-center text-md-start">view all &gt;</h5></a>
 						</div> }
 					<div className='row'>
-						{ errorMsg == null && pagePopular.prev!==null &&
+						{ !list && errorMsg == null && pagePopular.prev!==null &&
 							<div className='col-1 d-flex justify-content-center align-items-center'>
 								<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pagePopular.prev)}></button>
 							</div>
 						}
-						{ errorMsg == null && vehiclePopular.map((data,idx) =>{
+						{ !list && errorMsg == null && vehiclePopular.map((data,idx) =>{
 							return(
 								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 									<div className='d-flex position-relative mb-4'>
@@ -285,24 +282,24 @@ export const VehicleType = () => {
 									</div>
 								</div>
 							)})}
-						{ errorMsg == null && pagePopular.next!==null &&
+						{ !list && errorMsg == null && pagePopular.next!==null &&
 							<div className='col-1 d-flex justify-content-center align-items-center'>
 								<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pagePopular.next)}></button>
 							</div>
 						}
 					</div>
-					{ errorMsg == null &&
+					{ !list && errorMsg == null &&
 						<div className="d-md-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
 							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
 						</div>}
 					<div className='row'>
-						{ errorMsg == null && pageCar.prev!==null &&
+						{ !list && errorMsg == null && pageCar.prev!==null &&
 						<div className='col d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageCar.prev)}></button>
 						</div>
 						}
-						{ errorMsg == null && vehicleCar.map((data,idx) =>{
+						{ !list && errorMsg == null && vehicleCar.map((data,idx) =>{
 							return(
 								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 									<div className='d-flex position-relative mb-4'>
@@ -314,24 +311,24 @@ export const VehicleType = () => {
 									</div>
 								</div>
 							)})}
-						{ errorMsg == null && pageCar.next!==null &&
+						{ !list && errorMsg == null && pageCar.next!==null &&
 						<div className='col d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageCar.next)}></button>
 						</div>
 						}
 					</div>
-					{ errorMsg == null &&
+					{ !list && errorMsg == null &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Motorbike</h1>
-							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div>}
 					<div className='row '>
-						{ errorMsg == null && pageMotorbike.prev!==null &&
+						{ !list && errorMsg == null && pageMotorbike.prev!==null &&
 						<div className='col-1 d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageMotorbike.prev)}></button>
 						</div>
 						}
-						{ errorMsg == null && vehicleMotorbike.map((data,idx) =>{
+						{ !list && errorMsg == null && vehicleMotorbike.map((data,idx) =>{
 							return(
 								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 									<div className='d-flex position-relative mb-4'>
@@ -343,25 +340,25 @@ export const VehicleType = () => {
 									</div>
 								</div>
 							)})}
-						{ errorMsg == null && pageMotorbike.next!==null &&
+						{ !list && errorMsg == null && pageMotorbike.next!==null &&
 						<div className='col-1 d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageMotorbike.next)}></button>
 						</div>
 						}
 					</div>
 					
-					{ errorMsg == null &&
+					{ !list && errorMsg == null &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Bike</h1>
-							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div>}
 					<div className='row '>
-						{ errorMsg == null && pageBike.prev!==null &&
+						{ !list && errorMsg == null && pageBike.prev!==null &&
 						<div className='col-1 d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageBike.prev)}></button>
 						</div>
 						}
-						{ errorMsg == null && vehicleBike.map((data,idx) =>{
+						{ !list && errorMsg == null && vehicleBike.map((data,idx) =>{
 							return(
 								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 									<div className='d-flex position-relative mb-4'>
@@ -373,7 +370,7 @@ export const VehicleType = () => {
 									</div>
 								</div>
 							)})}
-						{ errorMsg == null && pageBike.next!==null &&
+						{ !list && errorMsg == null && pageBike.next!==null &&
 						<div className='col-1 d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageBike.next)}></button>
 						</div>

@@ -18,12 +18,6 @@ import VehicleEdit from './pages/VehicleEdit'
 import VehicleCreate from './pages/VehicleCreate'
 
 export default class App extends Component{
-	state ={
-		isLogged:false
-	}
-	componentDidMount(){
-		console.log(this.state.isLogged)
-	}
 	history = createBrowserHistory()
 
 	render(){
@@ -39,6 +33,7 @@ export default class App extends Component{
 					<Route path='login' element={<LoginPage />}/>
 					<Route path='loginGoogle' element={<LoginGoogle />}/>
 					<Route path='signUp' element={<SignUp />}/>
+					{/* <Route path='forgotPassword' element={<SignUp />}/> */}
 					<Route path='vehiclesType' element={<VehicleType />}/>
 					<Route path='vehiclesType/:id' element={<VehicleDetail history = {this.history} />}/>
 					<Route path='reservation' element={<Reservation />}/>

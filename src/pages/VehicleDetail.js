@@ -4,7 +4,7 @@ import React, { useState,useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import LayoutLogin from '../components/LayoutLogin'
 import {getData} from '../helpers/http'
-import defaultImage from '../assets/image/defaultImage.png'
+import defaultImage from '../assets/image/image 6.png'
 
 export const VehicleDetail = (props) => {
 	const [vehicle,setVehicle] = useState([])
@@ -85,7 +85,7 @@ export const VehicleDetail = (props) => {
 							<div className="d-flex justify-content-between">
 								<button className="icon-plus button-third rounded bg-yellow fw-bolder fs-1" onClick={decreament}>-</button>
 								<div className="fw-bolder fs-0">{count}</div>
-								<button className="icon-plus rounded fw-bolder fs-1 bg-fiveth" onClick={increament}>+</button>
+								<button className="icon-plus rounded fw-bolder fs-1 button-fourth" onClick={increament}>+</button>
 							</div>
 						</div>
 					</div>

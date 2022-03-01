@@ -213,7 +213,7 @@ body{
    border-radius: 10px;
    background-color: var(--fiveth-color);
    border: none;
-   color: black;
+   color: rgba(0, 0, 0, 0.9);
 }
 
 .button-width{

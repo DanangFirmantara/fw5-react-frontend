@@ -39,7 +39,7 @@ export default class LoginPage extends Component{
 										<div href="" className="text-white fs-4 fw-bold mb-4">Don&rsquo;t have account</div>
 										<Link to="../signUp">
 											<div
-												className="fw-bolder button-dark w-75 text-center py-4 shadow-light fs-4"
+												className="fw-bolder button-third w-75 text-center py-4 shadow-light fs-4"
 											>
                               Sign up
 											</div>
@@ -68,15 +68,11 @@ export default class LoginPage extends Component{
 													className="button-light w-100 py-4 fw-bold fs-4 ps-5 shadow-dark mb-3"
 												/>
 												<div className="mb-5">
-													<a
-														href="/forgot-password.html"
-														className="fs-6 fw-bold text-white"
-													>Forgot password?</a
-													>
+													<Link to="/forgotPassword" className="fs-6 fw-bold text-white">Forgot password?</Link>
 												</div>
 												<div className="mb-4">
 													<button
-														className="button-yellow fw-bolder fs-4 py-4 text-center w-100 shadow-yellow"
+														className="button-fourth fw-bolder fs-4 py-4 text-center w-100 shadow-yellow"
 														onClick={this.onLogin}
 													>
                                        Login
