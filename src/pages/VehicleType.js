@@ -207,21 +207,6 @@ export const VehicleType = () => {
 									<button className="fa-solid fa-magnifying-glass text-dark bg-white border border-0 fs-1 d-flex align-items-center pb-lg-3 pb-0" type='submit' ></button>
 								</div>
 							</div>
-							{/* <div className='input-group d-flex align-items-center'>
-								<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height" autoComplete='off'/>
-								<select name='location' className='px-3 form-select rounded button-height'>
-									<option value='' style={{display: 'none'}}>Select location</option>
-									<option value='jakarta'>Jakarta</option>
-									<option value='yogyakarta'>Yogyakarta</option>
-								
-								</select>
-								<select name='sortType' className='px-3 form-select rounded button-height'>
-									<option value='' style={{display: 'none'}}>Sort Type</option>
-									<option value='ASC'>A-Z</option>
-									<option value='DESC'>Z-A</option>
-								</select>
-								<button className="px-3 fa-solid fa-magnifying-glass icon icon-search text-dark bg-white border border-0" type='submit' ></button>
-							</div> */}
 						</form>
 					</div>
 					{errorMsg !==null && 
@@ -235,27 +220,29 @@ export const VehicleType = () => {
 							<h1 className="pd-heading">Vehicles List</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div> }
-					<div className='row '>
-						{ list && errorMsg == null && pageList.prev!==null &&
-							<div className='col-1 d-flex justify-content-center align-items-center'>
-								<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getDataSearch(pageList.prev)}></button>
-							</div>
-						}
-						{ list && errorMsg == null && vehicleList.map((data,idx) =>{
-							return(
-								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-									<div className='d-flex position-relative mb-4'>
-										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-										<div className='card-name px-3'>
-											<div>{data.name}</div>
-											<div className='text-muted'>{data.location}</div>
+					<div className='d-flex position-relative align-items-center'>
+						<div className='row '>
+							{ list && errorMsg == null && vehicleList.map((data,idx) =>{
+								return(
+									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+										<div className='d-flex position-relative mb-4'>
+											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+											<div className='card-name px-3'>
+												<div>{data.name}</div>
+												<div className='text-muted'>{data.location}</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							)})}
+								)})}
+						</div>
+						{ list && errorMsg == null && pageList.prev!==null &&
+							<div className='position-absolute start-0 mx-3 bg-primer rounded'>
+								<button className='fa-solid fa-chevron-left icon fiveth ' onClick={()=>getDataSearch(pageList.prev)}></button>
+							</div>
+						}
 						{ list && errorMsg == null && pageList.next!==null &&
-							<div className='col-1 d-flex justify-content-center align-items-center'>
-								<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getDataSearch(pageList.next)}></button>
+							<div className='position-absolute end-0 mx-3 bg-primer rounded'>
+								<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getDataSearch(pageList.next)}></button>
 							</div>
 						}
 					</div>
@@ -264,56 +251,61 @@ export const VehicleType = () => {
 							<h1 className="pd-heading text-center text-md-start primer">Popular in Town</h1>
 							<a href="#"><h5 className="third text-center text-md-start">view all &gt;</h5></a>
 						</div> }
-					<div className='row'>
-						{ !list && errorMsg == null && pagePopular.prev!==null &&
-							<div className='col-1 d-flex justify-content-center align-items-center'>
-								<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pagePopular.prev)}></button>
-							</div>
-						}
-						{ !list && errorMsg == null && vehiclePopular.map((data,idx) =>{
-							return(
-								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-									<div className='d-flex position-relative mb-4'>
-										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-										<div className='card-name px-3'>
-											<div>{data.name}</div>
-											<div className='text-muted'>{data.location} </div>
+					<div className='position-relative d-flex align-items-center'>
+						<div className='row'>
+							{ !list && errorMsg == null && vehiclePopular.map((data,idx) =>{
+								return(
+									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+										<div className='d-flex position-relative mb-4'>
+											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+											<div className='card-name px-3'>
+												<div>{data.name}</div>
+												<div className='text-muted'>{data.location} </div>
+											</div>
 										</div>
 									</div>
-								</div>
-							)})}
+								)})}
+						</div>
+						{ !list && errorMsg == null && pagePopular.prev!==null &&
+							<div className='position-absolute end-0 mx-3 rounded bg-primer'>
+								<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pagePopular.prev)}></button>
+							</div>
+						}
 						{ !list && errorMsg == null && pagePopular.next!==null &&
-							<div className='col-1 d-flex justify-content-center align-items-center'>
-								<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pagePopular.next)}></button>
+							<div className='position-absolute end-0 mx-3 rounded bg-primer'>
+								<button className='fa-solid fa-chevron-right icon  fiveth' onClick={()=>getNextData(pagePopular.next)}></button>
 							</div>
 						}
 					</div>
+					
 					{ !list && errorMsg == null &&
 						<div className="d-md-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
 							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
 						</div>}
-					<div className='row'>
-						{ !list && errorMsg == null && pageCar.prev!==null &&
-						<div className='col d-flex justify-content-center align-items-center'>
-							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageCar.prev)}></button>
-						</div>
-						}
-						{ !list && errorMsg == null && vehicleCar.map((data,idx) =>{
-							return(
-								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-									<div className='d-flex position-relative mb-4'>
-										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-										<div className='card-name px-3'>
-											<div>{data.name}</div>
-											<div className='text-muted'>{data.location}</div>
+					<div className='d-flex position-relative align-items-center'>
+						<div className='row'>
+							{ !list && errorMsg == null && vehicleCar.map((data,idx) =>{
+								return(
+									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+										<div className='d-flex position-relative mb-4'>
+											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+											<div className='card-name px-3'>
+												<div>{data.name}</div>
+												<div className='text-muted'>{data.location}</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							)})}
+								)})}
+						</div>
+						{ !list && errorMsg == null && pageCar.prev!==null &&
+						<div className='position-absolute left-0 bg-primer rounded ms-3'>
+							<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pageCar.prev)}></button>
+						</div>
+						}
 						{ !list && errorMsg == null && pageCar.next!==null &&
-						<div className='col d-flex justify-content-center align-items-center'>
-							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageCar.next)}></button>
+						<div className='position-absolute end-0 bg-primer rounded me-3'>
+							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageCar.next)}></button>
 						</div>
 						}
 					</div>
@@ -322,26 +314,29 @@ export const VehicleType = () => {
 							<h1 className="pd-heading">Motorbike</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div>}
-					<div className='row '>
+					<div className='d-flex position-relative align-items-center '>
+						<div className='row'>
+							{ !list && errorMsg == null && vehicleMotorbike.map((data,idx) =>{
+								return(
+									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+										<div className='d-flex position-relative mb-4'>
+											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+											<div className='card-name px-3'>
+												<div>{data.name}</div>
+												<div className='text-muted'>{data.location}</div>
+											</div>
+										</div>
+									</div>
+								)})}
+						
+						</div>
 						{ !list && errorMsg == null && pageMotorbike.prev!==null &&
-						<div className='col-1 d-flex justify-content-center align-items-center'>
+						<div className='position-absolute left-0 ms-3 rounded bg-primer'>
 							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageMotorbike.prev)}></button>
 						</div>
 						}
-						{ !list && errorMsg == null && vehicleMotorbike.map((data,idx) =>{
-							return(
-								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-									<div className='d-flex position-relative mb-4'>
-										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-										<div className='card-name px-3'>
-											<div>{data.name}</div>
-											<div className='text-muted'>{data.location}</div>
-										</div>
-									</div>
-								</div>
-							)})}
 						{ !list && errorMsg == null && pageMotorbike.next!==null &&
-						<div className='col-1 d-flex justify-content-center align-items-center'>
+						<div className='position-absolute end-0 bg-primer rounded me-3'>
 							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageMotorbike.next)}></button>
 						</div>
 						}
@@ -352,30 +347,33 @@ export const VehicleType = () => {
 							<h1 className="pd-heading">Bike</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div>}
-					<div className='row '>
-						{ !list && errorMsg == null && pageBike.prev!==null &&
-						<div className='col-1 d-flex justify-content-center align-items-center'>
-							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageBike.prev)}></button>
-						</div>
-						}
-						{ !list && errorMsg == null && vehicleBike.map((data,idx) =>{
-							return(
-								<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-									<div className='d-flex position-relative mb-4'>
-										<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-										<div className='card-name px-3'>
-											<div>{data.name}</div>
-											<div className='text-muted'>{data.location}</div>
+					<div className='d-flex position-relative align-items-center'>
+						<div className='row '>
+							{ !list && errorMsg == null && vehicleBike.map((data,idx) =>{
+								return(
+									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+										<div className='d-flex position-relative mb-4'>
+											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+											<div className='card-name px-3'>
+												<div>{data.name}</div>
+												<div className='text-muted'>{data.location}</div>
+											</div>
 										</div>
 									</div>
-								</div>
-							)})}
+								)})}
+						</div>
+						{ !list && errorMsg == null && pageBike.prev!==null &&
+						<div className='position-absolute bg-primer rounded left-0'>
+							<button className='fa-solid fa-chevron-left icon fiveth ' onClick={()=>getNextData(pageBike.prev)}></button>
+						</div>
+						}
 						{ !list && errorMsg == null && pageBike.next!==null &&
-						<div className='col-1 d-flex justify-content-center align-items-center'>
-							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageBike.next)}></button>
+						<div className='position-absolute bg-primer rounded end-0'>
+							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageBike.next)}></button>
 						</div>
 						}
 					</div>
+					
 				</div>
 			</main>
 		</LayoutLogin>

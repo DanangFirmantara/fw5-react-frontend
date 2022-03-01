@@ -7,7 +7,7 @@ export default class NavbarLogin extends Component {
 	render() {
 		return (
 			<>
-				<nav className="navbar navbar-expand-lg p-0 bg-primer">
+				<nav className="navbar navbar-expand-lg navbar-dark p-0 bg-primer">
 					<div className="container navbar-content mx-5">
 						<Link className="navbar-brand" to="/">
 							<img src={logo} alt="logo" className="brand" />
