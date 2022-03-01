@@ -8,8 +8,8 @@ export default class HomePage extends Component{
 			<LayoutHome>
 				<header>
 					<div className="img-banner-4 img-fluid img-13">
-						<div className="img-banner-4 cover-dark">
-							<div className="container py-7 ">
+						<div className="img-banner-4 img-fluid cover-dark">
+							<div className="container py-7 px-5">
 								<div className="pd-heading fs-0-0 lh-2 mb-5 text-center text-md-start">
                             Explore and <br />Travel
 								</div>
@@ -61,9 +61,9 @@ export default class HomePage extends Component{
 				<main >
 					<div className="container mt-md-5 mt-4">
 						<div className="pd-heading text-center text-md-start pb-4">Popular in town</div>
-						<div className='row row-cols-md-4 row-cols-1 mb-md-4'>
-							<div className='col'>
-								<div className="position-relative d-flex justify-content-center mb-5 mb-md-0">
+						<div className='row row-cols-md-2 row-cols-lg-4 row-cols-1 mb-md-4 '>
+							<div className='col mb-md-5'>
+								<div className="position-relative d-flex justify-content-center mb-5 mb-md-0  w-100">
 									<div className='d-flex position-relative'>
 										<div className="img-thumbnail rounded img-1"></div>
 										<div className="card-name">
@@ -74,8 +74,8 @@ export default class HomePage extends Component{
 								</div>
 							</div>
 							<div className='col'>
-								<div className="position-relative d-flex justify-content-center mb-5 mb-md-0">
-									<div className='d-flex position-relative'>
+								<div className="position-relative d-flex justify-content-center mb-5 mb-md-0 w-100">
+									<div className='d-flex position-relative '>
 										<div className="img-thumbnail rounded img-2"></div>
 										<div className="card-name">
 											<div>Teluk Bogam</div>
@@ -85,8 +85,8 @@ export default class HomePage extends Component{
 								</div>
 							</div>
 							<div className='col'>
-								<div className="d-flex justify-content-center mb-5 mb-md-0">
-									<div className='d-flex position-relative'>
+								<div className="d-flex justify-content-center mb-5 mb-md-0 w-100">
+									<div className='d-flex position-relative '>
 										<div className="img-thumbnail rounded img-3"></div>
 										<div className="card-name">
 											<div>Bromo</div>
@@ -97,7 +97,7 @@ export default class HomePage extends Component{
 								</div>
 							</div>
 							<div className='col'>
-								<div className=" d-flex justify-content-center mb-5 mb-md-0">
+								<div className=" d-flex justify-content-center mb-5 mb-md-0 w-100">
 									<div className='d-flex position-relative'>
 										<div className="img-thumbnail rounded img-4"></div>
 										<div className="card-name">

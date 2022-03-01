@@ -184,10 +184,33 @@ export const VehicleType = () => {
 	return (
 		<LayoutLogin>
 			<main>
-				<div className="container g-0 my-md-5 my-4">
+				<div className="container g-0 my-md-5 my-4 px-5 px-md-0">
 					<div className="mb-5">
 						<form className="" onSubmit={onSearch} id='search'>
-							<div className='input-group d-flex align-items-center'>
+							<div className='row row-cols-1 row-cols-md-12'>
+								<div className='col col-md-6 mb-4 '>
+									<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start" autoComplete='off'/>
+								</div>
+								<div className='col col-md-2 mb-4'>
+									<select name='location' className='px-3 form-select rounded button-height text-center text-md-start'>
+										<option value='' style={{display: 'none'}}>Select location</option>
+										<option value='jakarta'>Jakarta</option>
+										<option value='yogyakarta'>Yogyakarta</option>
+								
+									</select>
+								</div>
+								<div className='col col-md-2 mb-4'>
+									<select name='sortType' className='px-3 form-select rounded button-height text-center text-md-start '>
+										<option value='' style={{display: 'none'}}>Sort Type</option>
+										<option value='ASC'>A-Z</option>
+										<option value='DESC'>Z-A</option>
+									</select>
+								</div>
+								<div className='col col-md-2 d-flex justify-content-center'>
+									<button className="fa-solid fa-magnifying-glass text-dark bg-white border border-0 fs-1 d-flex align-items-center pb-lg-3 pb-0" type='submit' ></button>
+								</div>
+							</div>
+							{/* <div className='input-group d-flex align-items-center'>
 								<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height" autoComplete='off'/>
 								<select name='location' className='px-3 form-select rounded button-height'>
 									<option value='' style={{display: 'none'}}>Select location</option>
@@ -201,7 +224,7 @@ export const VehicleType = () => {
 									<option value='DESC'>Z-A</option>
 								</select>
 								<button className="px-3 fa-solid fa-magnifying-glass icon icon-search text-dark bg-white border border-0" type='submit' ></button>
-							</div>
+							</div> */}
 						</form>
 					</div>
 					{errorMsg !==null && 
@@ -240,11 +263,11 @@ export const VehicleType = () => {
 						}
 					</div>
 					{ errorMsg == null &&
-						<div className="d-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading">Popular in Town</h1>
-							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+						<div className="d-md-flex justify-content-between align-items-center mb-5 ">
+							<h1 className="pd-heading text-center text-md-start primer">Popular in Town</h1>
+							<a href="#"><h5 className="third text-center text-md-start">view all &gt;</h5></a>
 						</div> }
-					<div className='row '>
+					<div className='row'>
 						{ errorMsg == null && pagePopular.prev!==null &&
 							<div className='col-1 d-flex justify-content-center align-items-center'>
 								<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pagePopular.prev)}></button>
@@ -269,13 +292,13 @@ export const VehicleType = () => {
 						}
 					</div>
 					{ errorMsg == null &&
-						<div className="d-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading">Cars</h1>
-							<a href="#"><h5 className="text-orange">view all &gt;</h5></a>
+						<div className="d-md-flex justify-content-between align-items-center mb-5">
+							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
+							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
 						</div>}
-					<div className='row '>
+					<div className='row'>
 						{ errorMsg == null && pageCar.prev!==null &&
-						<div className='col-1 d-flex justify-content-center align-items-center'>
+						<div className='col d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageCar.prev)}></button>
 						</div>
 						}
@@ -292,7 +315,7 @@ export const VehicleType = () => {
 								</div>
 							)})}
 						{ errorMsg == null && pageCar.next!==null &&
-						<div className='col-1 d-flex justify-content-center align-items-center'>
+						<div className='col d-flex justify-content-center align-items-center'>
 							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageCar.next)}></button>
 						</div>
 						}

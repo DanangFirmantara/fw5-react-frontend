@@ -7,6 +7,7 @@
    --fiveth-color:#A3C8BC;
 };
 
+
 body{
    font-family: 'Nunito', Times, serif;
 }
@@ -150,9 +151,6 @@ body{
    border: none;
 }
 
-.form-control{
-   padding-left: 3rem;
-}
 
 .button-height{
    min-height: 72px;
@@ -288,8 +286,8 @@ a:hover{
 }
 
 .img-thumbnail{
-   width: 261px;
-   height: 332px;
+   width: 16rem;
+   height: 23rem;
    border: unset;
    background-size: cover;
    background-position: center;

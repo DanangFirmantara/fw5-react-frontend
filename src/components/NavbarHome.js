@@ -6,8 +6,8 @@ export default class NavbarHome extends Component{
 	render(){
 		return (
 			<React.Fragment>
-				<nav className="navbar navbar-expand-lg p-0 bg-primer">
-					<div className="container navbar-content">
+				<nav className="navbar navbar-expand-lg bg-primer">
+					<div className="container navbar-content mx-5">
 						<Link className="navbar-brand" to="/">
 							<img src={logo} alt="logo" className="brand" />
 						</Link>
@@ -42,7 +42,7 @@ export default class NavbarHome extends Component{
 							<div className="">
 								<div className="d-flex align-items-center justify-content-around">
 									<Link to="login w-100">
-										<div className="button-second py-2 text-center button-width mx-md-5">
+										<div className="button-second py-2 text-center button-width me-lg-4">
                         Login
 										</div>
 									</Link>

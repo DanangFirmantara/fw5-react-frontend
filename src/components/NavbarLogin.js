@@ -8,7 +8,7 @@ export default class NavbarLogin extends Component {
 		return (
 			<>
 				<nav className="navbar navbar-expand-lg p-0 bg-primer">
-					<div className="container navbar-content">
+					<div className="container navbar-content mx-5">
 						<Link className="navbar-brand" to="/">
 							<img src={logo} alt="logo" className="brand" />
 						</Link>
@@ -24,45 +24,43 @@ export default class NavbarLogin extends Component {
 							<span className="navbar-toggler-icon"></span>
 						</button>
 						<div className="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul className="navbar-nav ms-auto mb-lg-0">
-								<li className="nav-item">
+							<ul className="navbar-nav ms-auto mb-3 mb-lg-0">
+								<li className="nav-item text-center">
 									<Link className="nav-link link-secondary mx-3 second" aria-current="page" to="/"
 									>Home</Link>
 								</li>
-								<li className="nav-item">
+								<li className="nav-item text-center">
 									<Link className="nav-link link-secondary mx-3 second" to="../vehiclesType"
 									>Vehicle Type</Link>
 								</li>
-								<li className="nav-item">
+								{/* <li className="nav-item">
 									<Link className="nav-link link-secondary mx-3 second" to="../vehicle"
 									>Vehicle Create</Link>
-								</li>
-								<li className="nav-item">
+								</li> */}
+								<li className="nav-item text-center">
 									<Link className="nav-link link-secondary mx-3 second" to="../history">History</Link>
 								</li>
-								<li className="nav-item">
+								<li className="nav-item text-center">
 									<Link className="nav-link link-secondary mx-3 second" to="../about">About</Link>
 								</li>
 							</ul>
-							<div className="ms-5">
-                        
-								<div className="d-flex align-items-center">
-									<Link to="../history">
-										<div className="d-flex position-relative message mx-5">
-											<i className="fa-regular fa-envelope icon fiveth"></i>
-											<button className="notif-icon">1</button>
-										</div>
-									</Link>
-									<Link to="../profile">
-										<div>
-											<img
-												src={profile}
-												className="rounded-circle icon-image"
-												alt="Profile"
-											/>
-										</div>
-									</Link>
-								</div>
+							<div className="d-flex align-items-center justify-content-center">
+								<Link to="../history">
+									<div className="d-lg-flex d-none position-relative message mx-5">
+										<i className="fa-regular fa-envelope icon fiveth"></i>
+										<button className="notif-icon">1</button>
+									</div>
+								</Link>
+								<Link to="../profile">
+									<div className='d-lg-flex d-none'>
+										<img
+											src={profile}
+											className="rounded-circle icon-image"
+											alt="Profile"
+										/>
+									</div>
+									<div className='second fs-5 d-lg-none'>Profile</div>
+								</Link>
 							</div>
 						</div>
 					</div>

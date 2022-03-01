@@ -50,11 +50,14 @@ export const VehicleDetail = (props) => {
 						<i className="fa-solid fa-chevron-left icon dark fs-0 me-3"></i>
 						<div className="fs-1 fw-bold text-dark">Detail</div>
 					</Link>
-					<div className="row mb-5">
-						<div className="col-7 g-0">
-							<div className="pe-5">
+					<div className="row mb-5 row-cols-1 row-cols-lg-2">
+						<div className="g-0 col">
+							<div className="pe-lg-5 px-5 px-lg-0">
 								<div className="mb-5 text-center">
-									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-banner-5 rounded'></img>
+									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-banner-5 rounded d-none d-lg-flex'></img>
+								</div>
+								<div className="mb-5 text-center">
+									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-fluid  d-lg-none rounded'></img>
 								</div>
 								<div className="d-flex justify-content-between align-items-center">
 									<i className="fa-solid fa-chevron-left icon dark"></i>
