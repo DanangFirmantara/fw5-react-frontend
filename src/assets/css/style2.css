@@ -97,6 +97,10 @@ body{
    width: 40px;
    height: 40px;
 }
+.icon-circle-3{
+   width: 50px;
+   height: 50px;
+}
 
 .yellow{
    color: rgba(255, 205, 97, 1);
@@ -369,7 +373,15 @@ a:hover{
    background-size: cover;
    background-repeat: no-repeat;
 }
-
+.img-forgot{
+   background-image: url(../image/forgot-password.png);
+   background-size: cover;
+   background-position: center;
+}
+.img-profile{
+   width: 200px;
+   height: 200px;
+}
 .img-google{
    background-image: url(../image/google.png);
 }
@@ -561,4 +573,28 @@ input:focus{
 }
 .custom-select{
    pointer-events: none;
+}
+.radio-button input{
+   position: absolute;
+   width: 0;
+   height: 0;
+}
+.radio-button .checkmark{
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   border: 3px solid #636363;
+   display: inline-block;
+}
+.radio-button .text-radio{
+   display: inline-block;
+   color: #636363;
+}
+.radio-button input:checked~.checkmark{
+   border-color:var(--base-color);
+   background-color: var(--fiveth-color);
+}
+.radio-button input:checked~.text-radio{
+   color: var(--base-color);
+   font-weight: 700;
 }
