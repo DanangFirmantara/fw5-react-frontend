@@ -32,7 +32,6 @@ export const VehicleCreate = () => {
 			const image = event.target.elements['image'].value
 			const stock = count
 			const data = [name, location, description, price, status, category, stock, image]
-			console.log(data)
 		} catch (err){
 			console.log(err)
 		}

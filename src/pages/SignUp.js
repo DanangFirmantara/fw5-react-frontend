@@ -7,13 +7,13 @@ export class SignUp extends Component {
 	render() {
 		return (
 			<>
-				<div className='row g-0 vh-100'>
-					<div className='col'>
+				<div className='row g-0 vh-100 '>
+					<div className='col d-none d-xl-flex'>
 						<div className='img-1 img-side'></div>
 					</div>
 					<div className='col'>
 						<div className='mx-6 my-5'>
-							<div className='pd-heading fs-0 mb-5'>Sign Up</div>
+							<div className='pd-heading fs-0 mb-5 text-center text-xl-start'>Sign Up</div>
 							<div>
 								<form>
 									<input  type='text' placeholder="Name"  className='w-100 button-grey py-4 mb-5 px-4 fs-4'/>						

@@ -10,9 +10,7 @@ export const Reservation = () => {
 		<LayoutLogin>
 			<div className="container my-5">
 				<div className="d-flex align-items-center mb-5">
-					<button
-						className="fa-solid fa-chevron-left icon dark fs-0 me-3" onClick={goBack}
-					></button>
+					<button className="fa-solid fa-chevron-left icon dark fs-0 me-3" onClick={goBack}></button>
 					<div className="fs-1 fw-bold text-dark">Reservation</div>
 				</div>
 				<div className="row mb-5">

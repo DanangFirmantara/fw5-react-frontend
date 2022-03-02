@@ -40,9 +40,9 @@ export default class NavbarHome extends Component{
 								</li>
 							</ul>
 							<div className="">
-								<div className="d-flex align-items-center justify-content-around">
+								<div className="d-flex flex-column align-items-center justify-content-around ">
 									<Link to="login" className='w-100'>
-										<div className="button-second py-2 text-center button-width me-lg-4">
+										<div className="button-second py-2 text-center button-width me-lg-4 mb-3">
                         Login
 										</div>
 									</Link>
