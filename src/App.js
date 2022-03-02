@@ -16,6 +16,7 @@ import Payment from './pages/Payment'
 import { createBrowserHistory } from 'history'
 import VehicleEdit from './pages/VehicleEdit'
 import VehicleCreate from './pages/VehicleCreate'
+import ForgotPassword from './pages/ForgotPassword'
 
 export default class App extends Component{
 	history = createBrowserHistory()
@@ -33,7 +34,7 @@ export default class App extends Component{
 					<Route path='login' element={<LoginPage />}/>
 					<Route path='loginGoogle' element={<LoginGoogle />}/>
 					<Route path='signUp' element={<SignUp />}/>
-					{/* <Route path='forgotPassword' element={<SignUp />}/> */}
+					<Route path='forgotPassword' element={<ForgotPassword />}/>
 					<Route path='vehiclesType' element={<VehicleType />}/>
 					<Route path='vehiclesType/:id' element={<VehicleDetail history = {this.history} />}/>
 					<Route path='reservation' element={<Reservation />}/>
