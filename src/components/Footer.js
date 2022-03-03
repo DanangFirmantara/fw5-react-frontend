@@ -10,8 +10,8 @@ export default class Footer extends Component{
 				<footer className="bg-primer container-fluid g-0">
 					<div className="container">
 						<div className="pt-6">
-							<div className="row d-md-flex justify-content-between row-cols-1 row-cols-md-12 mb-md-5 mb-3">
-								<div className="col-md-5 col text-center text-md-start mb-4 mb-md-0">
+							<div className="row d-lg-flex justify-content-between row-cols-1 row-cols-lg-12 mb-lg-5 mb-3">
+								<div className="col-lg-5 col text-center text-lg-start mb-4 mb-lg-0">
 									<Link to='/'>
 										<div className="mb-5 "><img src={logo} alt="logo" className="brand" /></div>
 									</Link>
@@ -24,7 +24,7 @@ export default class Footer extends Component{
 										<h5 className="mulish mulish-normal fourth">©2020 Vehicle Rental Center. All rights reserved</h5>
 									</div>
 								</div>
-								<div className="col col-md-2 text-center text-md-start ">
+								<div className="col col-lg-2 text-center text-lg-start ">
 									<h4 className="mulish second">Destinations</h4>
 									<ul className="fourth">
 										<li>Bali</li>
@@ -34,7 +34,7 @@ export default class Footer extends Component{
 										<li>Malang</li>
 									</ul>
 								</div>
-								<div className="col col-md-2 text-center text-md-start">
+								<div className="col col-lg-2 text-center text-lg-start">
 									<h4 className="mulish second">Vehicle</h4>
 									<ul className="fourth">
 										<li>Bike </li>
@@ -44,9 +44,9 @@ export default class Footer extends Component{
 										<li>FAQs</li>
 									</ul>
 								</div>
-								<div className="col col-md-3 text-center text-md-start">
+								<div className="col col-lg-3 text-center text-lg-start">
 									<h4 className="mulish second">Interest</h4>
-									<ul className="fourth">
+									<ul className="fourth ">
 										<li>Adventure Travel</li>
 										<li>Art and Culture</li>
 										<li>Wildlife and Nature</li>

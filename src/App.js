@@ -23,12 +23,8 @@ export default class App extends Component{
 
 	render(){
 		return (
-		// <div>
-		// 	{this.state.isLogged && <HomePage />}
-		// 	{!this.state.isLogged && <LoginPage onLogin={(value)=>{this.setState({isLogged: value})}} />}
-		// </div>
+		
 			<HistoryRouter history={this.history}>
-				{/* <BrowserRouter> */}
 				<Routes>
 					<Route path='/' element={<HomePage />}/>
 					<Route path='login' element={<LoginPage />}/>
@@ -45,7 +41,6 @@ export default class App extends Component{
 					<Route path='vehicle' element={<VehicleCreate />}/>
 					<Route path='vehicle/:id' element={<VehicleEdit />}/>
 				</Routes>
-				{/* </BrowserRouter> */}
 			</HistoryRouter>
 		)
 	}

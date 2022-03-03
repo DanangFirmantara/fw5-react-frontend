@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -16,10 +17,10 @@ export const Arrow = ({children, variant='dark', className ,...rest}) => {
 	)
 }
 
-Arrow.propTypes = {
-	children: PropTypes.string.isRequired,
-	variant: PropTypes.string.isRequired,
-	className: PropTypes.string.isRequired
-}
+// Arrow.propTypes = {
+// 	children: PropTypes.string.isRequired,
+// 	variant: PropTypes.string.isRequired,
+// 	className: PropTypes.string.isRequired
+// }
 
 export default Arrow

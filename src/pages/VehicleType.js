@@ -236,13 +236,13 @@ export const VehicleType = () => {
 								)})}
 						</div>
 						{ list && errorMsg == null && pageList.prev!==null &&
-							<div className='position-absolute start-0 mx-3 bg-primer rounded'>
-								<button className='fa-solid fa-chevron-left icon fiveth ' onClick={()=>getDataSearch(pageList.prev)}></button>
+							<div className='position-absolute start-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
+								<button className='fa-solid fa-chevron-left icon fiveth fs-3' onClick={()=>getDataSearch(pageList.prev)}></button>
 							</div>
 						}
 						{ list && errorMsg == null && pageList.next!==null &&
-							<div className='position-absolute end-0 mx-3 bg-primer rounded'>
-								<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getDataSearch(pageList.next)}></button>
+							<div className='position-absolute end-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
+								<button className='fa-solid fa-chevron-right fiveth fs-3 icon ' onClick={()=>getDataSearch(pageList.next)}></button>
 							</div>
 						}
 					</div>
