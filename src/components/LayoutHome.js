@@ -3,10 +3,11 @@
 import React from 'react'
 import NavbarHome from './NavbarHome'
 import Footer from './Footer'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import NavbarLogin from './NavbarLogin'
 
-export const LayoutHome = ({children, auth, dispatch}) => {
+export const LayoutHome = ({children}) => {
+	const {auth} = useSelector(state => state)
 	return (
 		<React.Fragment>
 			{auth.token !== null && <NavbarLogin />}
@@ -17,6 +18,8 @@ export const LayoutHome = ({children, auth, dispatch}) => {
 	)
 }
 
-const mapStateToProps = state => ({auth: state.auth})
-const mapDispatchToProps = dispatch => ({dispatch})
-export default connect(mapStateToProps, mapDispatchToProps)(LayoutHome)
+// const mapStateToProps = state => ({auth: state.auth})
+// const mapDispatchToProps = dispatch => ({dispatch})
+// export default connect(mapStateToProps, mapDispatchToProps)(LayoutHome)
+
+export default LayoutHome

@@ -3,9 +3,10 @@ import React from 'react'
 import logo from '../assets/image/logo.png'
 import profile from '../assets/image/image 39.png'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-export const NavbarLogin = ({ dispatch}) => {
+export const NavbarLogin = () => {
+	const dispatch = useDispatch()
 	const onLogout = ()=>{
 		dispatch({
 			type:'LOGOUT'
@@ -50,14 +51,9 @@ export const NavbarLogin = ({ dispatch}) => {
 								<Link className="nav-link link-secondary mx-3 second" to="../about">About</Link>
 							</li>
 						</ul>
-						<div>
-							<button onClick={onLogout}>
-								Logout
-							</button>
-						</div>
 						<div className="d-flex align-items-center justify-content-center">
 							<Link to="../history">
-								<div className="d-lg-flex d-none position-relative message mx-5">
+								<div className="d-lg-flex d-none position-relative message mx-3">
 									<i className="fa-regular fa-envelope icon fiveth"></i>
 									<button className="notif-icon">1</button>
 								</div>
@@ -72,6 +68,12 @@ export const NavbarLogin = ({ dispatch}) => {
 								</div>
 								<div className='second fs-5 d-lg-none'>Profile</div>
 							</Link>
+							<div>
+								<button onClick={onLogout} className='fa-solid fa-right-from-bracket icon third ms-3 d-none d-lg-block'>
+								</button>
+								<div className='second fs-5 d-lg-none ms-5' onClick={onLogout}>Logout</div>
+							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -80,7 +82,9 @@ export const NavbarLogin = ({ dispatch}) => {
 	)
 }
 
-const mapStateToProps = state =>({auth:state.auth})
-const mapDispatchToProps = dispatch =>({dispatch})
+// const mapStateToProps = state =>({auth:state.auth})
+// const mapDispatchToProps = dispatch =>({dispatch})
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavbarLogin)
+// export default connect(mapStateToProps, mapDispatchToProps)(NavbarLogin)
+
+export default NavbarLogin

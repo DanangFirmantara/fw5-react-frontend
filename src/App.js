@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { Component } from 'react'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
-// import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { unstable_HistoryRouter as HistoryRouter,BrowserRouter, Route, Routes } from 'react-router-dom'
+import { unstable_HistoryRouter as HistoryRouter, Route, Routes } from 'react-router-dom'
 import SignUp from './pages/SignUp'
 import VehicleType from './pages/VehicleType'
 import History from './pages/History'

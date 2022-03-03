@@ -5,19 +5,28 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import LayoutLogin from '../components/LayoutLogin'
 import {getData} from '../helpers/http'
 import defaultImage from '../assets/image/image 6.png'
+import { useDispatch,useSelector } from 'react-redux'
 
 export const VehicleDetail = (props) => {
 	const [vehicle,setVehicle] = useState([])
 	const {id} = useParams()
-	let [count, setCount] = useState(1)
-	
 	const navigate = useNavigate()
+
+	const {counter} = useSelector(state=>state)
+
+	const dp=useDispatch()
 
 	useEffect(()=>{
 		getDataComponent(id)
-		console.log(count,'count')
 	},[])
 
+	const onIncreament = ()=>{
+		dp({type:'INCREAMENT'})
+	}
+
+	const onDecreament = ()=>{
+		dp({type:'DECREAMENT'})
+	}
 	const getDataComponent = async(id)=>{
 		try{
 			// const {data} = await getData(`https://rickandmortyapi.com/api/character/${id}`, props.history)
@@ -26,16 +35,6 @@ export const VehicleDetail = (props) => {
 			setVehicle(data.results[0])
 		} catch(err){
 			console.log(err)
-		}
-	}
-
-	const increament = ()=>{
-		setCount(count+1)
-	}
-
-	const decreament = ()=>{
-		if(count>1){
-			setCount(count-1)
 		}
 	}
 
@@ -83,9 +82,9 @@ export const VehicleDetail = (props) => {
 								Rp. {new Intl.NumberFormat('de-DE').format(vehicle.price)}/day
 							</div>
 							<div className="d-flex justify-content-between">
-								<button className="icon-plus button-third rounded bg-yellow fw-bolder fs-1" onClick={decreament}>-</button>
-								<div className="fw-bolder fs-0">{count}</div>
-								<button className="icon-plus rounded fw-bolder fs-1 button-fourth" onClick={increament}>+</button>
+								<button className="icon-plus button-third rounded bg-yellow fw-bolder fs-1" onClick={onDecreament}>-</button>
+								<div className="fw-bolder fs-0">{counter.num}</div>
+								<button className="icon-plus rounded fw-bolder fs-1 button-fourth" onClick={onIncreament}>+</button>
 							</div>
 						</div>
 					</div>

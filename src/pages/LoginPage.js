@@ -4,16 +4,19 @@ import React, { useEffect } from 'react'
 import Footer from '../components/Footer'
 import google from '../assets/image/google.png'
 import { Link, Navigate } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-export const LoginPage = ({auth, dispatch}) => {
+export const LoginPage = () => {
+	const {auth} = useSelector(state=>state)
+	const dp = useDispatch()
+
 	useEffect(()=>{
 		console.log(auth.token)
 	},[])
 	
 	const onLogin = (event) =>{
 		event.preventDefault()
-		dispatch({
+		dp({
 			type:'LOGIN',
 			payload : {
 				email : event.target.elements['email'].value,
@@ -21,14 +24,9 @@ export const LoginPage = ({auth, dispatch}) => {
 			}
 		})
 	}
-	const onLogout = () =>{
-		dispatch({
-			type:'LOGOUT'
-		})
-	}
 	return (
 		<React.Fragment>
-			{auth.token !== null && <Navigate to='/' />}
+			{auth.token!=null && <Navigate to='/' />}
 			<header>
 				<div className="img-banner-4 img-3">
 					<div className="img-banner-4 cover-dark">
@@ -93,7 +91,6 @@ export const LoginPage = ({auth, dispatch}) => {
 												<div className="d-lg-none fw-bolder button-third w-100 text-center py-4 shadow-light fs-4">Sign up</div>
 											</Link>
 										</form>
-										<button onClick={onLogout}>Logout</button>
 									</div>
 								</div>
 							</div>
@@ -107,8 +104,10 @@ export const LoginPage = ({auth, dispatch}) => {
 }
 
 
-const mapStateToProps = state =>({auth:state.auth})
+// const mapStateToProps = state =>({auth:state.auth})
 
-const mapDispatchToProps = dispatch => ({dispatch})
+// const mapDispatchToProps = dispatch => ({dispatch})
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+// export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
+
+export default LoginPage

@@ -1,14 +1,17 @@
-/* eslint-disable react/jsx-key */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React , {useState, useEffect} from 'react'
 import LayoutLogin from '../components/LayoutLogin'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {default as axios} from 'axios'
 import defaultImage from '../assets/image/image 6.png'
- 
-// rafc
+import { getVehiclePopular, searchVehicle, getFilterVehicle } from '../redux/actions/vehicle'
+import { useSelector, connect } from 'react-redux'
 
-export const VehicleType = () => {
+
+export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}) => {
+	const {vehicle} = useSelector(state=>state)
+
 	const [ errorMsg, setErrorMsg] = useState(null)
 	const [ list, setList ] = useState(false)
 
@@ -32,11 +35,10 @@ export const VehicleType = () => {
 	const [ vehicleList, setVehicleList] = useState([])
 	const [ pageList,setPageList ] = useState({})
 
-
 	const navigate = useNavigate()
 	let [searchParams, setSearchParams] = useSearchParams()
 	// didmount
-	useEffect(()=>{
+	useEffect(async()=>{
 		const name = searchParams.get('name')
 		const location = searchParams.get('location')
 		const sortType = searchParams.get('sortType')
@@ -47,44 +49,23 @@ export const VehicleType = () => {
 			const url = (name,location, sortType) => `http://localhost:5000/vehicles?page=1&name=${name}&location=${location}&sortType=${sortType}`
 			getDataSearch(url(name,location, sortType))
 		} else{
-			getVehicle()
-			getVehiclePopular()
+			getData()
 		}
 	}, [])
 
-	const getVehicle = () =>{
-		const filterBy = ['car', 'motorbike', 'bike']
-		filterBy.map(async obj=>{
-			try{
-				let {data} = await axios.get(`http://localhost:5000/list?filterBy=${obj}`)
-				if(data){
-					if(obj=='car'){
-						setVehicleCar(data.results)
-						setPageCar(data.pageInfo)
-					} else if(obj == 'motorbike'){
-						setVehicleMotorbike(data.results)
-						setPageMotorbike(data.pageInfo)
-					} else if(obj== 'bike'){
-						setVehicleBike(data.results)
-						setPageBike(data.pageInfo)
-					}
-				}
-				
-			} catch (err){
-				console.log(err)
-			}
-		})
-	}
-
-	const getVehiclePopular = async()=>{
-		try{
-			let {data} = await axios.get('http://localhost:5000/popular')
-			setVehiclePopular(data.results)
-			setPagePopular(data.pageInfo)
-		} catch (err){
-			console.log(err)
-		}
-		
+	const getData = async()=>{
+		const {value:{data:popular}} = await getVehiclePopular()
+		const {value:{data:car}} = await getFilterVehicle('car')
+		const {value:{data:motorbike}} = await getFilterVehicle('motorbike')
+		const {value:{data:bike}} = await getFilterVehicle('bike')
+		setVehiclePopular(popular.results)
+		setVehicleCar(car.results)
+		setVehicleMotorbike(motorbike.results)
+		setVehicleBike(bike.results)
+		setPagePopular(popular.pageInfo)
+		setPageCar(car.pageInfo)
+		setPageMotorbike(motorbike.pageInfo)
+		setPageBike(bike.pageInfo)
 	}
 
 	//did update
@@ -137,42 +118,16 @@ export const VehicleType = () => {
 		}
 	}
 
-	const onSearch = async(event)=>{
-		try{
-			event.preventDefault()
-			const name = event.target.elements['name'].value
-			const location = event.target.elements['location'].value
-			const sortType = event.target.elements['sortType'].value
-			const data = {name, location, sortType}
-			const url = (data)=>{
-				let url = ''
-				let i = 0
-
-				if (data) {
-					var temp = Object.entries(data).length - 1
-
-					if (data.page) {
-						temp -= 1
-					}
-					for (const [key, value] of Object.entries(data)){
-						if(key != 'page'){
-							url += key + '=' + value
-	
-							if(i<temp){
-								url += '&'
-							}
-							i++
-						}
-						
-					}
-				}
-				url = `http://localhost:5000/vehicles?page=1&${url}`
-				return url
-			}
-			await getDataSearch(url(data))
-		} catch(err){
-			console.log('error bro 3')
-		}
+	const onSearch = async(event) =>{
+		event.preventDefault()
+		const name = event.target.elements['name'].value
+		const location = event.target.elements['location'].value
+		const sortType = event.target.elements['sortType'].value
+		setSearchParams({name, location, sortType})
+		const {value:{data:search}} = await searchVehicle(name,location,sortType)
+		setVehicleList(search.results)
+		setPageList(search.pageInfo)
+		setList(true)
 	}
 
 	const goToDetail = (id) =>{
@@ -209,20 +164,20 @@ export const VehicleType = () => {
 							</div>
 						</form>
 					</div>
-					{errorMsg !==null && 
+					{vehicle.isError && 
 						<div className="alert alert-warning alert-dismissible fade show" role="alert">
 							{errorMsg}
 							<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 					}
-					{ list && errorMsg == null &&
+					{ list && !vehicle.isError &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Vehicles List</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div> }
 					<div className='d-flex position-relative align-items-center'>
 						<div className='row '>
-							{ list && errorMsg == null && vehicleList.map((data,idx) =>{
+							{ list && !vehicle.isError && vehicleList.map((data,idx) =>{
 								return(
 									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 										<div className='d-flex position-relative mb-4'>
@@ -235,12 +190,12 @@ export const VehicleType = () => {
 									</div>
 								)})}
 						</div>
-						{ list && errorMsg == null && pageList.prev!==null &&
+						{ !vehicle.isError && pageList.prev &&
 							<div className='position-absolute start-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
 								<button className='fa-solid fa-chevron-left icon fiveth fs-3' onClick={()=>getDataSearch(pageList.prev)}></button>
 							</div>
 						}
-						{ list && errorMsg == null && pageList.next!==null &&
+						{ !vehicle.isError && pageList.next &&
 							<div className='position-absolute end-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
 								<button className='fa-solid fa-chevron-right fiveth fs-3 icon ' onClick={()=>getDataSearch(pageList.next)}></button>
 							</div>
@@ -380,4 +335,7 @@ export const VehicleType = () => {
 	)
 }
 
-export default VehicleType
+const mapStateToProps = state => ({vehicle: state.vehicle})
+const mapDispatchToProps = {getVehiclePopular, searchVehicle, getFilterVehicle}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VehicleType)
