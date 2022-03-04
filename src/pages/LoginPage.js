@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 import React, { useEffect } from 'react'
@@ -5,32 +6,31 @@ import Footer from '../components/Footer'
 import google from '../assets/image/google.png'
 import { Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { getDataUser, login } from '../redux/actions/auth'
 
 export const LoginPage = () => {
-	const {auth} = useSelector(state=>state)
-	const dp = useDispatch()
-
-	useEffect(()=>{
-		console.log(auth.token)
-	},[])
+	const auth = useSelector(state=>state.auth)
+	const dispatch = useDispatch()
 	
 	const onLogin = (event) =>{
 		event.preventDefault()
-		dp({
-			type:'LOGIN',
-			payload : {
-				email : event.target.elements['email'].value,
-				password : event.target.elements['password'].value
-			}
-		})
+		const email = event.target.elements['email'].value
+		const password = event.target.elements['password'].value
+		dispatch(login(email, password))
 	}
 	return (
 		<React.Fragment>
-			{auth.token!=null && <Navigate to='/' />}
+			{auth.token !=null && <Navigate to='/' />}
 			<header>
 				<div className="img-banner-4 img-3">
 					<div className="img-banner-4 cover-dark">
 						<div className="container py-7 px-4 px-lg-0">
+							{auth.isError &&
+								<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
+									{auth.errorMsg}
+									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+							}
 							<div className="row justify-content-between flex-column flex-lg-row">
 								<div className="col">
 									<div className="pd-heading fs-0-0 mb-4 text-center text-lg-start">Let&rsquo;s Explore <br />The World
@@ -51,8 +51,8 @@ export const LoginPage = () => {
 									<div className="pt-5">
 										<form onSubmit={onLogin}>
 											<input
-												type="email"
-												placeholder="Email"
+												type="text"
+												placeholder="Username or Email"
 												name='email'
 												autoComplete='off'
 												className="button-light w-100 py-4 fw-bold fs-4 ps-5 shadow-dark mb-4"

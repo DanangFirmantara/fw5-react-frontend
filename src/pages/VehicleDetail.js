@@ -3,9 +3,10 @@
 import React, { useState,useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import LayoutLogin from '../components/LayoutLogin'
-import {getData} from '../helpers/http'
+// import {getData} from '../helpers/http'
 import defaultImage from '../assets/image/image 6.png'
 import { useDispatch,useSelector } from 'react-redux'
+import http from '../helpers/http'
 
 export const VehicleDetail = (props) => {
 	const [vehicle,setVehicle] = useState([])
@@ -30,7 +31,8 @@ export const VehicleDetail = (props) => {
 	const getDataComponent = async(id)=>{
 		try{
 			// const {data} = await getData(`https://rickandmortyapi.com/api/character/${id}`, props.history)
-			const {data} = await getData(`http://localhost:5000/vehicles?id=${id}`, props.history)
+			// const {data} = await getData(`http://localhost:5000/vehicles?id=${id}`, props.history)
+			const {data} = await http().get(`http://localhost:5000/vehicles?id=${id}`, props.history)
 			console.log(data.results)
 			setVehicle(data.results[0])
 		} catch(err){

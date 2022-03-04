@@ -1,62 +1,83 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import logo from '../assets/image/logo.png'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getDataUser } from '../redux/actions/auth'
 
-export default class NavbarHome extends Component{
-	render(){
-		return (
-			<React.Fragment>
-				<nav className="navbar navbar-expand-lg bg-primer navbar-dark">
-					<div className="container navbar-content mx-5 ">
-						<Link className="navbar-brand" to="/">
-							<img src={logo} alt="logo" className="brand" />
-						</Link>
-						<button
-							className="navbar-toggler "
-							type="button"
-							data-bs-toggle="collapse"
-							data-bs-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent"
-							aria-expanded="false"
-							aria-label="Toggle navigation"
-						>
-							<span className="navbar-toggler-icon "></span>
-						</button>
-						<div className="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul className="navbar-nav ms-md-auto mb-md-0 mb-4">
-								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3 second" aria-current="page" to="/" >Home</Link>
-								</li>
-								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3 second" to="vehiclesType"
-									>Vehicle Type
-									</Link>							
-								</li>
-								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3 second" to="history">History</Link>
-								</li>
-								<li className="nav-item text-center">
-									<Link className="nav-link link-secondary mx-md-3 second" to="about">About</Link>
-								</li>
-							</ul>
-							<div className="">
+
+const NavbarHome = () => {
+	const auth = useSelector(state=>state.auth)
+	const dispatch = useDispatch()
+
+	useEffect(()=>{
+		if(auth.token){
+			dispatch(getDataUser(auth.token))
+		}
+	},[])
+
+	return (
+		<React.Fragment>
+			<nav className="navbar navbar-expand-lg bg-primer navbar-dark">
+				<div className="container navbar-content mx-5 ">
+					<Link className="navbar-brand" to="/">
+						<img src={logo} alt="logo" className="brand" />
+					</Link>
+					<button
+						className="navbar-toggler "
+						type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent"
+						aria-expanded="false"
+						aria-label="Toggle navigation"
+					>
+						<span className="navbar-toggler-icon "></span>
+					</button>
+					<div className="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul className="navbar-nav ms-md-auto mb-md-0 mb-4">
+							<li className="nav-item text-center">
+								<Link className="nav-link link-secondary mx-md-3 second" aria-current="page" to="/" >Home</Link>
+							</li>
+							<li className="nav-item text-center">
+								<Link className="nav-link link-secondary mx-md-3 second" to="vehiclesType"
+								>Vehicle Type
+								</Link>							
+							</li>
+							<li className="nav-item text-center">
+								<Link className="nav-link link-secondary mx-md-3 second" to="history">History</Link>
+							</li>
+							<li className="nav-item text-center">
+								<Link className="nav-link link-secondary mx-md-3 second" to="about">About</Link>
+							</li>
+						</ul>
+						<div className="">
+							{!auth.token &&
 								<div className="d-flex flex-column flex-lg-row align-items-center justify-content-around ">
 									<Link to="login" className='w-100'>
 										<div className="button-second py-2 text-center button-width me-lg-4 mb-3 mb-lg-0">
-                        Login
+										Login
 										</div>
 									</Link>
 									<Link to="signUp" className='w-100'>
 										<div className="button-primer py-2 text-center button-width">
-                        Register
+										Register
 										</div>
 									</Link>
 								</div>
-							</div>
+							}
+							{ auth.token &&
+								<div className='ms-3'>
+									<button onClick={()=>dispatch({type:'AUTH_LOGOUT'})} className='button-primer fs-5 py-2 text-center button-width fw-bold'>
+									Logout
+									</button>
+								</div>
+							}
 						</div>
 					</div>
-				</nav>
-			</React.Fragment>
-		)
-	}
+				</div>
+			</nav>
+		</React.Fragment>
+	)
 }
+
+export default NavbarHome
