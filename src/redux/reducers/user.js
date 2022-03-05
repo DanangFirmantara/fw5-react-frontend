@@ -1,7 +1,6 @@
 const initialState={
 	isLoading:false,
 	isError:false,
-	isSuccess:false,
 	successMsg : '',
 	errorMsg:''
 }
@@ -19,7 +18,6 @@ const user = (state=initialState, action)=>{
 		const {data} = action.payload 
 		state.isLoading = false
 		state.isError = false
-		state.isSuccess = true
 		state.successMsg = data.message
 		console.log(data.results)
 		return {...state}
@@ -27,7 +25,6 @@ const user = (state=initialState, action)=>{
 	case 'USER_SIGNUP_REJECTED':{
 		const {message} = action.payload.response.data
 		state.isLoading = false
-		state.isSuccess = false
 		state.isError = true
 		state.errorMsg = message
 		return {...state}

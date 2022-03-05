@@ -1,10 +1,13 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import LayoutLogin from '../components/LayoutLogin'
 import profile from '../assets/image/image 39.png'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
+import { userEdit } from '../redux/actions/auth'
 
 export const Profile = () => {
+	const dispatch = useDispatch()
 	const auth = useSelector(state=>state.auth)
 	const [userData, setUserData] = useState({})
 
@@ -15,10 +18,25 @@ export const Profile = () => {
 	const getUserData = ()=>{
 		setUserData(auth.userData[0])
 	}
+
+	const editProfile = (event)=>{
+		event.preventDefault()
+		const email = auth.userData[0].email
+		const username = auth.userData[0].username
+		const gender = event.target.elements['gender'].value
+		const contact = event.target.elements['contact'].value
+		const birthDate = event.target.elements['birthDate'].value
+		const displayName = event.target.elements['displayName'].value
+		const address = event.target.elements['address'].value
+		const data = {email, gender, contact, birthDate, displayName, address, username}
+		console.log(data)
+		dispatch(userEdit(data,auth.userData[0].id))
+	}
+
 	return (
 		<LayoutLogin>
 			{!auth.token && <Navigate to='/' />}
-			<form className="profile-edit">
+			<form className="profile-edit" id='editProfile' onSubmit={editProfile}>
 				<main className="container px-4 px-lg-0">
 					<div className="my-5">
 						<div className='fs-4 fw-bold'>Profile</div>
@@ -34,7 +52,7 @@ export const Profile = () => {
 								<i className="fa-solid fa-pencil"></i>
 							</button>
 						</div>
-						<div className="pd-heading ">{userData.fullName}</div>
+						<div className="pd-heading ">{userData.displayName}</div>
 						<div className="text-muted fw-bold">
 							<div>{userData.email}</div>
 							<div>{userData.contact}</div>
@@ -44,14 +62,14 @@ export const Profile = () => {
 					<div className="d-flex justify-content-center algin-items-center mb-5">
 						<div className="me-5">
 							<label className='radio-button d-flex align-items-center'>
-								<input type='radio' name='gender'/>
+								<input type='radio' name='gender' value='male'/>
 								<div className='checkmark'></div>
 								<div className='text-radio ms-2'>Male</div>
 							</label>
 						</div>
 						<div>
 							<label className='radio-button d-flex align-items-center'>
-								<input type='radio' name='gender'/>
+								<input type='radio' name='gender' value='female'/>
 								<div className='checkmark'></div>
 								<div className='text-radio ms-2'>Female</div>
 							</label>
@@ -62,20 +80,20 @@ export const Profile = () => {
 					</div>
 					<div className="mb-5">
 						<label htmlFor="email" className='text-muted mb-2'>Email Address :</label>
-						<input type="email" name="email" className="w-100 d-inline-block border-0 border-bottom border-3 border-dark pb-3" />
+						<input type="email" name="email" className="w-100 d-inline-block border-0 border-bottom border-3 border-dark pb-3" placeholder={userData.email}/>
 					</div>
 					<div className="mb-5">
 						<label htmlFor="address">Address :</label>
 						<textarea name="address" className="d-block w-100 border-0 border-bottom border-3 border-dark pb-0" ></textarea>
 					</div>
 					<div className="mb-5">
-						<label htmlFor="mobileNumber" className='text-muted mb-2'>Mobile Number :</label>
-						<input type="email" name="mobileNumber" className="w-100 d-inline-block border-0 border-bottom border-3 border-dark pb-3" />
+						<label htmlFor="contact" className='text-muted mb-2'>Mobile Number :</label>
+						<input type="text" name="contact" className="w-100 d-inline-block border-0 border-bottom border-3 border-dark pb-3" />
 					</div>
 					<div className="row row-cols-1 row-cols-lg-2 mb-5">
 						<div className="col-lg-5 col mb-5 mb-lg-0">
 							<label htmlFor="displayName" className='text-muted mb-2'>Display Name :</label>
-							<input type="displayName" name="displayName" className="w-100 d-inline-block border-0 border-bottom border-3 border-dark pb-3" />
+							<input type="text" name="displayName" className="w-100 d-inline-block border-0 border-bottom border-3 border-dark pb-3" />
 						</div>
 						<div className="col-lg-6 col ms-lg-auto">
 							<label htmlFor="birthDate" className='text-muted mb-2'>birthDate :</label>
@@ -85,10 +103,10 @@ export const Profile = () => {
 					<div className="mb-4 mb-lg-5">
 						<div className='row row-cols-1 row-cols-lg-3'>
 							<div className='col mb-3 mb-lg-0'>
-								<button className="button-third w-100 py-3 fs-4 fw-bolder">Save Change</button>
+								<button className="button-third w-100 py-3 fs-4 fw-bolder" type='submit'>Save Change</button>
 							</div>
 							<div className='col mb-3 mb-lg-0'>
-								<button className="button-second w-100 py-3 fs-4 fw-bolder">Edit Password</button>
+								<button className="button-second w-100 py-3 fs-4 fw-bolder" >Edit Password</button>
 							</div>
 							<div className='col mb-3 mb-lg-0'>
 								<button className="button-primer w-100 py-3 fs-4 fw-bolder">Cancel</button>

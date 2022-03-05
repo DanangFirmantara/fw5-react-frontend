@@ -17,3 +17,12 @@ export const getDataUser = (token)=>{
 		payload : http(token).get('/profiles')
 	})
 }
+
+export const userEdit = (data,id)=>{
+	const param = new URLSearchParams(data)
+	
+	return({
+		type: 'AUTH_USERDATA',
+		payload: http().patch(`/users/?id=${id}`,param)
+	})	
+}
