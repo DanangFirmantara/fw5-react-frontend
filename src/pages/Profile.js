@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LayoutLogin from '../components/LayoutLogin'
 import profile from '../assets/image/image 39.png'
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 
 export const Profile = () => {
+	const auth = useSelector(state=>state.auth)
+	const [userData, setUserData] = useState({})
+
+	useEffect(()=>{
+		getUserData()
+	},[])
+
+	const getUserData = ()=>{
+		setUserData(auth.userData[0])
+	}
 	return (
 		<LayoutLogin>
+			{!auth.token && <Navigate to='/' />}
 			<form className="profile-edit">
 				<main className="container px-4 px-lg-0">
 					<div className="my-5">
@@ -21,10 +34,10 @@ export const Profile = () => {
 								<i className="fa-solid fa-pencil"></i>
 							</button>
 						</div>
-						<div className="pd-heading ">Samantha Doe</div>
+						<div className="pd-heading ">{userData.fullName}</div>
 						<div className="text-muted fw-bold">
-							<div>samanthadoe@mail.com</div>
-							<div>+62833467823</div>
+							<div>{userData.email}</div>
+							<div>{userData.contact}</div>
 							<div>Has been active since 2013</div>
 						</div>
 					</div>

@@ -48,9 +48,11 @@ const auth = (state=initialState, action)=>{
 		return {...state}
 	}
 	case 'AUTH_USERDATA_REJECTED':{
+		const {message} = action.payload.response.data
+		console.log(message)
 		state.isLoading = false
 		state.isError = true
-		state.errorMsg = 'User Data not found'
+		state.errorMsg = message
 		return {...state}
 	}
 	default:{

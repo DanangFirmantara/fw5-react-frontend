@@ -1,13 +1,14 @@
 import React from 'react'
-import LayoutLogin from '../components/LayoutLogin'
 import { Link } from 'react-router-dom'
+import LayoutHome from '../components/LayoutHome'
 
 export const Reservation = () => {
 	const goBack = () =>{
 		window.history.back()
 	}
 	return (
-		<LayoutLogin>
+		
+		<LayoutHome >
 			<div className="container my-5">
 				<div className="d-flex align-items-center mb-5">
 					<button className="fa-solid fa-chevron-left icon dark fs-0 me-3" onClick={goBack}></button>
@@ -73,7 +74,9 @@ Total : Rp. 178.000
 					</div>
 				</Link>
 			</div>
-		</LayoutLogin>
+		</LayoutHome>
+			
+		
 	)
 }
 

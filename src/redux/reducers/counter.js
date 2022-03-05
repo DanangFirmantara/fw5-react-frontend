@@ -9,7 +9,9 @@ const counter = (state=initialState, action)=>{
 		return {...state}
 	}
 	case 'COUNTER_DECREAMENT':{
-		state.num--
+		if(state.num > 1){
+			state.num--
+		}
 		return {...state}
 	}
 	default:{

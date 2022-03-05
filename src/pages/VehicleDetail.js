@@ -1,37 +1,28 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
+
 import React, { useState,useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
-import LayoutLogin from '../components/LayoutLogin'
-// import {getData} from '../helpers/http'
+import { useParams, useNavigate, Link, Navigate } from 'react-router-dom'
 import defaultImage from '../assets/image/image 6.png'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import http from '../helpers/http'
+import LayoutHome from '../components/LayoutHome'
+import {increament, decreament} from '../redux/actions/counter'
 
 export const VehicleDetail = (props) => {
+	const auth = useSelector(state=>state.auth)
+	const counter = useSelector(state=>state.counter)
 	const [vehicle,setVehicle] = useState([])
 	const {id} = useParams()
 	const navigate = useNavigate()
 
-	const {counter} = useSelector(state=>state)
-
-	const dp=useDispatch()
+	const dispatch = useDispatch()
 
 	useEffect(()=>{
 		getDataComponent(id)
 	},[])
 
-	const onIncreament = ()=>{
-		dp({type:'INCREAMENT'})
-	}
-
-	const onDecreament = ()=>{
-		dp({type:'DECREAMENT'})
-	}
 	const getDataComponent = async(id)=>{
 		try{
-			// const {data} = await getData(`https://rickandmortyapi.com/api/character/${id}`, props.history)
-			// const {data} = await getData(`http://localhost:5000/vehicles?id=${id}`, props.history)
 			const {data} = await http().get(`http://localhost:5000/vehicles?id=${id}`, props.history)
 			console.log(data.results)
 			setVehicle(data.results[0])
@@ -43,8 +34,17 @@ export const VehicleDetail = (props) => {
 	const goToReservation = (id)=>{
 		navigate(`/reservation?id=${id}`)
 	}
+
+	const onIncreament = ()=>{
+		dispatch(increament())
+	}
+
+	const onDecreament = ()=>{
+		dispatch(decreament())
+	}
 	return (
-		<LayoutLogin>
+		<LayoutHome>
+			{!auth.token && <Navigate to='/login' />}
 			<main>
 				<div className="container">
 					<Link className="d-flex align-items-center my-md-5 my-4" to="../vehiclesType">
@@ -109,7 +109,7 @@ export const VehicleDetail = (props) => {
 					</div>
 				</div>
 			</main>
-		</LayoutLogin>
+		</LayoutHome>
 	)
 }
 

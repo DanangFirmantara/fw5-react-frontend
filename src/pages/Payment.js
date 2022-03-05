@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import LayoutLogin from '../components/LayoutLogin'
 import { Link } from 'react-router-dom'
+import LayoutHome from '../components/LayoutHome'
 
 export class Payment extends Component {
 	render() {
 		return (
-			<LayoutLogin>
+			<LayoutHome >
 				<main>
 					<div className="container my-5">
 						<div className="d-flex align-items-center mb-5" href="./vehicle-type.html">
@@ -73,7 +73,7 @@ export class Payment extends Component {
 						</Link>
 					</div>
 				</main>
-			</LayoutLogin>
+			</LayoutHome>
 		)
 	}
 }

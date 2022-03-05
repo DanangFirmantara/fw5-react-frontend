@@ -1,11 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
+import LayoutHome from '../components/LayoutHome'
 
-export class About extends Component {
-	render() {
-		return (
-			<div>About</div>
-		)
-	}
+const About = () => {
+	return (
+		<LayoutHome>
+			<div className='d-flex align-items-center justify-content-center vh-100'>
+				<div className='fs-1'>Sorry This Page on Process</div>
+			</div>
+		</LayoutHome>
+	)
 }
 
 export default About

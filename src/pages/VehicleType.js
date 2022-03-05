@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React , {useState, useEffect} from 'react'
-import LayoutLogin from '../components/LayoutLogin'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams} from 'react-router-dom'
 import {default as axios} from 'axios'
 import defaultImage from '../assets/image/image 6.png'
 import { getVehiclePopular, searchVehicle, getFilterVehicle } from '../redux/actions/vehicle'
 import { useSelector, connect } from 'react-redux'
+import LayoutHome from '../components/LayoutHome'
 
 
 export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}) => {
@@ -133,8 +132,12 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 	const goToDetail = (id) =>{
 		navigate(`/vehiclesType/${id}`)
 	}
+
+	const goBack = ()=>{
+		window.history.back()
+	}
 	return (
-		<LayoutLogin>
+		<LayoutHome>
 			<main>
 				<div className="container g-0 my-md-5 my-4 px-5 px-md-0">
 					<div className="mb-5">
@@ -171,13 +174,19 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 						</div>
 					}
 					{ list && !vehicle.isError &&
+						<button className="d-flex align-items-center mb-3 my-4" onClick={goBack}>
+							<i className="fa-solid fa-chevron-left icon dark fs-4 me-3"></i>
+							<div className="fs-5 fw-bold text-dark">Vehicle Type</div>
+						</button>
+					}
+					{ list && !vehicle.isError &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Vehicles List</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div> }
 					<div className='d-flex position-relative align-items-center'>
 						<div className='row '>
-							{ list && !vehicle.isError && vehicleList.map((data,idx) =>{
+							{ list && !vehicle.isError && vehicleList.map((data) =>{
 								return(
 									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 										<div className='d-flex position-relative mb-4'>
@@ -208,7 +217,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 						</div> }
 					<div className='position-relative d-flex align-items-center'>
 						<div className='row'>
-							{ !list && errorMsg == null && vehiclePopular.map((data,idx) =>{
+							{ !list && errorMsg == null && vehiclePopular.map((data) =>{
 								return(
 									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 										<div className='d-flex position-relative mb-4'>
@@ -240,7 +249,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 						</div>}
 					<div className='d-flex position-relative align-items-center'>
 						<div className='row'>
-							{ !list && errorMsg == null && vehicleCar.map((data,idx) =>{
+							{ !list && errorMsg == null && vehicleCar.map((data) =>{
 								return(
 									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 										<div className='d-flex position-relative mb-4'>
@@ -271,7 +280,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 						</div>}
 					<div className='d-flex position-relative align-items-center '>
 						<div className='row'>
-							{ !list && errorMsg == null && vehicleMotorbike.map((data,idx) =>{
+							{ !list && errorMsg == null && vehicleMotorbike.map((data) =>{
 								return(
 									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 										<div className='d-flex position-relative mb-4'>
@@ -304,7 +313,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 						</div>}
 					<div className='d-flex position-relative align-items-center'>
 						<div className='row '>
-							{ !list && errorMsg == null && vehicleBike.map((data,idx) =>{
+							{ !list && errorMsg == null && vehicleBike.map((data) =>{
 								return(
 									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 										<div className='d-flex position-relative mb-4'>
@@ -331,7 +340,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 					
 				</div>
 			</main>
-		</LayoutLogin>
+		</LayoutHome>
 	)
 }
 
