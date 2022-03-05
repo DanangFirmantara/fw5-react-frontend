@@ -3,13 +3,14 @@ import auth from './auth'
 import counter from './counter'
 import vehicle from './vehicle'
 import user from './user'
+import reservation from './reservation'
 
 const rootReducer = combineReducers({
 	auth,
 	counter,
 	vehicle,
-	user
-	
+	user,
+	reservation
 })
 
 export default rootReducer

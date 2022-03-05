@@ -11,6 +11,7 @@ const vehicle = (state = initialState, action)=>{
 	case 'GET_VEHICLE_PENDING':{
 		state.isLoading = true
 		state.isError = false
+		state.errorMsg = ''
 		return {...state}
 	}
 	case 'GET_VEHICLE_FULFILLED':{
@@ -22,10 +23,10 @@ const vehicle = (state = initialState, action)=>{
 		return {...state}
 	}
 	case 'GET_VEHICLE_REJECTED':{
+		const {message} = action.payload.response.data
 		state.isLoading = false
 		state.isError = true
-		console.log(action.payload)
-		state.errorMsg = ''
+		state.errorMsg = message
 		return {...state}
 	}
 	default:{

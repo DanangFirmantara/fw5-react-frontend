@@ -1,6 +1,6 @@
 export const increament = () =>{
 	return ({
-		type: 'COUNTER_INCREAMENT'
+		type: 'COUNTER_INCREAMENT',
 	})
 }
 

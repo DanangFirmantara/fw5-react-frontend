@@ -1,35 +1,25 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState,useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useParams, useNavigate, Link, Navigate } from 'react-router-dom'
 import defaultImage from '../assets/image/image 6.png'
 import { useDispatch, useSelector } from 'react-redux'
-import http from '../helpers/http'
 import LayoutHome from '../components/LayoutHome'
 import {increament, decreament} from '../redux/actions/counter'
+import { getVehicleById } from '../redux/actions/vehicle'
 
-export const VehicleDetail = (props) => {
+export const VehicleDetail = () => {
 	const auth = useSelector(state=>state.auth)
 	const counter = useSelector(state=>state.counter)
-	const [vehicle,setVehicle] = useState([])
+	let vehicle = useSelector(state=>state.vehicle)
 	const {id} = useParams()
 	const navigate = useNavigate()
 
 	const dispatch = useDispatch()
 
-	useEffect(()=>{
-		getDataComponent(id)
+	useEffect(async()=>{
+		dispatch(getVehicleById(id))
 	},[])
-
-	const getDataComponent = async(id)=>{
-		try{
-			const {data} = await http().get(`http://localhost:5000/vehicles?id=${id}`, props.history)
-			console.log(data.results)
-			setVehicle(data.results[0])
-		} catch(err){
-			console.log(err)
-		}
-	}
 
 	const goToReservation = (id)=>{
 		navigate(`/reservation?id=${id}`)
@@ -55,33 +45,33 @@ export const VehicleDetail = (props) => {
 						<div className="g-0 col">
 							<div className="pe-lg-5 px-5 px-lg-0">
 								<div className="mb-5 text-center">
-									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-banner-5 rounded d-none d-lg-flex'></img>
+									<img src={vehicle.results[0]?.image || defaultImage} alt={vehicle.results[0].name} className='img-banner-5 rounded d-none d-lg-flex'></img>
 								</div>
 								<div className="mb-5 text-center">
-									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-fluid  d-lg-none rounded'></img>
+									<img src={vehicle.results[0]?.image || defaultImage} alt={vehicle.results[0].name} className='img-fluid  d-lg-none rounded'></img>
 								</div>
 								<div className="d-flex justify-content-between align-items-center">
 									<i className="fa-solid fa-chevron-left icon dark"></i>
 									{/* <div className="img-slide img-12 rounded"></div>
 									<div className="img-slide img-12 rounded"></div> */}
-									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-slide rounded '></img>
-									<img src={vehicle?.image || defaultImage} alt={vehicle?.name} className='img-slide rounded '></img>
+									<img src={vehicle.results[0]?.image || defaultImage} alt={vehicle.results[0].name} className='img-slide rounded '></img>
+									<img src={vehicle.results[0]?.image || defaultImage} alt={vehicle.results[0].name} className='img-slide rounded '></img>
 									<i className="fa-solid fa-chevron-right icon dark"></i>
 								</div>
 							</div>
 						</div>
 						<div className="col">
-							<h1 className="pd-bolder mb-3">{vehicle?.name}</h1>
-							<h3 className="pd-bolder fw-normal fs-2 mb-3">{vehicle?.location}</h3>
-							<div className="fs-4 green fw-bold">{vehicle?.status}</div>
+							<h1 className="pd-bolder mb-3">{vehicle.results[0].name}</h1>
+							<h3 className="pd-bolder fw-normal fs-2 mb-3">{vehicle.results[0].location}</h3>
+							<div className="fs-4 green fw-bold">{vehicle.results[0].status}</div>
 							<div className="fs-4 text-danger fw-light mb-3">No prepayment</div>
 							<ul className="lh-base fs-4 fw-light mb-4">
-								<li>Capacity : {vehicle?.stock}</li>
-								<li>Type : {vehicle?.category}</li>
-								<li>{vehicle.description}</li>
+								<li>Capacity : {vehicle.results[0].stock}</li>
+								<li>Type : {vehicle.results[0].category}</li>
+								<li>{vehicle.results[0].description}</li>
 							</ul>
 							<div className="pd-bolder fs-1 d-flex justify-content-center pt-2 mb-6">
-								Rp. {new Intl.NumberFormat('de-DE').format(vehicle.price)}/day
+								Rp. {new Intl.NumberFormat('de-DE').format(vehicle.results[0].price)}/day
 							</div>
 							<div className="d-flex justify-content-between">
 								<button className="icon-plus button-third rounded bg-yellow fw-bolder fs-1" onClick={onDecreament}>-</button>
@@ -97,7 +87,7 @@ export const VehicleDetail = (props) => {
 							</button>
 						</div>
 						<div className="col-4">
-							<button className="button-height w-100 fw-bolder fs-4 shadow-yellow button-fourth" onClick={()=>goToReservation(vehicle.id)}>
+							<button className="button-height w-100 fw-bolder fs-4 shadow-yellow button-fourth" onClick={()=>goToReservation(vehicle.results[0].id)}>
 									Reservation
 							</button>
 						</div>
