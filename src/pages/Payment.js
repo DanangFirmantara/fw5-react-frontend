@@ -16,12 +16,16 @@ export const Payment = () => {
 		setVehicleServe(vehicle.results[0])
 		setUserData(auth.userData[0])
 	},[])
+
+	const goBack = ()=>{
+		window.history.back()
+	}
 	return (
 		<LayoutHome >
 			<main>
 				<div className="container my-5">
 					<div className="d-flex align-items-center mb-5" >
-						<Link className="fa-solid fa-chevron-left icon dark fs-0 me-3" to="../reservation"></Link>
+						<button onClick={goBack} className="fa-solid fa-chevron-left icon dark fs-0 me-3" to="/reservation"></button>
 						<div className="fs-1 fw-bold text-dark">Payment</div>
 					</div>
 					<div className="row mb-5">
@@ -33,7 +37,7 @@ export const Payment = () => {
 							<div className="border border-3 py-4 border-grey rounded ">
 								<div className="fw-bolder fs-4 ps-5">Order details :</div>
 								<div className="ps-5 fs-4">{counter.num} {vehicleServe.category} : Rp. {new Intl.NumberFormat('de-DE').format(total)}</div>
-								<div className="fw-bolder fs-4 ps-5 mt-3">Total : 178.000</div>
+								<div className="fw-bolder fs-4 ps-5 mt-3">Total : {new Intl.NumberFormat('de-DE').format(total)}</div>
 							</div>
 						</div>
 						<div className="col">
@@ -49,7 +53,7 @@ export const Payment = () => {
 									<div className="fw-bold fs-4 ps-5">
 				Reservation Date :
 									</div>
-									<div className="dark fs-4 pe-6">{reservation.dataReservation.rentStartDate}</div>
+									<div className="dark fs-4 pe-6">{reservation.dataReservation[0].rentStartDate}</div>
 								</div>
 							</div>
 							<div className="border border-3 py-4 border-grey rounded ">

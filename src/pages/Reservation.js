@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
-import { reservation } from '../redux/actions/reservation'
+import { createReservation} from '../redux/actions/reservation'
 
 export const Reservation = () => {
-	const {vehicle, counter} = useSelector(state=>state)
+	const {vehicle, counter,auth} = useSelector(state=>state)
 	const [vehiclesServe, setVehicleServe] = useState({})
 	const total = counter.num * vehiclesServe.price
 	const navigate = useNavigate()
@@ -19,8 +19,12 @@ export const Reservation = () => {
 		event.preventDefault()
 		const rentStartDate = event.target.elements['rentStartDate'].value
 		const rentEndDate = event.target.elements['rentEndDate'].value
-		const data = {rentEndDate, rentStartDate}
-		dispatch(reservation(data))
+		const userId = auth.userData[0].id
+		const quantity = counter.num
+		const prepayment = 0
+		const vehicleId = vehiclesServe.id
+		const data = {rentEndDate, rentStartDate, userId, prepayment, quantity, vehicleId}
+		dispatch(createReservation(data))
 		navigate('/payment')
 	}
 	

@@ -241,7 +241,31 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 							</div>
 						}
 					</div>
-					
+					{ !list && errorMsg == null &&
+						<div className="d-md-flex justify-content-between align-items-center mb-5">
+							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
+							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
+						</div>}
+					<div className='d-flex position-relative align-items-center'>
+						<div className='slider'>
+							{ !list && errorMsg == null && vehicleCar.map((data) =>{
+								return(
+									<div className='slider-item' key={String(data.id)}>
+										<img src={data.image} className='rounded img-thumbnail-2'></img>
+									</div>
+								)})}
+						</div>
+						{ !list && errorMsg == null && pageCar.prev!==null &&
+						<div className='position-absolute left-0 bg-primer rounded ms-3'>
+							<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pageCar.prev)}></button>
+						</div>
+						}
+						{ !list && errorMsg == null && pageCar.next!==null &&
+						<div className='position-absolute end-0 bg-primer rounded me-3'>
+							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageCar.next)}></button>
+						</div>
+						}
+					</div>
 					{ !list && errorMsg == null &&
 						<div className="d-md-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>

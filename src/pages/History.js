@@ -1,10 +1,24 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
+import { getHistoryUser } from '../redux/actions/history'
 
 export const History = () => {
-	const auth = useSelector(state=>state.auth)
+	const {auth,history} = useSelector(state=>state)
+	const [vehicleHistory,setVehicleHistory] = useState([])
+	const [pageHistory,setPageHistory] = useState({})
+	const dispatch = useDispatch()
+
+	useEffect(async()=>{
+		await dispatch(getHistoryUser(auth.userData[0].id))
+		await setVehicleHistory(history.historyData)
+		await setPageHistory(history.pageInfo)
+		console.log(vehicleHistory[0].vehicleName)
+		console.log(pageHistory)
+	},[])
+
 	return (
 		<LayoutHome >
 			{!auth.token && <Navigate to='/login' />}
@@ -74,6 +88,7 @@ export const History = () => {
 								</div>
 							</div>
 							<div className="grey-2 fs-4 fw-normal-bold mb-5">A week ago</div>
+							
 							<div className="row mb-5">
 								<div className="col d-flex justify-content-star">
 									<div className="img-slide img-7 rounded"></div>

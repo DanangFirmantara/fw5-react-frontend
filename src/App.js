@@ -17,6 +17,7 @@ import VehicleCreate from './pages/VehicleCreate'
 import ForgotPassword from './pages/ForgotPassword'
 import { useDispatch} from 'react-redux'
 import { getDataUser } from './redux/actions/auth'
+import Test from './pages/Test'
 
 
 export const App = () => {
@@ -55,6 +56,7 @@ export const App = () => {
 				<Route path='profile' element={<Profile />}/>
 				<Route path='vehicle' element={<VehicleCreate />}/>
 				<Route path='vehicle/:id' element={<VehicleEdit />}/>
+				<Route path='test' element={<Test />}/>
 			</Routes>
 		</HistoryRouter>
 	)
