@@ -1,5 +1,5 @@
 const initialState = {
-	dataReservation : {},
+	dataReservation : [],
 	isLoading : false,
 	isError : false,
 	errorMsg : '',

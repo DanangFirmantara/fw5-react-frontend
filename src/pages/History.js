@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
@@ -49,8 +49,7 @@ export const History = () => {
 								</div>
 							</div>
 							<div
-								className="border border-3 border-grey bg-grey text-muted ps-5 py-3 rounded fs-4 w-25 mb-5"
-							>
+								className="border border-3 border-grey bg-grey text-muted ps-5 py-3 rounded fs-4 w-25 mb-5">
 								<div className="d-flex justify-content-between align-items-center">
 									Filter
 									<div className="fa-solid fa-chevron-down pe-4 fs-3"></div>
@@ -58,9 +57,7 @@ export const History = () => {
 							</div>
 							<div className="row">
 								<div className="col">
-									<div
-										className="border-bottom border-1 py-3 fw-normal-bold fs-4 d-flex justify-content-between align-items-center"
-									>
+									<div className="border-bottom border-1 py-3 fw-normal-bold fs-4 d-flex justify-content-between align-items-center">
 										<div className="">
 											Please finish your payment for vespa for Vespa Rental Jogja
 										</div>
@@ -75,16 +72,12 @@ export const History = () => {
 							</div>
 							<div className="row mb-5">
 								<div className="col">
-									<div
-										className="border-bottom border-1 py-3 fw-normal-bold fs-4 d-flex justify-content-between align-items-center"
-									>
+									<div className="border-bottom border-1 py-3 fw-normal-bold fs-4 d-flex justify-content-between align-items-center">
 										<div className="">Your payment has been confirmed!</div>
 										<div className="fa-solid fa-chevron-right"></div>
 									</div>
 								</div>
-								<div
-									className="col-2 d-flex align-items-center justify-content-center"
-								>
+								<div className="col-2 d-flex align-items-center justify-content-center">
 									<div className="border border-3 border-grey icon-check"></div>
 								</div>
 							</div>

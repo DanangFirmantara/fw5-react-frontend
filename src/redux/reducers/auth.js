@@ -1,7 +1,7 @@
 
 const initialState = {
 	token : null,
-	userData : {},
+	userData : [],
 	isLoading : false,
 	isError : false,
 	successMsg : '',
@@ -20,10 +20,10 @@ const auth = (state=initialState, action)=>{
 		return {...state}
 	}
 	case 'AUTH_LOGIN_FULFILLED':{
-		const {data, message} = action.payload 
+		const {results, message} = action.payload.data 
 		state.isLoading = false
 		state.isError = false
-		state.token = data.results
+		state.token = results
 		state.successMsg = message
 		window.localStorage.setItem('token', state.token)
 		return {...state}
@@ -36,7 +36,7 @@ const auth = (state=initialState, action)=>{
 	}
 	case 'AUTH_LOGOUT':{
 		state.token = null
-		state.userData = {}
+		state.userData = []
 		window.localStorage.removeItem('token')
 		return {...state}
 	}

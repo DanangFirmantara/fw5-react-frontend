@@ -3,7 +3,7 @@ const initialState = {
 	isError : false,
 	errorMsg : '',
 	successMsg : '',
-	historyData : {},
+	historyData : [],
 	pageInfo :[]
 }
 
@@ -14,6 +14,8 @@ const history = (state = initialState, action)=>{
 		state.isError = false
 		state.errorMsg = ''
 		state.successMsg = ''
+		state.historyData = []
+		state.pageInfo = []
 		return {...state}
 	}
 	case 'HISTORY_USERDATA_FULFILLED':{

@@ -6,7 +6,10 @@ import { createReservation} from '../redux/actions/reservation'
 import defaultImage from '../assets/image/image 6.png'
 
 export const Reservation = () => {
-	const {vehicle, counter,auth} = useSelector(state=>state)
+	const vehicle = useSelector(state=>state.vehicle)
+	const counter = useSelector(state=>state.counter)
+	const auth = useSelector(state=>state.auth)
+	const reservation = useSelector(state=>state.reservation)
 	const [vehiclesServe, setVehicleServe] = useState({})
 	const total = counter.num * vehiclesServe.price
 	const navigate = useNavigate()
@@ -16,7 +19,7 @@ export const Reservation = () => {
 		setVehicleServe(vehicle.results[0])
 	}, [])
 
-	const onReservation = (event)=>{
+	const onReservation = async(event)=>{
 		event.preventDefault()
 		const rentStartDate = event.target.elements['rentStartDate'].value
 		const rentEndDate = event.target.elements['rentEndDate'].value
@@ -42,6 +45,12 @@ export const Reservation = () => {
 						<button className="fa-solid fa-chevron-left icon dark fs-0 me-3" onClick={goBack}></button>
 						<div className="fs-1 fw-bold text-dark">Reservation</div>
 					</div>
+					{reservation.isError &&
+						<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
+							{reservation.errorMsg}
+							<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					}
 					<div className="row mb-5">
 						<div className="col-7">
 							<div className="pe-5">
