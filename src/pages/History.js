@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
@@ -8,20 +7,19 @@ import { getHistoryUser } from '../redux/actions/history'
 export const History = () => {
 	const auth = useSelector(state=>state.auth)
 	const history = useSelector(state=>state.history)
-	const [vehicleHistory,setVehicleHistory] = useState([])
-	const [pageHistory,setPageHistory] = useState({})
 	const dispatch = useDispatch()
 
-	useEffect(async()=>{
-		await dispatch(getHistoryUser(auth.userData[0].id))
+	useEffect(()=>{
+		dispatch(getHistoryUser(auth.userData[0].id))
 	},[])
 
-	// useEffect(()=>{
-	// 	setVehicleHistory(history.historyData)
-	// 	setPageHistory(history.pageInfo)
-	// 	console.log(vehicleHistory[0].vehicleName)
-	// },[history])
-
+	const statusVehicle = (quantity)=>{
+		if(quantity == 0){
+			return 'Vehicle has been return'
+		} else{
+			return 'vehicle has not been return'
+		}
+	}
 	return (
 		<LayoutHome >
 			{!auth.token && <Navigate to='/login' />}
@@ -91,22 +89,6 @@ export const History = () => {
 								</div>
 							</div>
 							<div className="grey-2 fs-4 fw-normal-bold mb-5">A week ago</div>
-							<div className="row mb-5">
-								<div className="col d-flex justify-content-star">
-									<div className="img-slide img-7 rounded">Vespa Matic</div>
-									<div className="d-inline-block py-3 px-4 align-items-center">
-										<div className="fs-6 fw-bold"></div>
-										<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
-										<div className="fs-6 fw-bold">Prepayment : Rp.245.000</div>
-										<div className="fs-6 green">Has been returned</div>
-									</div>
-								</div>
-								<div
-									className="col-2 d-flex align-items-center justify-content-center"
-								>
-									<div className="border border-3 border-grey icon-check"></div>
-								</div>
-							</div>
 							{history?.historyData.map((obj)=>{
 								return(
 									<div className="row mb-5" key={String(obj.id)}>
@@ -114,9 +96,9 @@ export const History = () => {
 											<div className="img-slide img-7 rounded"></div>
 											<div className="d-inline-block py-3 px-4 align-items-center">
 												<div className="fs-6 fw-bold">{obj.vehicleName}</div>
-												<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
-												<div className="fs-6 fw-bold">Prepayment : Rp.245.000</div>
-												<div className="fs-6 green">Has been returned</div>
+												<div className="fs-6 fw-light mb-3">{obj.rentStartDate} to {obj.rentEndDate}</div>
+												<div className="fs-6 fw-bold">Prepayment : Rp. {obj.prepayment}</div>
+												<div className="fs-6 green">{statusVehicle(obj.quantity)}</div>
 											</div>
 										</div>
 										<div
@@ -127,54 +109,6 @@ export const History = () => {
 									</div>
 								)
 							})}
-							<div className="row mb-5">
-								<div className="col d-flex justify-content-star">
-									<div className="img-slide img-7 rounded">Vespa Matic</div>
-									<div className="d-inline-block py-3 px-4 align-items-center">
-										<div className="fs-6 fw-bold"></div>
-										<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
-										<div className="fs-6 fw-bold">Prepayment : Rp.245.000</div>
-										<div className="fs-6 green">Has been returned</div>
-									</div>
-								</div>
-								<div
-									className="col-2 d-flex align-items-center justify-content-center"
-								>
-									<div className="border border-3 border-grey icon-check"></div>
-								</div>
-							</div>
-							<div className="row mb-5">
-								<div className="col d-flex justify-content-star">
-									<div className="img-slide img-8 rounded"></div>
-									<div className="d-inline-block py-3 px-4 align-items-center">
-										<div className="fs-6 fw-bold">Vespa Matic</div>
-										<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
-										<div className="fs-6 fw-bold">Prepayment : Rp.245.000</div>
-										<div className="fs-6 green">Has been returned</div>
-									</div>
-								</div>
-								<div
-									className="col-2 d-flex align-items-center justify-content-center"
-								>
-									<div className="border border-3 border-grey icon-check"></div>
-								</div>
-							</div>
-							<div className="row mb-5">
-								<div className="col d-flex justify-content-star">
-									<div className="img-slide img-9 rounded"></div>
-									<div className="d-inline-block py-3 px-4 align-items-center">
-										<div className="fs-6 fw-bold">Bike</div>
-										<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
-										<div className="fs-6 fw-bold">Prepayment : Rp.100.000</div>
-										<div className="fs-6 green">Has been returned</div>
-									</div>
-								</div>
-								<div
-									className="col-2 d-flex align-items-center justify-content-center"
-								>
-									<div className="border border-3 border-grey icon-check"></div>
-								</div>
-							</div>
 						</div>
 						<div className="col-3 text-center">
 							<div

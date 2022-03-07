@@ -427,6 +427,9 @@ a:hover{
 .img-14{
    background-image: url(../image/testimoni.png);
 }
+.img-15{
+   background-image: url(../image/resetPassword.png);
+}
 footer{
    min-height: 470px;
    
@@ -539,7 +542,7 @@ ul{
 }
 
 input::placeholder{
-   color: #B8BECD;
+   color: white;
 }
 
 .button-grey::placeholder{

@@ -31,6 +31,12 @@ export const SignUp = () => {
 									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
 						}
+						{user.successMsg &&
+								<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
+									{user.successMsg}
+									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+						}
 						{!user.isError && user.isSuccess &&
 								<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
 									{user.successMsg}

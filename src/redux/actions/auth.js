@@ -20,9 +20,17 @@ export const getDataUser = (token)=>{
 
 export const userEdit = (data,id)=>{
 	const param = new URLSearchParams(data)
-	
 	return({
-		type: 'AUTH_USERDATA',
+		type: 'AUTH_USEREDIT',
 		payload: http().patch(`/users/?id=${id}`,param)
 	})	
+}
+
+export const forgotRequest = (email)=>{
+	const param = new URLSearchParams()
+	param.append('email', email)
+	return ({
+		type: 'AUTH_FORGOTREQUEST',
+		payload : http().post('/auth/forgotRequest', param)
+	})
 }

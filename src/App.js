@@ -18,6 +18,8 @@ import ForgotPassword from './pages/ForgotPassword'
 import { useDispatch, useSelector} from 'react-redux'
 import { getDataUser } from './redux/actions/auth'
 import Test from './pages/Test'
+import ResetPassword from './pages/ResetPassword'
+import ResetPasswordUser from './pages/ResetPasswordUser'
 
 
 export const App = () => {
@@ -47,6 +49,8 @@ export const App = () => {
 				<Route path='login' element={<LoginPage />}/>
 				<Route path='loginGoogle' element={<LoginGoogle />}/>
 				<Route path='signUp' element={<SignUp />}/>
+				<Route path='resetPassword' element={<ResetPassword />}/>
+				<Route path='resetPasswordUser' element={<ResetPasswordUser />}/>
 				<Route path='forgotPassword' element={<ForgotPassword />}/>
 				<Route path='vehiclesType' element={<VehicleType />}/>
 				<Route path='vehiclesType/:id' element={<VehicleDetail history = {history} />}/>

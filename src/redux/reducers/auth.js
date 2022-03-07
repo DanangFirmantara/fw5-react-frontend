@@ -1,8 +1,11 @@
+
 const initialState = {
 	token : null,
 	userData : {},
 	isLoading : false,
 	isError : false,
+	successMsg : '',
+	successMsgUpdated: '',
 	errorMsg : ''
 }
 
@@ -11,14 +14,17 @@ const auth = (state=initialState, action)=>{
 	case 'AUTH_LOGIN_PENDING':{
 		state.isLoading = true
 		state.isError = false
+		state.successMsg = ''
 		state.errorMsg = ''
+		state.successMsgUpdated = ''
 		return {...state}
 	}
 	case 'AUTH_LOGIN_FULFILLED':{
-		const {data} = action.payload 
+		const {data, message} = action.payload 
 		state.isLoading = false
 		state.isError = false
 		state.token = data.results
+		state.successMsg = message
 		window.localStorage.setItem('token', state.token)
 		return {...state}
 	}
@@ -38,18 +44,64 @@ const auth = (state=initialState, action)=>{
 		state.isLoading = true
 		state.isError = false
 		state.errorMsg = ''
+		state.successMsg = ''
 		return {...state}
 	}
 	case 'AUTH_USERDATA_FULFILLED':{
-		const {data} = action.payload
+		const {results, message} = action.payload.data
 		state.isLoading = false
 		state.isError = false
-		state.userData = data.results
+		state.successMsg = message
+		state.userData = results
 		return {...state}
 	}
 	case 'AUTH_USERDATA_REJECTED':{
 		const {message} = action.payload.response.data
 		console.log(message)
+		state.isLoading = false
+		state.isError = true
+		state.errorMsg = message
+		return {...state}
+	}
+	case 'AUTH_USEREDIT_PENDING':{
+		state.isLoading = true
+		state.isError = false
+		state.errorMsg = ''
+		state.successMsg = ''
+		state.successMsgUpdated = ''
+		return {...state}
+	}
+	case 'AUTH_USEREDIT_FULFILLED':{
+		const {results, message} = action.payload.data
+		state.isLoading = false
+		state.isError = false
+		state.successMsgUpdated = message
+		state.userData = results
+		return {...state}
+	}
+	case 'AUTH_USEREDIT_REJECTED':{
+		const {message} = action.payload.response.data
+		console.log(message)
+		state.isLoading = false
+		state.isError = true
+		state.errorMsg = message
+		return {...state}
+	}
+	case 'AUTH_FORGOTREQUEST_PENDING':{
+		state.isLoading = true 
+		state.isError = false
+		state.errorMsg = ''
+		state.successMsg = ''
+		return {...state}
+	}
+	case 'AUTH_FORGOTREQUEST_FULFILLED':{
+		const {message} = action.payload.data
+		state.isLoading = false
+		state.successMsg = message
+		return {...state}
+	}
+	case 'AUTH_FORGOTREQUEST_REJECTED':{
+		const {message} = action.payload.response.data
 		state.isLoading = false
 		state.isError = true
 		state.errorMsg = message

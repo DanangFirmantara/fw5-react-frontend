@@ -5,6 +5,7 @@ import vehicle from './vehicle'
 import user from './user'
 import reservation from './reservation'
 import history from './history'
+import resetPassword from './resetPassword'
 
 const rootReducer = combineReducers({
 	auth,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
 	vehicle,
 	user,
 	reservation,
-	history
+	history,
+	resetPassword
 })
 
 export default rootReducer
