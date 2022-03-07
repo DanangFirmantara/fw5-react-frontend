@@ -6,7 +6,8 @@ import LayoutHome from '../components/LayoutHome'
 import { getHistoryUser } from '../redux/actions/history'
 
 export const History = () => {
-	const {auth,history} = useSelector(state=>state)
+	const auth = useSelector(state=>state.auth)
+	const history = useSelector(state=>state.history)
 	const [vehicleHistory,setVehicleHistory] = useState([])
 	const [pageHistory,setPageHistory] = useState({})
 	const dispatch = useDispatch()
@@ -90,7 +91,42 @@ export const History = () => {
 								</div>
 							</div>
 							<div className="grey-2 fs-4 fw-normal-bold mb-5">A week ago</div>
-							
+							<div className="row mb-5">
+								<div className="col d-flex justify-content-star">
+									<div className="img-slide img-7 rounded">Vespa Matic</div>
+									<div className="d-inline-block py-3 px-4 align-items-center">
+										<div className="fs-6 fw-bold"></div>
+										<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
+										<div className="fs-6 fw-bold">Prepayment : Rp.245.000</div>
+										<div className="fs-6 green">Has been returned</div>
+									</div>
+								</div>
+								<div
+									className="col-2 d-flex align-items-center justify-content-center"
+								>
+									<div className="border border-3 border-grey icon-check"></div>
+								</div>
+							</div>
+							{history?.historyData.map((obj)=>{
+								return(
+									<div className="row mb-5" key={String(obj.id)}>
+										<div className="col d-flex justify-content-star">
+											<div className="img-slide img-7 rounded"></div>
+											<div className="d-inline-block py-3 px-4 align-items-center">
+												<div className="fs-6 fw-bold">{obj.vehicleName}</div>
+												<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
+												<div className="fs-6 fw-bold">Prepayment : Rp.245.000</div>
+												<div className="fs-6 green">Has been returned</div>
+											</div>
+										</div>
+										<div
+											className="col-2 d-flex align-items-center justify-content-center"
+										>
+											<div className="border border-3 border-grey icon-check"></div>
+										</div>
+									</div>
+								)
+							})}
 							<div className="row mb-5">
 								<div className="col d-flex justify-content-star">
 									<div className="img-slide img-7 rounded">Vespa Matic</div>
