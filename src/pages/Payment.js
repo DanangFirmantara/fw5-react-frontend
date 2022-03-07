@@ -1,9 +1,9 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
-import reservation from '../redux/reducers/reservation'
+// import reservation from '../redux/reducers/reservation'
+import defaultImage from '../assets/image/image 6.png'
 
 
 export const Payment = () => {
@@ -12,9 +12,9 @@ export const Payment = () => {
 	const [userData,setUserData]= useState({})
 	const total = counter.num * vehicleServe.price
 
-	useEffect(()=>{
-		setVehicleServe(vehicle.results[0])
-		setUserData(auth.userData[0])
+	useEffect(async()=>{
+		await setVehicleServe(vehicle.results[0])
+		await setUserData(auth.userData[0])
 	},[])
 
 	const goBack = ()=>{
@@ -22,6 +22,7 @@ export const Payment = () => {
 	}
 	return (
 		<LayoutHome >
+			{/* {reservation.dataReservation[0].rentStartDate == undefined && <Navigate to='/vehicleType' />} */}
 			<main>
 				<div className="container my-5">
 					<div className="d-flex align-items-center mb-5" >
@@ -30,7 +31,8 @@ export const Payment = () => {
 					</div>
 					<div className="row mb-5">
 						<div className="col-5">
-							<div className="img-banner-3 img-12 rounded mb-4"></div>
+							{/* <div className="img-banner-3 img-12 rounded mb-4"></div> */}
+							<img src={vehicleServe?.image || defaultImage} alt={vehicle.results[0].name} className='img-banner-5 rounded d-none d-lg-flex'></img>
 							<div className="border border-3 py-4 border-grey rounded mb-4 ">
 								<div className="fw-bold fs-4 ps-5">Quantity : {counter.num} {vehicleServe.category} </div>
 							</div>

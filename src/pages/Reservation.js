@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
 import { createReservation} from '../redux/actions/reservation'
+import defaultImage from '../assets/image/image 6.png'
 
 export const Reservation = () => {
 	const {vehicle, counter,auth} = useSelector(state=>state)
@@ -44,7 +45,8 @@ export const Reservation = () => {
 					<div className="row mb-5">
 						<div className="col-7">
 							<div className="pe-5">
-								<div className="img-banner img-12 rounded"></div>
+								{/* <div className="img-banner img-12 rounded"></div> */}
+								<img src={vehiclesServe?.image || defaultImage} alt={vehicle.results[0].name} className='img-banner-5 rounded d-none d-lg-flex'></img>
 							</div>
 						</div>
 						<div className="col move-1">

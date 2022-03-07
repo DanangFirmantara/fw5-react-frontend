@@ -13,11 +13,13 @@ export const History = () => {
 
 	useEffect(async()=>{
 		await dispatch(getHistoryUser(auth.userData[0].id))
-		await setVehicleHistory(history.historyData)
-		await setPageHistory(history.pageInfo)
-		console.log(vehicleHistory[0].vehicleName)
-		console.log(pageHistory)
 	},[])
+
+	// useEffect(()=>{
+	// 	setVehicleHistory(history.historyData)
+	// 	setPageHistory(history.pageInfo)
+	// 	console.log(vehicleHistory[0].vehicleName)
+	// },[history])
 
 	return (
 		<LayoutHome >
@@ -91,9 +93,9 @@ export const History = () => {
 							
 							<div className="row mb-5">
 								<div className="col d-flex justify-content-star">
-									<div className="img-slide img-7 rounded"></div>
+									<div className="img-slide img-7 rounded">Vespa Matic</div>
 									<div className="d-inline-block py-3 px-4 align-items-center">
-										<div className="fs-6 fw-bold">Vespa Matic</div>
+										<div className="fs-6 fw-bold"></div>
 										<div className="fs-6 fw-light mb-3">Jan 18 to 21 20221</div>
 										<div className="fs-6 fw-bold">Prepayment : Rp.245.000</div>
 										<div className="fs-6 green">Has been returned</div>

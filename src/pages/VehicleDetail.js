@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 import React, { useEffect } from 'react'
 import { useParams, useNavigate, Link, Navigate } from 'react-router-dom'
 import defaultImage from '../assets/image/image 6.png'

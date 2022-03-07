@@ -15,13 +15,14 @@ import { createBrowserHistory } from 'history'
 import VehicleEdit from './pages/VehicleEdit'
 import VehicleCreate from './pages/VehicleCreate'
 import ForgotPassword from './pages/ForgotPassword'
-import { useDispatch} from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import { getDataUser } from './redux/actions/auth'
 import Test from './pages/Test'
 
 
 export const App = () => {
 	const history = createBrowserHistory({window})
+	const {auth} = useSelector(state=>state)
 	const dispatch = useDispatch()
 
 	useEffect(()=>{
@@ -37,7 +38,7 @@ export const App = () => {
 			})
 			dispatch(getDataUser(token))
 		}
-	},[])
+	},[dispatch,auth.token])
 
 	return (
 		<HistoryRouter history={history}>
