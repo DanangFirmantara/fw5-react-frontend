@@ -6,7 +6,8 @@ const initialState = {
 	isError : false,
 	successMsg : '',
 	successMsgUpdated: '',
-	errorMsg : ''
+	errorMsg : '',
+	successMsgForgot: ''
 }
 
 const auth = (state=initialState, action)=>{
@@ -97,7 +98,7 @@ const auth = (state=initialState, action)=>{
 	case 'AUTH_FORGOTREQUEST_FULFILLED':{
 		const {message} = action.payload.data
 		state.isLoading = false
-		state.successMsg = message
+		state.successMsgForgot = message
 		return {...state}
 	}
 	case 'AUTH_FORGOTREQUEST_REJECTED':{

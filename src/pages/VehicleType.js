@@ -231,7 +231,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 								)})}
 						</div>
 						{ !list && errorMsg == null && pagePopular.prev!==null &&
-							<div className='position-absolute end-0 mx-3 rounded bg-primer'>
+							<div className='position-absolute left-0 mx-3 rounded bg-primer'>
 								<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pagePopular.prev)}></button>
 							</div>
 						}

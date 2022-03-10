@@ -49,32 +49,35 @@ export const Payment = () => {
 					</div>
 					<div className='row justify-content-around'>
 						<div className='col-5 border border-3 py-4 border-grey rounded mb-4'>
-							<div className='ms-4 d-flex align-items-center'>
-								<div className='fw-bold fs-5'>Quantity : <span className='fw-normal'>{reservation?.dataReservation[0].quantity} {vehicle.results[0].category}</span> </div>
+							<div className='mx-4 d-flex align-items-center'>
+								<div className='fw-bold fs-5'>Quantity : <span className='fw-normal'>{reservation.dataReservation[0].quantity } {vehicle.results[0].category}</span> </div>
 							</div>
 						</div>
 						<div className='col-6 border border-3 py-4 border-grey rounded mb-4 '>
-							<div className='d-flex align-items-center ms-3'>
+							<div className='d-flex align-items-center mx-4'>
 								<div className='fw-bold fs-5'>
-								Reservation Date : <span className='fw-normal'>{reservation?.dataReservation[0].rentStartDate}</span> 
+								Reservation Date : <span className='fw-normal'>{reservation.dataReservation[0].rentStartDate}</span> 
 								</div>
 							</div>
 						</div>
 					</div>
 					<div className='row justify-content-around'>
 						<div className='col-5 border border-3 py-4 border-grey rounded mb-4'>
-							<div className='d-flex align-items-center ps-4'>
-								<div >
-									<div className="fw-bolder fs-4 ps-5">Order details :</div>
-									<div className="ps-5 fs-4">{counter.num} {vehicle?.results[0].category} : Rp. {new Intl.NumberFormat('de-DE').format(total)}</div>
-									<div className="fw-bolder fs-4 ps-5 mt-3">Total : {new Intl.NumberFormat('de-DE').format(total)}</div>
+							<div className='d-flex align-items-center'>
+								<div className='mx-4 '>
+									<div className="fw-bolder fs-4">Order details :</div>
+									<div className="fs-4">{counter.num} {vehicle?.results[0].category} : Rp. {new Intl.NumberFormat('de-DE').format(total)}</div>
+									<div className="fw-bolder fs-4 mt-3">Total : {new Intl.NumberFormat('de-DE').format(total)}</div>
 								</div>
 							</div>
 						</div>
 						<div className='col-6 border border-3 py-4 border-grey rounded mb-4'>
-							<div className="fw-bolder fs-4 ps-5">Identity :</div>
-							<div className="ps-5 fs-4">{auth?.userData[0].fullName ? auth?.userData[0].fullName : auth?.userData[0].username} ( {auth?.userData[0].contact} )</div>
-							<div className="ps-5 fs-4"></div>
+							<div className='d-flex align-items-center'>
+								<div className='mx-4'>
+									<div className="fw-bolder fs-4">Identity :</div>
+									<div className="fs-4">{auth.userData[0].fullName ? auth.userData[0].fullName : auth.userData[0].username} {auth.userData[0]?.contact} </div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div className='row justify-content-around'>
