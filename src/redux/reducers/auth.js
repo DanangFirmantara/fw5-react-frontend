@@ -98,26 +98,7 @@ const auth = (state=initialState, action)=>{
 		state.errorMsg = message
 		return {...state}
 	}
-	case 'AUTH_FORGOTREQUEST_PENDING':{
-		state.isLoading = true 
-		state.isError = false
-		state.errorMsg = ''
-		state.successMsg = ''
-		return {...state}
-	}
-	case 'AUTH_FORGOTREQUEST_FULFILLED':{
-		const {message} = action.payload.data
-		state.isLoading = false
-		state.successMsgForgot = message
-		return {...state}
-	}
-	case 'AUTH_FORGOTREQUEST_REJECTED':{
-		const {message} = action.payload.response.data
-		state.isLoading = false
-		state.isError = true
-		state.errorMsg = message
-		return {...state}
-	}
+	
 	default:{
 		return {...state}
 	}
