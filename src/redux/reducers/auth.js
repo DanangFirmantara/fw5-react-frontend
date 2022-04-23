@@ -7,11 +7,50 @@ const initialState = {
 	successMsg : '',
 	successMsgUpdated: '',
 	errorMsg : '',
-	successMsgForgot: ''
+	successMsgForgot: '',
+	data : [],
 }
+
+export const AUTH_GETDATA = 'AUTH_GETDATA'
+export const AUTH_SETLOADING = 'AUTH_SETLOADING'
+export const AUTH_CLEARLOADING = 'AUTH_CLEARLOADING'
+export const AUTH_SETERROR = 'AUTH_SETERROR'
+export const AUTH_CLEARERROR = 'AUTH_CLEARERROR'
+export const AUTH_GETTOKEN = 'AUTH_GETTOKEN'
+export const AUTH_LOGOUT = 'AUTH_LOGOUT'
+export const AUTH_SETSUCCESS = 'AUTH_SETSUCCESS'
+export const AUTH_CLEARSUCCESS = 'AUTH_CLEARSUCCESS'
+
 
 const auth = (state=initialState, action)=>{
 	switch(action.type){
+	case AUTH_GETDATA :{
+		return { ...state, data : action.payload}
+	}
+	case AUTH_GETTOKEN: {
+		return { ...state, token : action.payload}
+	}
+	case AUTH_SETLOADING:{
+		return {...state, isLoading: true}
+	}
+	case AUTH_CLEARLOADING:{
+		return { ...state, isLoading: false}
+	}
+	case AUTH_SETSUCCESS:{
+		return { ...state, successMsg: action.payload}
+	}
+	case AUTH_CLEARSUCCESS:{
+		return { ...state, successMsg: ''}
+	}
+	case AUTH_SETERROR:{
+		return { ...state, errorMsg: action.payload}
+	}
+	case AUTH_CLEARERROR:{
+		return {...state, errorMsg: ''}
+	}
+	case AUTH_LOGOUT:{
+		return { ...initialState } 
+	}
 	case 'AUTH_LOGIN_PENDING':{
 		state.isLoading = true
 		state.isError = false
@@ -35,12 +74,7 @@ const auth = (state=initialState, action)=>{
 		state.errorMsg = 'check your email, username, and password'
 		return {...state}
 	}
-	case 'AUTH_LOGOUT':{
-		state.token = null
-		state.userData = []
-		window.localStorage.removeItem('token')
-		return {...state}
-	}
+	
 	case 'AUTH_USERDATA_PENDING':{
 		state.isLoading = true
 		state.isError = false
