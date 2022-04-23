@@ -3,13 +3,16 @@ import React , {useState, useEffect} from 'react'
 import { useNavigate, useSearchParams} from 'react-router-dom'
 import {default as axios} from 'axios'
 import defaultImage from '../assets/image/image 6.png'
-import { getVehiclePopular, searchVehicle, getFilterVehicle } from '../redux/actions/vehicle'
-import { useSelector, connect } from 'react-redux'
+import { getVehiclePopular, searchVehicle, getFilterVehicle, getVehicleCategory } from '../redux/actions/vehicle'
+import { useSelector, connect, useDispatch } from 'react-redux'
 import LayoutHome from '../components/LayoutHome'
+import { getLocation } from '../redux/actions/location'
+import { getCategory } from '../redux/actions/category'
+import LoadingScreen from '../components/LoadingScreen'
 
 
 export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}) => {
-	const {vehicle} = useSelector(state=>state)
+	
 
 	const [ errorMsg, setErrorMsg] = useState(null)
 	const [ list, setList ] = useState(false)
@@ -36,8 +39,31 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 
 	const navigate = useNavigate()
 	let [searchParams, setSearchParams] = useSearchParams()
+
+	//new concept
+	const locationRedux = useSelector((state)=>state.location)
+	const vehicle = useSelector( state =>state.vehicle)
+	const category = useSelector( (state)=> state.category)
+	const dispatch = useDispatch()
 	// didmount
 	useEffect(async()=>{
+		console.log(locationRedux)
+		if( locationRedux.data.length > 0){
+			console.log('data ada')
+		} else{
+			dispatch( getLocation() )
+		}
+		
+		if(category.data.length === 0){
+			dispatch( getCategory() )
+		} else{
+			if(vehicle.dataCategory.length === 0){
+				category.data.map( async (item)=>{
+					console.log(item.id)
+					await dispatch(getVehicleCategory(item.id))
+				})
+			}
+		}
 		const name = searchParams.get('name')
 		const location = searchParams.get('location')
 		const sortType = searchParams.get('sortType')
@@ -50,7 +76,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 		} else{
 			getData()
 		}
-	}, [])
+	}, [dispatch])
 
 	const getData = async()=>{
 		const {value:{data:popular}} = await getVehiclePopular()
@@ -138,110 +164,113 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 	}
 	return (
 		<LayoutHome>
-			<main>
-				<div className="container g-0 my-md-5 my-4 px-5 px-md-0">
-					<div className="mb-5">
-						<form className="" onSubmit={onSearch} id='search'>
-							<div className='row row-cols-1 row-cols-md-12'>
-								<div className='col col-md-6 mb-4 '>
-									<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start" autoComplete='off'/>
-								</div>
-								<div className='col col-md-2 mb-4'>
-									<select name='location' className='px-3 form-select rounded button-height text-center text-md-start'>
-										<option value='' style={{display: 'none'}}>Select location</option>
-										<option value='jakarta'>Jakarta</option>
-										<option value='yogyakarta'>Yogyakarta</option>
+			{locationRedux.isLoading || vehicle.isLoading || category.isLoading ? (
+				<LoadingScreen />
+			) : (
+				<main>
+					<div className="container g-0 my-md-5 my-4 px-5 px-md-0">
+						<div className="mb-5">
+							<form className="" onSubmit={onSearch} id='search'>
+								<div className='row row-cols-1 row-cols-md-12'>
+									<div className='col col-md-6 mb-4 '>
+										<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start" autoComplete='off'/>
+									</div>
+									<div className='col col-md-2 mb-4'>
+										<select name='location' className='px-3 form-select rounded button-height text-center text-md-start'>
+											<option value='' style={{display: 'none'}}>Select location</option>
+											<option value='jakarta'>Jakarta</option>
+											<option value='yogyakarta'>Yogyakarta</option>
 								
-									</select>
+										</select>
+									</div>
+									<div className='col col-md-2 mb-4'>
+										<select name='sortType' className='px-3 form-select rounded button-height text-center text-md-start '>
+											<option value='' style={{display: 'none'}}>Sort Type</option>
+											<option value='ASC'>A-Z</option>
+											<option value='DESC'>Z-A</option>
+										</select>
+									</div>
+									<div className='col col-md-2 d-flex justify-content-center'>
+										<button className="fa-solid fa-magnifying-glass text-dark bg-white border border-0 fs-1 d-flex align-items-center pb-lg-3 pb-0" type='submit' ></button>
+									</div>
 								</div>
-								<div className='col col-md-2 mb-4'>
-									<select name='sortType' className='px-3 form-select rounded button-height text-center text-md-start '>
-										<option value='' style={{display: 'none'}}>Sort Type</option>
-										<option value='ASC'>A-Z</option>
-										<option value='DESC'>Z-A</option>
-									</select>
-								</div>
-								<div className='col col-md-2 d-flex justify-content-center'>
-									<button className="fa-solid fa-magnifying-glass text-dark bg-white border border-0 fs-1 d-flex align-items-center pb-lg-3 pb-0" type='submit' ></button>
-								</div>
-							</div>
-						</form>
-					</div>
-					{vehicle.isError && 
+							</form>
+						</div>
+						{vehicle.isError && 
 						<div className="alert alert-warning alert-dismissible fade show" role="alert">
 							{errorMsg}
 							<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
-					}
-					{ list && !vehicle.isError &&
+						}
+						{ list && !vehicle.isError &&
 						<button className="d-flex align-items-center mb-3 my-4" onClick={goBack}>
 							<i className="fa-solid fa-chevron-left icon dark fs-4 me-3"></i>
 							<div className="fs-5 fw-bold text-dark">Vehicle Type</div>
 						</button>
-					}
-					{ list && !vehicle.isError &&
+						}
+						{ list && !vehicle.isError &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Vehicles List</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div> }
-					<div className='d-flex position-relative align-items-center'>
-						<div className='row '>
-							{ list && !vehicle.isError && vehicleList.map((data) =>{
-								return(
-									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-										<div className='d-flex position-relative mb-4'>
-											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-											<div className='card-name px-3'>
-												<div>{data.name}</div>
-												<div className='text-muted'>{data.location}</div>
+						<div className='d-flex position-relative align-items-center'>
+							<div className='row '>
+								{ list && !vehicle.isError && vehicleList.map((data) =>{
+									return(
+										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+											<div className='d-flex position-relative mb-4'>
+												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+												<div className='card-name px-3'>
+													<div>{data.name}</div>
+													<div className='text-muted'>{data.location}</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								)})}
-						</div>
-						{ !vehicle.isError && pageList.prev &&
+									)})}
+							</div>
+							{ !vehicle.isError && pageList.prev &&
 							<div className='position-absolute start-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
 								<button className='fa-solid fa-chevron-left icon fiveth fs-3' onClick={()=>getDataSearch(pageList.prev)}></button>
 							</div>
-						}
-						{ !vehicle.isError && pageList.next &&
+							}
+							{ !vehicle.isError && pageList.next &&
 							<div className='position-absolute end-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
 								<button className='fa-solid fa-chevron-right fiveth fs-3 icon ' onClick={()=>getDataSearch(pageList.next)}></button>
 							</div>
-						}
-					</div>
-					{ !list && errorMsg == null &&
+							}
+						</div>
+						{ !list && errorMsg == null &&
 						<div className="d-md-flex justify-content-between align-items-center mb-5 ">
 							<h1 className="pd-heading text-center text-md-start primer">Popular in Town</h1>
 							<a href="#"><h5 className="third text-center text-md-start">view all &gt;</h5></a>
 						</div> }
-					<div className='position-relative d-flex align-items-center'>
-						<div className='row'>
-							{ !list && errorMsg == null && vehiclePopular.map((data) =>{
-								return(
-									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-										<div className='d-flex position-relative mb-4'>
-											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-											<div className='card-name px-3'>
-												<div>{data.name}</div>
-												<div className='text-muted'>{data.location} </div>
+						<div className='position-relative d-flex align-items-center'>
+							<div className='row'>
+								{ !list && errorMsg == null && vehiclePopular.map((data) =>{
+									return(
+										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+											<div className='d-flex position-relative mb-4'>
+												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+												<div className='card-name px-3'>
+													<div>{data.name}</div>
+													<div className='text-muted'>{data.location} </div>
+												</div>
 											</div>
 										</div>
-									</div>
-								)})}
-						</div>
-						{ !list && errorMsg == null && pagePopular.prev!==null &&
+									)})}
+							</div>
+							{ !list && errorMsg == null && pagePopular.prev!==null &&
 							<div className='position-absolute left-0 mx-3 rounded bg-primer'>
 								<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pagePopular.prev)}></button>
 							</div>
-						}
-						{ !list && errorMsg == null && pagePopular.next!==null &&
+							}
+							{ !list && errorMsg == null && pagePopular.next!==null &&
 							<div className='position-absolute end-0 mx-3 rounded bg-primer'>
 								<button className='fa-solid fa-chevron-right icon  fiveth' onClick={()=>getNextData(pagePopular.next)}></button>
 							</div>
-						}
-					</div>
-					{/* { !list && errorMsg == null &&
+							}
+						</div>
+						{/* { !list && errorMsg == null &&
 						<div className="d-md-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
 							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
@@ -266,104 +295,106 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 						</div>
 						}
 					</div> */}
-					{ !list && errorMsg == null &&
+						{ !list && errorMsg == null &&
 						<div className="d-md-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
 							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
 						</div>}
-					<div className='d-flex position-relative align-items-center'>
-						<div className='row'>
-							{ !list && errorMsg == null && vehicleCar.map((data) =>{
-								return(
-									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-										<div className='d-flex position-relative mb-4'>
-											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-											<div className='card-name px-3'>
-												<div>{data.name}</div>
-												<div className='text-muted'>{data.location}</div>
+						<div className='d-flex position-relative align-items-center'>
+							<div className='row'>
+								{ !list && errorMsg == null && vehicleCar.map((data) =>{
+									return(
+										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+											<div className='d-flex position-relative mb-4'>
+												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+												<div className='card-name px-3'>
+													<div>{data.name}</div>
+													<div className='text-muted'>{data.location}</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								)})}
-						</div>
-						{ !list && errorMsg == null && pageCar.prev!==null &&
+									)})}
+							</div>
+							{ !list && errorMsg == null && pageCar.prev!==null &&
 						<div className='position-absolute left-0 bg-primer rounded ms-3'>
 							<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pageCar.prev)}></button>
 						</div>
-						}
-						{ !list && errorMsg == null && pageCar.next!==null &&
+							}
+							{ !list && errorMsg == null && pageCar.next!==null &&
 						<div className='position-absolute end-0 bg-primer rounded me-3'>
 							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageCar.next)}></button>
 						</div>
-						}
-					</div>
-					{ !list && errorMsg == null &&
+							}
+						</div>
+						{ !list && errorMsg == null &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Motorbike</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div>}
-					<div className='d-flex position-relative align-items-center '>
-						<div className='row'>
-							{ !list && errorMsg == null && vehicleMotorbike.map((data) =>{
-								return(
-									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-										<div className='d-flex position-relative mb-4'>
-											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-											<div className='card-name px-3'>
-												<div>{data.name}</div>
-												<div className='text-muted'>{data.location}</div>
+						<div className='d-flex position-relative align-items-center '>
+							<div className='row'>
+								{ !list && errorMsg == null && vehicleMotorbike.map((data) =>{
+									return(
+										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+											<div className='d-flex position-relative mb-4'>
+												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+												<div className='card-name px-3'>
+													<div>{data.name}</div>
+													<div className='text-muted'>{data.location}</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								)})}
+									)})}
 						
-						</div>
-						{ !list && errorMsg == null && pageMotorbike.prev!==null &&
+							</div>
+							{ !list && errorMsg == null && pageMotorbike.prev!==null &&
 						<div className='position-absolute left-0 ms-3 rounded bg-primer'>
 							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageMotorbike.prev)}></button>
 						</div>
-						}
-						{ !list && errorMsg == null && pageMotorbike.next!==null &&
+							}
+							{ !list && errorMsg == null && pageMotorbike.next!==null &&
 						<div className='position-absolute end-0 bg-primer rounded me-3'>
 							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageMotorbike.next)}></button>
 						</div>
-						}
-					</div>
+							}
+						</div>
 					
-					{ !list && errorMsg == null &&
+						{ !list && errorMsg == null &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Bike</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div>}
-					<div className='d-flex position-relative align-items-center'>
-						<div className='row '>
-							{ !list && errorMsg == null && vehicleBike.map((data) =>{
-								return(
-									<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-										<div className='d-flex position-relative mb-4'>
-											<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-											<div className='card-name px-3'>
-												<div>{data.name}</div>
-												<div className='text-muted'>{data.location}</div>
+						<div className='d-flex position-relative align-items-center'>
+							<div className='row '>
+								{ !list && errorMsg == null && vehicleBike.map((data) =>{
+									return(
+										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+											<div className='d-flex position-relative mb-4'>
+												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
+												<div className='card-name px-3'>
+													<div>{data.name}</div>
+													<div className='text-muted'>{data.location}</div>
+												</div>
 											</div>
 										</div>
-									</div>
-								)})}
-						</div>
-						{ !list && errorMsg == null && pageBike.prev!==null &&
+									)})}
+							</div>
+							{ !list && errorMsg == null && pageBike.prev!==null &&
 						<div className='position-absolute bg-primer rounded left-0'>
 							<button className='fa-solid fa-chevron-left icon fiveth ' onClick={()=>getNextData(pageBike.prev)}></button>
 						</div>
-						}
-						{ !list && errorMsg == null && pageBike.next!==null &&
+							}
+							{ !list && errorMsg == null && pageBike.next!==null &&
 						<div className='position-absolute bg-primer rounded end-0'>
 							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageBike.next)}></button>
 						</div>
-						}
-					</div>
+							}
+						</div>
 					
-				</div>
-			</main>
+					</div>
+				</main>
+			)}
+			
 		</LayoutHome>
 	)
 }

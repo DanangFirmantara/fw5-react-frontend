@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { doSignUp, userSignUp } from '../redux/actions/user'
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai'
 import { Button } from 'react-bootstrap'
+import LoadingScreen from '../components/LoadingScreen'
 
 export const SignUp = () => {
 	const dispatch = useDispatch()
@@ -20,10 +21,10 @@ export const SignUp = () => {
 		const password = event.target.elements['password'].value
 		const data = {username, email, password}
 		dispatch( doSignUp(data) )
-		// dispatch(userSignUp(username,email,password))
 	}
 	return (
 		<>
+			{user.isLoading && (<LoadingScreen />)}
 			<div className='row g-0 vh-100 '>
 				<div className='col d-none d-xl-flex'>
 					<div className='img-1 img-side'></div>
