@@ -1,6 +1,6 @@
 
 const initialState = {
-	token : null,
+	token : '',
 	userData : [],
 	isLoading : false,
 	isError : false,
@@ -51,30 +51,6 @@ const auth = (state=initialState, action)=>{
 	case AUTH_LOGOUT:{
 		return { ...initialState } 
 	}
-	case 'AUTH_LOGIN_PENDING':{
-		state.isLoading = true
-		state.isError = false
-		state.successMsg = ''
-		state.errorMsg = ''
-		state.successMsgUpdated = ''
-		return {...state}
-	}
-	case 'AUTH_LOGIN_FULFILLED':{
-		const {results, message} = action.payload.data 
-		state.isLoading = false
-		state.isError = false
-		state.token = results
-		state.successMsg = message
-		window.localStorage.setItem('token', state.token)
-		return {...state}
-	}
-	case 'AUTH_LOGIN_REJECTED':{
-		state.isLoading = false
-		state.isError = true
-		state.errorMsg = 'check your email, username, and password'
-		return {...state}
-	}
-	
 	case 'AUTH_USERDATA_PENDING':{
 		state.isLoading = true
 		state.isError = false

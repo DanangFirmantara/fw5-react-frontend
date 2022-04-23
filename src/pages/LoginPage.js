@@ -17,14 +17,13 @@ export const LoginPage = () => {
 	
 	const onLogin = (event) =>{
 		event.preventDefault()
-		const email = event.target.elements['email'].value
+		const username = event.target.elements['email'].value
 		const password = event.target.elements['password'].value
-		console.log(email, password)
-		dispatch(doLogin(email, password))
+		dispatch(doLogin(username, password))
 	}
 	return (
 		<React.Fragment>
-			{auth.token !=null && <Navigate to='/' />}
+			{auth.token !== '' && (<Navigate to='/' />)}
 			<header>
 				<div className="img-banner-4 img-3">
 					<div className="img-banner-4 cover-dark">

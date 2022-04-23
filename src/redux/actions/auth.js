@@ -1,20 +1,29 @@
 import http from '../../helpers/http'
-import { AUTH_CLEARERROR, AUTH_CLEARLOADING, AUTH_CLEARSUCCESS, AUTH_SETERROR, AUTH_SETLOADING } from '../reducers/auth'
-// import qs from 'query-string'
+import { AUTH_CLEARERROR,
+	AUTH_CLEARLOADING,
+	AUTH_CLEARSUCCESS,
+	AUTH_SETERROR,
+	AUTH_SETLOADING,
+	AUTH_GETTOKEN,
+	AUTH_LOGOUT
+} from '../reducers/auth'
 
-export const doLogin = (email, password) =>{
+export const doLogin = (username, password) =>{
 	return async (dispatch)=>{
 		try{
 			dispatch({ type: AUTH_SETLOADING })
 			dispatch({ type: AUTH_CLEARERROR })
 			dispatch({ type: AUTH_CLEARSUCCESS })
+
 			const param = new URLSearchParams()
+			param.append('username', username)
 			param.append('password', password)
-			param.append('email', email)
-			console.log( email, password)
-			console.log(param)
 			const { data } = await http().post('/auth/login', param)
-			console.log(data)
+			console.log(data.results[0])
+			dispatch({
+				type: AUTH_GETTOKEN,
+				payload : data.results[0]
+			})
 			dispatch({ type: AUTH_CLEARLOADING })
 		} catch(err){
 			let payload = ''
@@ -34,14 +43,10 @@ export const doLogin = (email, password) =>{
 	}
 }
 
-export const login = (email, password) =>{
-	const param = new URLSearchParams() //query string-like body
-	param.append('username', email) // karena backend membutuhkan data username ; * ketika input username atau email data tetap berhasil ditangkap
-	param.append('password', password)
-	return({
-		type: 'AUTH_LOGIN',
-		payload : http().post('/auth/login', param)
-	})
+export const doLogout = () =>{
+	return dispatch =>{
+		dispatch({ type: AUTH_LOGOUT })
+	}
 }
 
 export const getDataUser = (token)=>{
