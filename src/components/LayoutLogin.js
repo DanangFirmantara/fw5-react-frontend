@@ -5,14 +5,14 @@ import NavbarHome from './NavbarHome'
 // import NavbarLogin from './NavbarLogin'
 
 export default class LayoutLogin extends Component {
-	render() {
-		return (
-			<>
-				{/* <NavbarLogin /> */}
-				<NavbarHome/>
-				{this.props.children}
-				<Footer/>
-			</>
-		)
-	}
+   render() {
+      return (
+         <>
+            {/* <NavbarLogin /> */}
+            <NavbarHome/>
+            {this.props.children}
+            <Footer/>
+         </>
+      )
+   }
 }

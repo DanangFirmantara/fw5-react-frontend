@@ -10,48 +10,48 @@ import resetPassword from './resetPassword'
 import {persistReducer} from 'redux-persist'
 
 const persistAuth = {
-	key : 'auth',
-	storage
+   key : 'auth',
+   storage
 }
 
 const persistCounter = {
-	key : 'counter',
-	storage
+   key : 'counter',
+   storage
 }
 
 const persistVehicle = {
-	key : 'vehicle',
-	storage
+   key : 'vehicle',
+   storage
 }
 
 const persistReservation = {
-	key : 'reservation',
-	storage
+   key : 'reservation',
+   storage
 }
 
 const persistHistory = {
-	key : 'history',
-	storage
+   key : 'history',
+   storage
 }
 
 const persistResetPassword = {
-	key : 'resetPassword',
-	storage
+   key : 'resetPassword',
+   storage
 }
 
 const persistUser = {
-	key : 'user',
-	storage
+   key : 'user',
+   storage
 }
 
 const rootReducer = combineReducers({
-	auth : persistReducer(persistAuth, auth),
-	vehicle : persistReducer(persistVehicle, vehicle),
-	counter : persistReducer(persistCounter, counter),
-	user : persistReducer(persistUser, user),
-	resetPassword : persistReducer(persistResetPassword, resetPassword),
-	reservation : persistReducer(persistReservation, reservation),
-	history : persistReducer(persistHistory, history)
+   auth : persistReducer(persistAuth, auth),
+   vehicle : persistReducer(persistVehicle, vehicle),
+   counter : persistReducer(persistCounter, counter),
+   user : persistReducer(persistUser, user),
+   resetPassword : persistReducer(persistResetPassword, resetPassword),
+   reservation : persistReducer(persistReservation, reservation),
+   history : persistReducer(persistHistory, history)
 })
 
 export default rootReducer

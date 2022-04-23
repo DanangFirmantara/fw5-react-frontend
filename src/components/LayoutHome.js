@@ -5,13 +5,13 @@ import NavbarHome from './NavbarHome'
 import Footer from './Footer'
 
 export const LayoutHome = ({children}) => {
-	return (
-		<React.Fragment>
-			<NavbarHome/> 
-			{children}
-			<Footer />         
-		</React.Fragment>
-	)
+   return (
+      <React.Fragment>
+         <NavbarHome/> 
+         {children}
+         <Footer />         
+      </React.Fragment>
+   )
 }
 
 export default LayoutHome

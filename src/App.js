@@ -23,48 +23,48 @@ import ResetPasswordUser from './pages/ResetPasswordUser'
 
 
 export const App = () => {
-	const history = createBrowserHistory({window})
-	const {auth} = useSelector(state=>state)
-	const dispatch = useDispatch()
+   const history = createBrowserHistory({window})
+   const {auth} = useSelector(state=>state)
+   const dispatch = useDispatch()
 
-	useEffect(()=>{
-		const token = window.localStorage.getItem('token')
-		if(token){
-			dispatch({
-				type : 'AUTH_LOGIN_FULFILLED',
-				payload : {
-					data :{
-						results : token
-					}
-				}
-			})
-			dispatch(getDataUser(token))
-		}
-	},[dispatch,auth.token])
+   useEffect(()=>{
+      const token = window.localStorage.getItem('token')
+      if(token){
+         dispatch({
+            type : 'AUTH_LOGIN_FULFILLED',
+            payload : {
+               data :{
+                  results : token
+               }
+            }
+         })
+         dispatch(getDataUser(token))
+      }
+   },[dispatch,auth.token])
 
-	return (
-		<HistoryRouter history={history}>
-			<Routes>
-				<Route path='/' element={<HomePage />}/>
-				<Route path='login' element={<LoginPage />}/>
-				<Route path='loginGoogle' element={<LoginGoogle />}/>
-				<Route path='signUp' element={<SignUp />}/>
-				<Route path='resetPassword' element={<ResetPassword />}/>
-				<Route path='resetPasswordUser' element={<ResetPasswordUser />}/>
-				<Route path='forgotPassword' element={<ForgotPassword />}/>
-				<Route path='vehiclesType' element={<VehicleType />}/>
-				<Route path='vehiclesType/:id' element={<VehicleDetail history = {history} />}/>
-				<Route path='reservation' element={<Reservation />}/>
-				<Route path='payment' element={<Payment />}/>
-				<Route path='history' element={<History />}/>
-				<Route path='about' element={<About />}/>
-				<Route path='profile' element={<Profile />}/>
-				<Route path='vehicle' element={<VehicleCreate />}/>
-				<Route path='vehicle/:id' element={<VehicleEdit />}/>
-				<Route path='test' element={<Test />}/>
-			</Routes>
-		</HistoryRouter>
-	)
+   return (
+      <HistoryRouter history={history}>
+         <Routes>
+            <Route path='/' element={<HomePage />}/>
+            <Route path='login' element={<LoginPage />}/>
+            <Route path='loginGoogle' element={<LoginGoogle />}/>
+            <Route path='signUp' element={<SignUp />}/>
+            <Route path='resetPassword' element={<ResetPassword />}/>
+            <Route path='resetPasswordUser' element={<ResetPasswordUser />}/>
+            <Route path='forgotPassword' element={<ForgotPassword />}/>
+            <Route path='vehiclesType' element={<VehicleType />}/>
+            <Route path='vehiclesType/:id' element={<VehicleDetail history = {history} />}/>
+            <Route path='reservation' element={<Reservation />}/>
+            <Route path='payment' element={<Payment />}/>
+            <Route path='history' element={<History />}/>
+            <Route path='about' element={<About />}/>
+            <Route path='profile' element={<Profile />}/>
+            <Route path='vehicle' element={<VehicleCreate />}/>
+            <Route path='vehicle/:id' element={<VehicleEdit />}/>
+            <Route path='test' element={<Test />}/>
+         </Routes>
+      </HistoryRouter>
+   )
 }
 
 export default App

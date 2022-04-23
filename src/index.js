@@ -13,13 +13,13 @@ import reduxStore from './redux/store'
 const {store, persistor} = reduxStore()
 
 ReactDOM.render(
-	<Provider store={store}>
+   <Provider store={store}>
       <PersistGate persistor={persistor}>
          <App />
       </PersistGate>
 		
-	</Provider>,
-	document.getElementById('root')
+   </Provider>,
+   document.getElementById('root')
 )
 
 // If you want to start measuring performance in your app, pass a function
