@@ -1,6 +1,5 @@
 import http from '../../helpers/http'
 
-
 export const login = (email, password) =>{
 	const param = new URLSearchParams() //query string-like body
 	param.append('username', email) // karena backend membutuhkan data username ; * ketika input username atau email data tetap berhasil ditangkap
