@@ -7,13 +7,17 @@ import { Provider } from 'react-redux'
 import './assets/css/style2.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { PersistGate } from 'redux-persist/integration/react'
+import reduxStore from './redux/store'
 
-import store from './redux/store'
-
+const {store, persistor} = reduxStore()
 
 ReactDOM.render(
 	<Provider store={store}>
-		<App />
+		<PersistGate persistor={persistor}>
+			<App />
+		</PersistGate>
+		
 	</Provider>,
 	document.getElementById('root')
 )

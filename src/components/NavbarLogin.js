@@ -4,13 +4,12 @@ import logo from '../assets/image/logo.png'
 import profile from '../assets/image/image 39.png'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { doLogout } from '../redux/actions/auth'
 
 export const NavbarLogin = () => {
 	const dispatch = useDispatch()
 	const onLogout = ()=>{
-		dispatch({
-			type:'LOGOUT'
-		})
+		dispatch(doLogout())
 	}
 	return (
 		<>
