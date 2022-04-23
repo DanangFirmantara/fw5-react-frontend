@@ -1,18 +1,25 @@
-import React from 'react'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Arrow } from '../components/Arrow'
 import Footer from '../components/Footer'
-import { forgotRequest } from '../redux/actions/auth'
+import { doForgotRequest, forgotRequest } from '../redux/actions/auth'
 
 export const ForgotPassword = () => {
+	const [error, setError] = useState('')
 	const dispatch = useDispatch()
 	const auth = useSelector(state => state.auth)
 
 	const onForgotRequest = (event)=>{
 		event.preventDefault()
 		const email = event.target.elements['email'].value
-		console.log(email)
-		dispatch(forgotRequest(email))
+		if(!email.includes('@')){
+			setError('Email must include @')
+		} else{
+			console.log(email)
+			dispatch( doForgotRequest(email) )
+			// dispatch(forgotRequest(email))
+		}
 	}
 	return (
 		<React.Fragment>
@@ -26,22 +33,32 @@ export const ForgotPassword = () => {
 								</Arrow>
 								<div className='fs-0-0 pd-heading text-center mb-5 d-none d-md-block'>Don&lsquo;t  worry, we got your back!</div>
 								<div className='fs-0 pd-heading text-center mb-5 d-md-none'>Don&lsquo;t  worry, we got your back!</div>
-								{auth.isError &&
-								<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold mb-4" role="alert">
-									{auth.errorMsg}
-									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-								</div>
+								{auth.errorMsg !== '' &&
+								(
+									<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold mb-4" role="alert">
+										{auth.errorMsg}
+										<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
+								)
 								}
-								{auth.successMsg &&
-								<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold mb-4" role="alert">
-									{auth.successMsg}
-									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-								</div>
+								{error !== '' && (
+									<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold mb-4" role="alert">
+										{error}
+										<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=> setError('')}></button>
+									</div>
+								)}
+								{auth.successMsg !== '' &&
+								(
+									<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold mb-4" role="alert">
+										{auth.successMsg}
+										<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
+								)
 								}
 								<form onSubmit={onForgotRequest}>
 									<div className='row mb-4'>
 										<div className='col-lg-6 mx-lg-auto col'>
-											<input className='button-light py-3 fs-4 text-center w-100' type='email' name='email' placeholder='Enter your email address' autoComplete='off'/>
+											<input className='button-light py-3 fs-4 text-center w-100' type='text' name='email' placeholder='Enter your email address' autoComplete='off'/>
 										</div>
 									</div>
 									<div className='row mb-4'>

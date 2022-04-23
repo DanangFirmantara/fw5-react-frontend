@@ -5,7 +5,8 @@ import { AUTH_CLEARERROR,
 	AUTH_SETERROR,
 	AUTH_SETLOADING,
 	AUTH_GETTOKEN,
-	AUTH_LOGOUT
+	AUTH_LOGOUT,
+	AUTH_SETSUCCESS
 } from '../reducers/auth'
 
 export const doLogin = (username, password) =>{
@@ -49,6 +50,38 @@ export const doLogout = () =>{
 	}
 }
 
+export const doForgotRequest = (email) =>{
+	return async (dispatch) => {
+		try{
+			dispatch({ type: AUTH_SETLOADING })
+			dispatch({ type: AUTH_CLEARERROR })
+			dispatch({ type: AUTH_CLEARSUCCESS })
+			const param = new URLSearchParams()
+			param.append('email', email)
+			const { data } = await http().post('/auth/forgotRequest', param)
+			dispatch({
+				type: AUTH_SETSUCCESS,
+				payload : data.message
+			})
+			dispatch({ type: AUTH_CLEARLOADING })
+		} catch(err){
+			let payload = ''
+			if(err.response){
+				payload = err.response.data.message
+			} else{
+				payload = err.message
+			}
+			dispatch({
+				type: AUTH_SETERROR,
+				payload: payload
+			})
+			dispatch({
+				type: AUTH_CLEARLOADING
+			})
+		}
+	}
+}
+
 export const getDataUser = (token)=>{
 	return({
 		type: 'AUTH_USERDATA',
@@ -64,11 +97,11 @@ export const userEdit = (data,id)=>{
 	})	
 }
 
-export const forgotRequest = (email)=>{
-	const param = new URLSearchParams()
-	param.append('email', email)
-	return ({
-		type: 'AUTH_FORGOTREQUEST',
-		payload : http().post('/auth/forgotRequest', param)
-	})
-}
+// export const forgotRequest = (email)=>{
+// 	const param = new URLSearchParams()
+// 	param.append('email', email)
+// 	return ({
+// 		type: 'AUTH_FORGOTREQUEST',
+// 		payload : http().post('/auth/forgotRequest', param)
+// 	})
+// }
