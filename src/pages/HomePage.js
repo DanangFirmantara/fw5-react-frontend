@@ -1,14 +1,12 @@
 import React from 'react'
 import LayoutHome from '../components/LayoutHome'
-import CircularProgress from 'react-cssfx-loading/lib/CircularProgress'
+import LoadingScreen from '../components/LoadingScreen'
 
 export const HomePage = () => {
 
 	return (
 		<LayoutHome>
-			<div className='d-flex justify-content-center'>
-				<CircularProgress className='fs-1 fw-bold' duration='2s' color='#353535' />
-			</div>
+			<LoadingScreen />
 			<header>
 				<div className="img-banner-4 img-fluid img-13">
 					<div className="img-banner-4 img-fluid cover-dark">
