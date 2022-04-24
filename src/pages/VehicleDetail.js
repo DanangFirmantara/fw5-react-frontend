@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link, Navigate } from 'react-router-dom'
 import defaultImage from '../assets/image/image 6.png'
 import { useDispatch, useSelector } from 'react-redux'
 import LayoutHome from '../components/LayoutHome'
-import {increament, decreament} from '../redux/actions/counter'
 import { getVehicleById } from '../redux/actions/vehicle'
 import LoadingScreen from '../components/LoadingScreen'
+import { decQuantity, incQuantity } from '../redux/actions/reservation'
 
 export const VehicleDetail = () => {
+	const [error, setError ] = useState('')
+
 	const auth = useSelector(state=>state.auth)
-	const counter = useSelector(state=>state.counter)
+	const reservation = useSelector(state => state.reservation )
 	let vehicle = useSelector(state=>state.vehicle)
 	const {id} = useParams()
 	const navigate = useNavigate()
@@ -17,22 +19,31 @@ export const VehicleDetail = () => {
 	const dispatch = useDispatch()
 
 	useEffect(()=>{
-		console.log(id)
 		if(vehicle.dataDetail.id !== parseInt(id)){
 			dispatch(getVehicleById(id))
 		}
 	},[dispatch])
 
 	const goToReservation = (id)=>{
-		navigate(`/reservation?id=${id}`)
+		console.log(id)
+		console.log(vehicle.dataDetail.status)
+		if(vehicle.dataDetail.status === 'Available'){
+			navigate(`/reservation?id=${id}`)
+		} else{
+			setError('Vehicle full booked')
+		}
 	}
 
 	const onIncreament = ()=>{
-		dispatch(increament())
+		if(reservation.quantity < vehicle.dataDetail.stock ){
+			dispatch( incQuantity() )
+		}
 	}
 
 	const onDecreament = ()=>{
-		dispatch(decreament())
+		if(reservation.quantity > 0){
+			dispatch( decQuantity() )
+		}
 	}
 	return (
 		<LayoutHome>
@@ -42,6 +53,16 @@ export const VehicleDetail = () => {
 			) : (
 				<main>
 					<div className="container">
+						<div className='my-4'>
+							{error !== '' &&
+								(
+									<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
+										{error}
+										<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=> setError('')}></button>
+									</div>
+								)
+							}
+						</div>
 						<Link className="d-flex align-items-center my-md-5 my-4" to="../vehiclesType">
 							<i className="fa-solid fa-chevron-left icon dark fs-0 me-3"></i>
 							<div className="fs-1 fw-bold text-dark">Detail</div>
@@ -57,8 +78,6 @@ export const VehicleDetail = () => {
 									</div>
 									<div className="d-flex justify-content-between align-items-center">
 										<i className="fa-solid fa-chevron-left icon dark"></i>
-										{/* <div className="img-slide img-12 rounded"></div>
-									<div className="img-slide img-12 rounded"></div> */}
 										<img src={vehicle.dataDetail?.image || defaultImage} alt={vehicle.dataDetail?.name} className='img-slide rounded '></img>
 										<img src={vehicle.dataDetail?.image || defaultImage} alt={vehicle.dataDetail?.name} className='img-slide rounded '></img>
 										<i className="fa-solid fa-chevron-right icon dark"></i>
@@ -68,7 +87,7 @@ export const VehicleDetail = () => {
 							<div className="col">
 								<h1 className="pd-bolder mb-3">{vehicle.dataDetail.name}</h1>
 								<h3 className="pd-bolder fw-normal fs-2 mb-3">{vehicle.dataDetail?.location}</h3>
-								<div className="fs-4 green fw-bold">{vehicle.dataDetail?.status}</div>
+								<div className={vehicle.dataDetail?.status === 'Available' ? 'fs-4 green fw-bold' : 'fs-4 text-danger fw-bold'}>{vehicle.dataDetail?.status}</div>
 								<div className="fs-4 text-danger fw-light mb-3">No prepayment</div>
 								<ul className="lh-base fs-4 fw-light mb-4">
 									<li>Capacity : {vehicle.dataDetail?.stock}</li>
@@ -80,7 +99,7 @@ export const VehicleDetail = () => {
 								</div>
 								<div className="d-flex justify-content-between">
 									<button className="icon-plus button-third rounded bg-yellow fw-bolder fs-1" onClick={onDecreament}>-</button>
-									<div className="fw-bolder fs-0">{counter.num}</div>
+									<div className="fw-bolder fs-0">{reservation.quantity}</div>
 									<button className="icon-plus rounded fw-bolder fs-1 button-fourth" onClick={onIncreament}>+</button>
 								</div>
 							</div>
