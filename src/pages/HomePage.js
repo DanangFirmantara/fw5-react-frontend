@@ -4,15 +4,21 @@ import LayoutHome from '../components/LayoutHome'
 import LoadingScreen from '../components/LoadingScreen'
 import { getVehiclePopular } from '../redux/actions/vehicle'
 import defaultImg from '../assets/image/bike4.png'
+import { getUser } from '../redux/actions/user'
 
 export const HomePage = () => {
 	const vehicle = useSelector( state=> state.vehicle )
+	const auth = useSelector( state=> state.auth )
+
 	const dispatch = useDispatch()
+
 	useEffect(()=>{
+		dispatch( getUser(auth.token))
 		if(vehicle.dataPopular.length === 0){
 			dispatch( getVehiclePopular() )
 		}
 	}, [dispatch])
+	
 	return (
 		<LayoutHome>
 			{vehicle.isLoading && (<LoadingScreen />)}
