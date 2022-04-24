@@ -9,29 +9,15 @@ import LayoutHome from '../components/LayoutHome'
 import { getLocation } from '../redux/actions/location'
 import { getCategory } from '../redux/actions/category'
 import LoadingScreen from '../components/LoadingScreen'
+import defaultImg from '../assets/image/bike4.png'
 
 
-export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}) => {
+export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 	
 
 	const [ errorMsg, setErrorMsg] = useState(null)
 	const [ list, setList ] = useState(false)
-
-	//car list
-	const [ vehicleCar, setVehicleCar] = useState([])
-	const [ pageCar,setPageCar ] = useState({})
-
-	//motorbike list
-	const [ vehicleMotorbike, setVehicleMotorbike] = useState([])
-	const [ pageMotorbike,setPageMotorbike ] = useState({})
-
-	//bike list
-	const [ vehicleBike, setVehicleBike] = useState([])
-	const [ pageBike,setPageBike ] = useState({})
-
-	//popular list
-	const [ vehiclePopular, setVehiclePopular] = useState([])
-	const [ pagePopular,setPagePopular ] = useState({})
+	
 	
 	//vehicle list
 	const [ vehicleList, setVehicleList] = useState([])
@@ -47,10 +33,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 	const dispatch = useDispatch()
 	// didmount
 	useEffect(async()=>{
-		console.log(locationRedux)
-		if( locationRedux.data.length > 0){
-			console.log('data ada')
-		} else{
+		if(locationRedux.data.length === 0){
 			dispatch( getLocation() )
 		}
 		
@@ -64,6 +47,10 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 				})
 			}
 		}
+		if(vehicle.dataPopular.length === 0){
+			dispatch( getVehiclePopular() )
+		}
+
 		const name = searchParams.get('name')
 		const location = searchParams.get('location')
 		const sortType = searchParams.get('sortType')
@@ -73,62 +60,8 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 			document.getElementById('search').elements['sortType'].value = sortType
 			const url = (name,location, sortType) => `http://localhost:5000/vehicles?page=1&name=${name}&location=${location}&sortType=${sortType}`
 			getDataSearch(url(name,location, sortType))
-		} else{
-			getData()
 		}
 	}, [dispatch])
-
-	const getData = async()=>{
-		const {value:{data:popular}} = await getVehiclePopular()
-		const {value:{data:car}} = await getFilterVehicle('car')
-		const {value:{data:motorbike}} = await getFilterVehicle('motorbike')
-		const {value:{data:bike}} = await getFilterVehicle('bike')
-		setVehiclePopular(popular.results)
-		setVehicleCar(car.results)
-		setVehicleMotorbike(motorbike.results)
-		setVehicleBike(bike.results)
-		setPagePopular(popular.pageInfo)
-		setPageCar(car.pageInfo)
-		setPageMotorbike(motorbike.pageInfo)
-		setPageBike(bike.pageInfo)
-	}
-
-	//did update
-	const getNextData = async(url, replace=false) =>{
-		try{
-			setErrorMsg(null)
-			const filterBy=url.split('filterBy=')[1]	
-			const {data} = await axios.get(url)
-			if(replace){
-				setVehicleList(data.results)
-				setPageList(data.pageInfo)
-				setList(true)
-			} else{
-				if(filterBy=='car'){
-					setVehicleCar(data.results)
-					setPageCar(data.pageInfo)
-				} else if(filterBy =='motorbike'){
-					setVehicleMotorbike(data.results)
-					setPageMotorbike(data.pageInfo)
-				} else if(filterBy =='bike'){
-					setVehicleBike(data.results)
-					setPageBike(data.pageInfo)
-				} else{
-					setVehiclePopular(data.results)
-					setPagePopular(data.pageInfo)
-				}
-			}
-		} catch(err){
-			console.log(err)
-			if(err.message.includes('404')){
-				setErrorMsg('Data not found!')
-				setVehicleList([])
-				setPageList({
-					next:null
-				})
-			}
-		}
-	}
 
 	const getDataSearch = async(url)=>{
 		try{
@@ -217,7 +150,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 							<div className='row '>
 								{ list && !vehicle.isError && vehicleList.map((data) =>{
 									return(
-										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
+										<div key={String(data.id + Math.random())} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
 											<div className='d-flex position-relative mb-4'>
 												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
 												<div className='card-name px-3'>
@@ -245,152 +178,59 @@ export const VehicleType = ({getVehiclePopular, searchVehicle, getFilterVehicle}
 							<a href="#"><h5 className="third text-center text-md-start">view all &gt;</h5></a>
 						</div> }
 						<div className='position-relative d-flex align-items-center'>
-							<div className='row'>
-								{ !list && errorMsg == null && vehiclePopular.map((data) =>{
-									return(
-										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-											<div className='d-flex position-relative mb-4'>
-												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-												<div className='card-name px-3'>
-													<div>{data.name}</div>
-													<div className='text-muted'>{data.location} </div>
+							<div className='row row-cols-md-2 row-cols-xl-4 row-cols-1 mb-xl-4 '>
+								{vehicle.dataPopular.length > 0 && vehicle.dataPopular.map((item)=>{
+									return (
+										<div className='col mb-md-5' key={String(item.id + Math.random()) }  style={{cursor:'pointer'}} onClick={()=>goToDetail(item.id)}>
+											<div className="position-relative d-flex justify-content-center mb-5 mb-md-0  w-100">
+												<div className='d-flex position-relative'>
+													<img src={item.image || defaultImg } alt={item.id} className="rounded img-thumbnail-2" />
+													<div className="card-name">
+														<div>{item.name}</div>
+														<div className="text-muted">{item.location}</div>
+													</div>
 												</div>
 											</div>
 										</div>
-									)})}
+									)
+								})}
 							</div>
-							{ !list && errorMsg == null && pagePopular.prev!==null &&
-							<div className='position-absolute left-0 mx-3 rounded bg-primer'>
-								<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pagePopular.prev)}></button>
-							</div>
-							}
-							{ !list && errorMsg == null && pagePopular.next!==null &&
-							<div className='position-absolute end-0 mx-3 rounded bg-primer'>
-								<button className='fa-solid fa-chevron-right icon  fiveth' onClick={()=>getNextData(pagePopular.next)}></button>
-							</div>
-							}
 						</div>
-						{/* { !list && errorMsg == null &&
-						<div className="d-md-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
-							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
-						</div>}
-					<div className='d-flex position-relative align-items-center'>
-						<div className='slider'>
-							{ !list && errorMsg == null && vehicleCar.map((data) =>{
-								return(
-									<div className='slider-item' key={String(data.id)}>
-										<img src={data.image} className='rounded img-thumbnail-2'></img>
-									</div>
-								)})}
-						</div>
-						{ !list && errorMsg == null && pageCar.prev!==null &&
-						<div className='position-absolute left-0 bg-primer rounded ms-3'>
-							<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pageCar.prev)}></button>
-						</div>
+						{category.data.length > 0 && 
+							category.data.map((temp)=>{
+								return (
+									<>
+										<div className="d-md-flex justify-content-between align-items-center mb-5" key={String(temp.id + Math.random())}>
+											<h1 className="pd-heading text-center text-md-start primer">{temp.name}</h1>
+											<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
+										</div>
+										<div className='position-relative d-flex align-items-center'>
+											<div className='row row-cols-md-2 row-cols-xl-4 row-cols-1 mb-xl-4 '>
+												{vehicle.dataCategory.length > 0 && vehicle.dataCategory.map((item)=>{
+													return (
+														<div key={String(item.id + Math.random())}>
+															{item.idCategory === temp.id && (
+																<div className='col mb-md-5' style={{cursor:'pointer'}} onClick={()=>goToDetail(item.id)}>
+																	<div className="position-relative d-flex justify-content-center mb-5 mb-md-0  w-100">
+																		<div className='d-flex position-relative'>
+																			<img src={item.image || defaultImg } alt={item.id} className="rounded img-thumbnail-2" />
+																			<div className="card-name">
+																				<div>{item.name}</div>
+																				<div className="text-muted">{item.location}</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															)}
+														</div>
+													)
+												})}
+											</div>
+										</div>
+									</>
+								)
+							})
 						}
-						{ !list && errorMsg == null && pageCar.next!==null &&
-						<div className='position-absolute end-0 bg-primer rounded me-3'>
-							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageCar.next)}></button>
-						</div>
-						}
-					</div> */}
-						{ !list && errorMsg == null &&
-						<div className="d-md-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading text-center text-md-start primer">Cars</h1>
-							<a href="#"><h5 className="text-center text-md-start third">view all &gt;</h5></a>
-						</div>}
-						<div className='d-flex position-relative align-items-center'>
-							<div className='row'>
-								{ !list && errorMsg == null && vehicleCar.map((data) =>{
-									return(
-										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-											<div className='d-flex position-relative mb-4'>
-												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-												<div className='card-name px-3'>
-													<div>{data.name}</div>
-													<div className='text-muted'>{data.location}</div>
-												</div>
-											</div>
-										</div>
-									)})}
-							</div>
-							{ !list && errorMsg == null && pageCar.prev!==null &&
-						<div className='position-absolute left-0 bg-primer rounded ms-3'>
-							<button className='fa-solid fa-chevron-left icon fiveth' onClick={()=>getNextData(pageCar.prev)}></button>
-						</div>
-							}
-							{ !list && errorMsg == null && pageCar.next!==null &&
-						<div className='position-absolute end-0 bg-primer rounded me-3'>
-							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageCar.next)}></button>
-						</div>
-							}
-						</div>
-						{ !list && errorMsg == null &&
-						<div className="d-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading">Motorbike</h1>
-							<a href="#"><h5 className="third">view all &gt;</h5></a>
-						</div>}
-						<div className='d-flex position-relative align-items-center '>
-							<div className='row'>
-								{ !list && errorMsg == null && vehicleMotorbike.map((data) =>{
-									return(
-										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-											<div className='d-flex position-relative mb-4'>
-												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-												<div className='card-name px-3'>
-													<div>{data.name}</div>
-													<div className='text-muted'>{data.location}</div>
-												</div>
-											</div>
-										</div>
-									)})}
-						
-							</div>
-							{ !list && errorMsg == null && pageMotorbike.prev!==null &&
-						<div className='position-absolute left-0 ms-3 rounded bg-primer'>
-							<button className='fa-solid fa-chevron-left icon dark ' onClick={()=>getNextData(pageMotorbike.prev)}></button>
-						</div>
-							}
-							{ !list && errorMsg == null && pageMotorbike.next!==null &&
-						<div className='position-absolute end-0 bg-primer rounded me-3'>
-							<button className='fa-solid fa-chevron-right icon dark ' onClick={()=>getNextData(pageMotorbike.next)}></button>
-						</div>
-							}
-						</div>
-					
-						{ !list && errorMsg == null &&
-						<div className="d-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading">Bike</h1>
-							<a href="#"><h5 className="third">view all &gt;</h5></a>
-						</div>}
-						<div className='d-flex position-relative align-items-center'>
-							<div className='row '>
-								{ !list && errorMsg == null && vehicleBike.map((data) =>{
-									return(
-										<div key={String(data.id)} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-											<div className='d-flex position-relative mb-4'>
-												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-												<div className='card-name px-3'>
-													<div>{data.name}</div>
-													<div className='text-muted'>{data.location}</div>
-												</div>
-											</div>
-										</div>
-									)})}
-							</div>
-							{ !list && errorMsg == null && pageBike.prev!==null &&
-						<div className='position-absolute bg-primer rounded left-0'>
-							<button className='fa-solid fa-chevron-left icon fiveth ' onClick={()=>getNextData(pageBike.prev)}></button>
-						</div>
-							}
-							{ !list && errorMsg == null && pageBike.next!==null &&
-						<div className='position-absolute bg-primer rounded end-0'>
-							<button className='fa-solid fa-chevron-right icon fiveth ' onClick={()=>getNextData(pageBike.next)}></button>
-						</div>
-							}
-						</div>
-					
 					</div>
 				</main>
 			)}

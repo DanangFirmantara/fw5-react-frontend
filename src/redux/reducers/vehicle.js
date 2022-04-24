@@ -2,6 +2,7 @@ const initialState = {
 	dataPopular : [],
 	data:[],
 	dataCategory : [],
+	dataDetail : {},
 	pageInfo: {},
 	isLoading: false,
 	isError: false,
@@ -9,10 +10,12 @@ const initialState = {
 	pICar : {},
 	pIMotorBike : {},
 	pIBike : {},
+	pIPopular : {},
 }
 
 export const VEHICLE_GETDATA = 'VEHICLE_GETDATA'
 export const VEHICLE_GETDATACATEGORY = 'VEHICLE_GETDATACATEGORY'
+export const VEHICLE_GETDATADETAIL = 'VEHICLE_GETDATADETAIL'
 export const VEHICLE_PICAR = 'VEHICLE_PICAR'
 export const VEHICLE_PIMOTORBIKE = 'VEHICLE_PIMOTORBIKE'
 export const VEHICLE_PIBIKE = 'VEHICLE_PIBIKE'
@@ -22,14 +25,21 @@ export const VEHICLE_SETERROR = 'VEHICLE_SETERROR'
 export const VEHICLE_CLEARERROR = 'VEHICLE_CLEARERROR'
 export const VEHICLE_RESETDATA = 'VEHICLE_RESETDATA'
 export const VEHICLE_GETPOPULAR = 'VEHICLE_GETPOPULAR'
+export const VEHICLE_PIPOPULAR = 'VEHICLE_PIPOPULAR'
 
 const vehicle = (state = initialState, action)=>{
 	switch(action.type){
 	case VEHICLE_GETDATA :{
 		return { ...state,data : action.payload}
 	}
+	case VEHICLE_GETDATADETAIL:{
+		return { ...state, dataDetail: action.payload }
+	}
 	case VEHICLE_GETPOPULAR:{
 		return { ...state, dataPopular : action.payload }
+	}
+	case VEHICLE_PIPOPULAR:{
+		return { ...state, pIPopular : action.payload }
 	}
 	case VEHICLE_GETDATACATEGORY:{
 		return { ...state, dataCategory: [ ...state.dataCategory, ...action.payload ]}
