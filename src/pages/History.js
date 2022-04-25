@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
 import { getHistoryUser } from '../redux/actions/history'
+import defaultImage from '../assets/image/image 6.png'
 
 export const History = () => {
 	const auth = useSelector(state=>state.auth)
@@ -10,8 +11,8 @@ export const History = () => {
 	const dispatch = useDispatch()
 
 	useEffect(()=>{
-		dispatch(getHistoryUser(auth.userData[0].id))
-	},[])
+		dispatch( getHistoryUser(auth.token))
+	},[dispatch])
 
 	const statusVehicle = (quantity)=>{
 		if(quantity == 0){
@@ -82,11 +83,11 @@ export const History = () => {
 								</div>
 							</div>
 							<div className="grey-2 fs-4 fw-normal-bold mb-5">A week ago</div>
-							{history?.historyData.map((obj)=>{
+							{history.data.length > 0 && history.data.map((obj)=>{
 								return(
 									<div className="row mb-5" key={String(obj.id)}>
 										<div className="col d-flex justify-content-star">
-											<div className="img-slide img-7 rounded"></div>
+											<img src={obj?.image || defaultImage} alt={obj?.vehicleName} className='img-slide rounded'></img>
 											<div className="d-inline-block py-3 px-4 align-items-center">
 												<div className="fs-6 fw-bold">{obj.vehicleName}</div>
 												<div className="fs-6 fw-light mb-3">{obj.rentStartDate} to {obj.rentEndDate}</div>
