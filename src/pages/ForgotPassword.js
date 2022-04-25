@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Arrow } from '../components/Arrow'
 import Footer from '../components/Footer'
-import { doForgotRequest, forgotRequest } from '../redux/actions/auth'
+import { doForgotRequest } from '../redux/actions/auth'
+import LoadingScreen from '../components/LoadingScreen'
 
 export const ForgotPassword = () => {
 	const [error, setError] = useState('')
@@ -16,13 +17,13 @@ export const ForgotPassword = () => {
 		if(!email.includes('@')){
 			setError('Email must include @')
 		} else{
-			console.log(email)
 			dispatch( doForgotRequest(email) )
 			// dispatch(forgotRequest(email))
 		}
 	}
 	return (
 		<React.Fragment>
+			{auth.isLoading && (<LoadingScreen />)}
 			<header>
 				<div className="img-banner-4 img-forgot">
 					<div className="img-banner-4 cover-dark">

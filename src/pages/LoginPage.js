@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { doLogin, getDataUser, login } from '../redux/actions/auth'
 import { Button } from 'react-bootstrap'
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai'
+import LoadingScreen from '../components/LoadingScreen'
 
 export const LoginPage = () => {
 	const auth = useSelector(state=>state.auth)
@@ -23,6 +24,7 @@ export const LoginPage = () => {
 	}
 	return (
 		<React.Fragment>
+			{auth.isLoading && (<LoadingScreen />)}
 			{auth.token !== '' && (<Navigate to='/' />)}
 			<header>
 				<div className="img-banner-4 img-3">

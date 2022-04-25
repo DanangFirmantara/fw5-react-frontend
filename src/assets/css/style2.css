@@ -459,8 +459,6 @@ ul{
    font-family: 'Mulish', Times,serif;
 }
 
-
-
 .underline{
    border-bottom: 1px solid rgba(196, 196, 196, 1);
 }
@@ -616,3 +614,4 @@ input:focus{
    scroll-snap-align: start;
    border-radius: 10px;
 }
+

@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import LayoutHome from '../components/LayoutHome'
+import LoadingScreen from '../components/LoadingScreen'
+import { getVehiclePopular } from '../redux/actions/vehicle'
+import defaultImg from '../assets/image/bike4.png'
+import { getUser } from '../redux/actions/user'
 
 export const HomePage = () => {
+	const vehicle = useSelector( state=> state.vehicle )
+	const auth = useSelector( state=> state.auth )
 
+	const dispatch = useDispatch()
+
+	useEffect(()=>{
+		dispatch( getUser(auth.token))
+		if(vehicle.dataPopular.length === 0){
+			dispatch( getVehiclePopular() )
+		}
+	}, [dispatch])
+	
 	return (
 		<LayoutHome>
+			{vehicle.isLoading && (<LoadingScreen />)}
 			<header>
 				<div className="img-banner-4 img-fluid img-13">
 					<div className="img-banner-4 img-fluid cover-dark">
@@ -61,51 +78,21 @@ export const HomePage = () => {
 				<div className="container mt-md-5 mt-4">
 					<div className="pd-heading text-center text-md-start pb-4">Popular in town</div>
 					<div className='row row-cols-md-2 row-cols-xl-4 row-cols-1 mb-xl-4 '>
-						<div className='col mb-md-5'>
-							<div className="position-relative d-flex justify-content-center mb-5 mb-md-0  w-100">
-								<div className='d-flex position-relative'>
-									<div className="img-thumbnail rounded img-1"></div>
-									<div className="card-name">
-										<div>Merapi</div>
-										<div className="text-muted">Yogyakarta</div>
+						{vehicle.dataPopular.length > 0 && vehicle.dataPopular.map((item)=>{
+							return (
+								<div className='col mb-md-5' key={String(item.id)}>
+									<div className="position-relative d-flex justify-content-center mb-5 mb-md-0  w-100">
+										<div className='d-flex position-relative'>
+											<img src={item.image || defaultImg } alt={item.id} className="rounded img-thumbnail-2" />
+											<div className="card-name">
+												<div>{item.name}</div>
+												<div className="text-muted">{item.location}</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div className='col'>
-							<div className="position-relative d-flex justify-content-center mb-5 mb-md-0 w-100">
-								<div className='d-flex position-relative '>
-									<div className="img-thumbnail rounded img-2"></div>
-									<div className="card-name">
-										<div>Teluk Bogam</div>
-										<div className="text-muted">Kalimantan</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className='col'>
-							<div className="d-flex justify-content-center mb-5 mb-md-0 w-100">
-								<div className='d-flex position-relative '>
-									<div className="img-thumbnail rounded img-3"></div>
-									<div className="card-name">
-										<div>Bromo</div>
-										<div className="text-muted">Malang</div>
-									</div>
-								</div>
-						
-							</div>
-						</div>
-						<div className='col'>
-							<div className=" d-flex justify-content-center mb-5 mb-md-0 w-100">
-								<div className='d-flex position-relative'>
-									<div className="img-thumbnail rounded img-4"></div>
-									<div className="card-name">
-										<div>Malioboro</div>
-										<div className="text-muted">Yogyakarta</div>
-									</div>
-								</div>
-							</div>
-						</div>
+							)
+						})}
 					</div>
 					<div className="pd-heading my-4 text-center text-md-start">Testimonials</div>
 					<div className='d-flex justify-content-between flex-column-reverse flex-md-row mb-md-5 mb-4'>
