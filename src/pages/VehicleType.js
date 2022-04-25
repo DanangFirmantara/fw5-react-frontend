@@ -48,7 +48,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 			}
 		}
 		if(vehicle.dataPopular.length === 0){
-			dispatch( getVehiclePopular() )
+			await dispatch( getVehiclePopular() )
 		}
 
 		const name = searchParams.get('name')

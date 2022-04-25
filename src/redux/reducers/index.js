@@ -10,6 +10,7 @@ import resetPassword from './resetPassword'
 import {persistReducer} from 'redux-persist'
 import location from './location'
 import category from './category'
+import payment from './payment'
 
 const persistAuth = {
 	key : 'auth',
@@ -56,6 +57,11 @@ const persistCategory = {
 	storage 
 }
 
+const persistPayment = {
+	key : 'payment',
+	storage
+}
+
 const rootReducer = combineReducers({
 	auth : persistReducer(persistAuth, auth),
 	vehicle : persistReducer(persistVehicle, vehicle),
@@ -65,7 +71,8 @@ const rootReducer = combineReducers({
 	reservation : persistReducer(persistReservation, reservation),
 	history : persistReducer(persistHistory, history),
 	location : persistReducer(persistLocation, location),
-	category : persistReducer(persistCategory, category)
+	category : persistReducer(persistCategory, category),
+	payment : persistReducer(persistPayment, payment)
 })
 
 export default rootReducer
