@@ -1,11 +1,19 @@
-import React, {useEffect} from 'react'
+/* eslint-disable react/prop-types */
+import React, {useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
 import { getHistoryUser } from '../redux/actions/history'
 import defaultImage from '../assets/image/image 6.png'
+import moment from 'moment'
+import {BiTrash} from 'react-icons/bi'
+import { Modal } from 'react-bootstrap'
 
 export const History = () => {
+	const [deleted,setDeleted] = useState(false)
+	const [idDeleted, setIdDeleted] = useState()
+	const [modalShow, setModalShow] = useState(false)
+
 	const auth = useSelector(state=>state.auth)
 	const history = useSelector(state=>state.history)
 	const dispatch = useDispatch()
@@ -21,10 +29,36 @@ export const History = () => {
 			return 'vehicle has not been return'
 		}
 	}
+
+	const doDelete = (id) =>{
+		setModalShow(true)
+		setIdDeleted(id)
+		console.log(`delete history ${id}`)
+	}
+
+	const deletedHistory = ()=>{
+		console.log(`deleted history id ${idDeleted}`)
+	}
+
 	return (
 		<LayoutHome >
 			{!auth.token && <Navigate to='/login' />}
 			<main>
+				<Modal
+					show={modalShow}
+					obHide={()=>setModalShow(false)}
+					size="lg"
+					aria-labelledby="contained-modal-title-vcenter"
+					centered
+				>
+					<Modal.Body closeButton>
+						<div className={'fs-4 text-center fw-bold my-5'}>Are you sure do you want to delete selected item?</div>
+						<div className='d-flex justify-content-around my-5'>
+							<button className='button-third fw-bold w-25 fs-3 py-2' onClick={deletedHistory}>Yes</button>
+							<button className='button-second fw-bold w-25 fs-3 py-2' onClick={()=>setModalShow(false)}>No</button>
+						</div>
+					</Modal.Body>
+				</Modal>
 				<div className="container my-5">
 					<div className="row d-flex justify-content-between g-0">
 						<div className="col">
@@ -82,23 +116,35 @@ export const History = () => {
 									<div className="border border-3 border-grey icon-check"></div>
 								</div>
 							</div>
-							<div className="grey-2 fs-4 fw-normal-bold mb-5">A week ago</div>
+							<div className='row mb-5'>
+								<div className='col d-flex align-items-center'>
+									<div className="grey-2 fs-4 fw-normal-bold">A week ago</div>
+								</div>
+								<div className='col-2 d-flex justify-content-center align-items-center'>
+									<button className={deleted ? 'bg-second rounded-2 border-0 p-2' : 'bg-white rounded-2 border-0 p-2'} onClick={()=>setDeleted(!deleted)}>
+										<BiTrash className='fs-2 '/>
+									</button>
+								</div>
+								
+							</div>
 							{history.data.length > 0 && history.data.map((obj)=>{
 								return(
 									<div className="row mb-5" key={String(obj.id)}>
-										<div className="col d-flex justify-content-star">
+										<div className="col d-flex justify-content-start">
 											<img src={obj?.image || defaultImage} alt={obj?.vehicleName} className='img-slide rounded'></img>
 											<div className="d-inline-block py-3 px-4 align-items-center">
 												<div className="fs-6 fw-bold">{obj.vehicleName}</div>
-												<div className="fs-6 fw-light mb-3">{obj.rentStartDate} to {obj.rentEndDate}</div>
-												<div className="fs-6 fw-bold">Prepayment : Rp. {obj.prepayment}</div>
+												<div className="fs-6 fw-light mb-3">{moment(obj.rentStartDate).format('ll') } to {moment(obj.rentEndDate).format('lll')}</div>
+												<div className="fs-6 fw-bold">Payment : Rp. {new Intl.NumberFormat('de-DE').format(obj.total)}</div>
 												<div className="fs-6 green">{statusVehicle(obj.quantity)}</div>
 											</div>
 										</div>
 										<div
 											className="col-2 d-flex align-items-center justify-content-center"
 										>
-											<div className="border border-3 border-grey icon-check"></div>
+											{deleted && (
+												<button className='button-third shadow-yellow py-3 d-flex justify-content-center fw-bold px-4 fs-4 me-3' onClick={()=>doDelete(obj.id)}>Delete</button>
+											)}
 										</div>
 									</div>
 								)
