@@ -72,7 +72,10 @@ export const doEditProfile = (dataChanged, token) =>{
 			dispatch({ type: USER_SETLOADING })
 			dispatch({ type: USER_CLEARERROR })
 			dispatch({ type: USER_CLEARSUCCESS })
-			const param = new URLSearchParams(dataChanged)
+			const param = new FormData()
+			Object.keys(dataChanged).forEach(item=>{
+				param.append(item,dataChanged[item])
+			})
 			const { data } = await http(token).patch('/users', param) 
 			dispatch({
 				type : USER_GETDATA,

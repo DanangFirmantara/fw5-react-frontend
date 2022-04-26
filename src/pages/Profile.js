@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
 import LoadingScreen from '../components/LoadingScreen'
 import moment from 'moment'
+import { resetMsg } from '../redux/actions/resetMsg'
 import { doEditProfile } from '../redux/actions/user'
 
 export const Profile = () => {
 	const [changed, setChanged] = useState({})
+	const [error, setError] = useState('')
 
 	const dispatch = useDispatch()
 	const auth = useSelector(state=>state.auth)
@@ -18,9 +20,18 @@ export const Profile = () => {
 	const editProfile = (event)=>{
 		event.preventDefault()
 		const data = {...changed}
+		const image = event.target.elements['image'].files[0]
+		console.log(image)
 		const gender = event.target.elements['gender'].value
 		const address = event.target.elements['address'].value
-		
+		if(image){
+			if(image.size <= 2097152){
+				data['image'] = image
+				console.log(image)
+			} else{
+				return setError('Max file 2 Mb')
+			}
+		}
 		if(user.data.address !== address){
 			data['address'] = address
 		}
@@ -53,10 +64,17 @@ export const Profile = () => {
 							</div>
 						)
 						}
+						{error !== '' && (
+							<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold mb-4" role="alert">
+								{error}
+								<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=>setError('')}></button>
+							</div>
+						)
+						}
 						{user.successMsg !== '' &&(
 							<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold mb-4" role="alert">
 								{user.successMsg}
-								<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=> dispatch(resetMsg())}></button>
 							</div>
 						)
 						}
@@ -71,6 +89,7 @@ export const Profile = () => {
 										/>
 										<button className="icon-circle-3 rounded-circle button-fourth position-absolute end-0 bottom-0">
 											<i className="fa-solid fa-pencil"></i>
+											<input type='file' name='image' className='position-absolute opacity-0'/>
 										</button>
 									</div>
 									<div className="pd-heading ">{user.data.fullName ? user.data.fullName : user.data.username}</div>

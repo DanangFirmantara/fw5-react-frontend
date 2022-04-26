@@ -10,6 +10,7 @@ export const CATEGORY_SETLOADING = 'CATEGORY_SETLOADING'
 export const CATEGORY_CLEARLOADING = 'CATEGORY_CLEARLOADING'
 export const CATEGORY_SETERROR = 'CATEGORY_SETERROR'
 export const CATEGORY_CLEARERROR = 'CATEGORY_CLEARERROR'
+export const CATEGORY_CLEARMSG = 'CATEGORY_CLEARMSG' 
 
 const category = (state = initialState, action) =>{
 	switch( action.type ) {
@@ -27,6 +28,9 @@ const category = (state = initialState, action) =>{
 	}
 	case CATEGORY_SETERROR:{
 		return { ...state, errorMsg : action.payload }
+	}
+	case CATEGORY_CLEARMSG:{
+		return { ...state, errorMsg: ''}
 	}
 	case CATEGORY_CLEARERROR:{
 		return { ...state, errorMsg: ''}

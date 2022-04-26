@@ -26,6 +26,7 @@ export const VEHICLE_CLEARERROR = 'VEHICLE_CLEARERROR'
 export const VEHICLE_RESETDATA = 'VEHICLE_RESETDATA'
 export const VEHICLE_GETPOPULAR = 'VEHICLE_GETPOPULAR'
 export const VEHICLE_PIPOPULAR = 'VEHICLE_PIPOPULAR'
+export const VEHICLE_CLEARMSG = 'VEHICLE_CLEARMSG'
 
 const vehicle = (state = initialState, action)=>{
 	switch(action.type){
@@ -67,6 +68,9 @@ const vehicle = (state = initialState, action)=>{
 	}
 	case VEHICLE_RESETDATA:{
 		return { ...initialState }
+	}
+	case VEHICLE_CLEARMSG:{
+		return { ...state, errorMsg: ''}
 	}
 	default:{
 		return { ...state } 
