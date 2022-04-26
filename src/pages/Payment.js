@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LayoutHome from '../components/LayoutHome'
@@ -7,6 +7,7 @@ import defaultImage from '../assets/image/image 6.png'
 import LoadingScreen from '../components/LoadingScreen'
 import moment from 'moment'
 import { doPayment } from '../redux/actions/payment'
+import { getHistoryUser } from '../redux/actions/history'
 
 export const Payment = () => {
 	const payment = useSelector(state => state.payment)
@@ -15,22 +16,54 @@ export const Payment = () => {
 
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
+	const startCountDown = moment.utc(moment(payment.data?.createdAt).add(1,'days').diff(moment())).format('HH:mm')
 
+	const [countDown, setCountDown] = useState(startCountDown)
 	const onPayment = () =>{
-		console.log('bayar gan')
-		const id = payment.data.id
-		const total = payment.data.total
-		const codePayment = payment.data.codePayment
-		const dataPayment = {id, total, codePayment}
-		dispatch( doPayment(dataPayment, auth.token))
+		if(payment.data.isPayment === 0 && countDown !== 'Expired'){
+			console.log('bayar gan')
+			const id = payment.data.id
+			const total = payment.data.total
+			const codePayment = payment.data.codePayment
+			const dataPayment = {id, total, codePayment}
+			dispatch( doPayment(dataPayment, auth.token))
+		}
+		dispatch( getHistoryUser(auth.token))
 		navigate('/History')
 	}
+	
+	useEffect(()=>{
+		doCountdown()
+	},[])
+
 	const goBack = ()=>{
 		window.history.back()
 	}
+	const doCountdown = ()=>{
+		const countDownDate = moment(payment.data?.createdAt).add(1,'days')
+		const x = setInterval(()=>{
+			let diff = countDownDate.diff(moment())
+			if(diff <= 0){
+				clearInterval(x)
+				setCountDown('Expired')
+			} else{
+				console.log(moment.utc(diff).format('HH:mm'))
+				setCountDown(moment.utc(diff).format('HH:mm'))
+			}
+		}, 60000)
+	} 
+
+	// const cekMoment = () =>{
+	// 	const startFrom = moment(payment.data.createdAt).format('HH:mm:ss')
+	// 	const end = moment(payment.data.createdAt).add(1,'days')
+	// 	const diff2 = end.diff(moment())
+	// 	console.log(startFrom, 'dimulai dari')	
+	// 	console.log(moment(end).format('HH:mm:ss'), 'akhir waktu')
+	// 	console.log(moment.utc(diff2).format('HH:mm:ss'), 'perbedaan waktu')
+	// }
 	return (
 		<LayoutHome >
-			{reservation.isLoading ? (
+			{reservation.isLoading || payment.isLoading ? (
 				<LoadingScreen/>
 			): (
 				<main>
@@ -123,9 +156,16 @@ export const Payment = () => {
 								</div>
 							</div>
 						</div>
+						{/* <button onClick={cekMoment}>cek moment</button> */}
 						<button onClick={onPayment} className="button-third shadow-yellow py-4 d-flex justify-content-center fw-bolder fs-4 w-100">
-							<div className="fw-bolder me-3">Finish payment :</div>
-							<div className="text-danger fw-bolder">59:30</div>
+							{payment.data?.isPayment === 1 ? (
+								<div className="fw-bolder me-3">Payment success </div>
+							) : (
+								<>
+									<div className="fw-bolder me-3">Finish payment :</div>
+									<div className="text-danger fw-bolder">{countDown}</div>
+								</>
+							)}
 						</button>
 					</div>
 				</main>
