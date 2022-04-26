@@ -30,6 +30,8 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 	const locationRedux = useSelector((state)=>state.location)
 	const vehicle = useSelector( state =>state.vehicle)
 	const category = useSelector( (state)=> state.category)
+	const user = useSelector( (state)=> state.user )
+	
 	const dispatch = useDispatch()
 	// didmount
 	useEffect(async()=>{
@@ -89,7 +91,12 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 	}
 
 	const goToDetail = (id) =>{
-		navigate(`/vehiclesType/${id}`)
+		if(user.data.role === 'Admin'){
+			navigate(`/vehicle/${id}`)
+		} else{
+			navigate(`/vehiclesType/${id}`)
+		}
+		
 	}
 
 	const goBack = ()=>{

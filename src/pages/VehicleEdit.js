@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import LayoutLogin from '../components/LayoutLogin'
+import { getVehicleById } from '../redux/actions/vehicle'
 
 export const vehicleEdit = () => {
+	const dispatch = useDispatch()
+	const {id} = useParams()
+
+	const vehicle = useSelector(state=> state.vehicle)
+
+	useEffect(()=>{
+		if(vehicle.dataDetail.id !== parseInt(id)){
+			dispatch(getVehicleById(id))
+		}
+	},[dispatch])
+
 	return (
 		<LayoutLogin>
 			<main>
@@ -25,7 +39,7 @@ export const vehicleEdit = () => {
 							</div>
 						</div>
 						<div className="col">
-							<h1 className="pd-bolder mb-3">Fixie Gray Only</h1>
+							<h1 className="pd-bolder mb-3">{vehicle.dataDetail?.name}</h1>
 							<h3 className="pd-bolder fw-normal fs-2 mb-3">Yogyakarta</h3>
 							<div className="fs-4 green fw-bold">Available</div>
 							<div className="fs-4 text-danger fw-light mb-3">No prepayment</div>

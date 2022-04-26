@@ -2,9 +2,13 @@
 import React, {useState, useEffect} from 'react'
 import LayoutLogin from '../components/LayoutLogin'
 import defaultImage from '../assets/image/defaultImage.png'
+import {useSelector} from 'react-redux'
+import { Navigate } from 'react-router-dom'
 import {Link} from 'react-router-dom'
 
 export const VehicleCreate = () => {
+	const user = useSelector(state=> state.user)
+
 	let [image, setImage] = useState([null])
 	let [count,setCount] = useState(0)
 
@@ -38,6 +42,9 @@ export const VehicleCreate = () => {
 	}
 	return (
 		<LayoutLogin>
+			{user.data?.role !== 'Admin' && (
+				<Navigate to='/' />
+			)}
 			<main>
 				<div className="container">
 					<div className='d-flex align-items-center mb-4'>
