@@ -1,5 +1,5 @@
 import http from '../../helpers/http'
-import { VEHICLE_CLEARERROR, VEHICLE_CLEARLOADING, VEHICLE_GETDATA, VEHICLE_GETDATACATEGORY, VEHICLE_GETDATADETAIL, VEHICLE_GETPOPULAR, VEHICLE_PIBIKE, VEHICLE_PICAR, VEHICLE_PIMOTORBIKE, VEHICLE_PIPOPULAR, VEHICLE_RESETDATA, VEHICLE_SETERROR, VEHICLE_SETLOADING } from '../reducers/vehicle'
+import { VEHICLE_CLEARERROR, VEHICLE_CLEARLOADING, VEHICLE_GETDATA, VEHICLE_GETDATACATEGORY, VEHICLE_GETDATADETAIL, VEHICLE_GETPOPULAR, VEHICLE_PIBIKE, VEHICLE_PICAR, VEHICLE_PIMOTORBIKE, VEHICLE_PIPOPULAR, VEHICLE_RESETDATA, VEHICLE_RESETDATADETAIL, VEHICLE_SETERROR, VEHICLE_SETLOADING, VEHICLE_SETSUCCESS } from '../reducers/vehicle'
 
 
 
@@ -159,4 +159,48 @@ export const getFilterVehicle = (data) =>{
 	}
 }
 
+export const addVehicle = (dataSaved , token) =>{
+	return async (dispatch) =>{
+		try{
+			dispatch({ type: VEHICLE_SETLOADING })
+			dispatch({ type: VEHICLE_CLEARERROR })
+			const param = new FormData()
+			Object.keys(dataSaved).forEach(item=>{
+				param.append(item, dataSaved[item])
+			})
+			const { data } = await http(token).post('/vehicles', param)
+			dispatch({
+				type : VEHICLE_GETDATADETAIL,
+				payload : data.results
+			})
+			dispatch({
+				type : VEHICLE_SETSUCCESS,
+				payload : data.message
+			})
+			dispatch({ type: VEHICLE_CLEARLOADING })
+		} catch(err){
+			let payload = ''
+			if(err.response){
+				payload = err.response.data.message
+			} else{
+				payload = err.message
+			}
+			dispatch({
+				type: VEHICLE_SETERROR,
+				payload: payload
+			})
+			dispatch({
+				type: VEHICLE_CLEARLOADING
+			})
+		}
+	}
+}
+
+export const resetVehicleDetail = () =>{
+	return dispatch =>{
+		dispatch({
+			type : VEHICLE_RESETDATADETAIL
+		})
+	}
+}
 
