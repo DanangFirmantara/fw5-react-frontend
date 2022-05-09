@@ -615,3 +615,8 @@ input:focus{
    border-radius: 10px;
 }
 
+.input-img{
+	width: 10px;
+	cursor : 'pointer';
+}
+

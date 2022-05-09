@@ -13,6 +13,7 @@ export const PAYMENT_CLEARERROR = 'PAYMENT_CLEARERROR'
 export const PAYMENT_SETSUCCESS = 'PAYMENT_SETSUCCESS'
 export const PAYMENT_CLEARSUCCESS = 'PAYMENT_CLEARSUCCESS'
 export const PAYMENT_RESETDATA = 'PAYMENT_RESETDATA'
+export const PAYMENT_CLEARMSG = 'PAYMENT_CLEARMSG'
 
 const payment = ( state=initialState, action)=>{
 	switch(action.type){
@@ -39,6 +40,9 @@ const payment = ( state=initialState, action)=>{
 	}
 	case PAYMENT_CLEARSUCCESS:{
 		return { ...state, successMsg : '' }
+	}
+	case PAYMENT_CLEARMSG:{
+		return { ...state, errorMsg: '', successMsg: ''}
 	}
 	default :{
 		return { ...state }

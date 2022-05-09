@@ -16,6 +16,7 @@ export const HISTORY_RESETDATA = 'HISTORY_RESETDATA'
 export const HISTORY_SETSUCCESS = 'HISTORY_SETSUCCESS'
 export const HISTORY_CLEARSUCCESS = 'HISTORY_CLEARSUCCESS'
 export const HISTORY_GETPAGEINFO = 'HISTORY_GETPAGEINFO'
+export const HISTORY_CLEARMSG = 'HISTORY_CLEARMSG'
 
 const history = (state = initialState, action)=>{
 	switch(action.type){
@@ -45,6 +46,9 @@ const history = (state = initialState, action)=>{
 	}
 	case HISTORY_GETPAGEINFO:{
 		return { ...state, pageInfo: action.payload }
+	}
+	case HISTORY_CLEARMSG:{
+		return { ...state, errorMsg: '', successMsg: ''}
 	}
 	default :{
 		return { ...state }

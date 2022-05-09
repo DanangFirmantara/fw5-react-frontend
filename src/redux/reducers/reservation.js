@@ -22,6 +22,7 @@ export const RESERVATION_SETSUCCESS = 'RESERVATION_SETSUCCESS'
 export const RESERVATION_CLEARSUCCESS = 'RESERVATION_CLEARSUCCESS'
 export const RESERVATION_SETSTARTDATE = 'RESERVATION_SETSTARTDATE'
 export const RESERVATION_SETENDDATE = 'RESERVATION_SETENDDATE'
+export const RESERVATION_CLEARMSG = 'RESERVATION_CLEARMSG'
 
 const reservation = (state=initialState, action)=>{
 	switch(action.type){
@@ -55,31 +56,8 @@ const reservation = (state=initialState, action)=>{
 	case RESERVATION_DECQUANTITY:{
 		return { ...state, quantity : state.quantity - 1 }
 	}
-	case 'RESERVATION_ADD':{
-		state.dataReservation = action.payload
-		return {...state}
-	}
-	case 'RESERVATION_CREATE_PENDING':{
-		state.isLoading = true
-		state.isError = false
-		state.errorMsg = ''
-		state.successMsg = ''
-		return {...state}
-	}
-	case 'RESERVATION_CREATE_FULFILLED':{
-		const {message, results} = action.payload.data
-		state.dataReservation = results
-		state.successMsg = message
-		state.isLoading = false
-		state.isError = false
-		return {...state}
-	}
-	case 'RESERVATION_CREATE_REJECTED':{
-		const {message} = action.payload.response.data
-		state.errorMsg = message
-		state.isLoading = false
-		state.isError = true
-		return {...state}
+	case RESERVATION_CLEARMSG:{
+		return { ...state, errorMsg: '', successMsg: '' }
 	}
 	default:{
 		return {...state}

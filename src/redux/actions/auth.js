@@ -8,6 +8,7 @@ import { AUTH_CLEARERROR,
 	AUTH_LOGOUT,
 	AUTH_SETSUCCESS
 } from '../reducers/auth'
+import { USER_RESETDATA } from '../reducers/user'
 
 export const doLogin = (username, password) =>{
 	return async (dispatch)=>{
@@ -46,6 +47,7 @@ export const doLogin = (username, password) =>{
 
 export const doLogout = () =>{
 	return dispatch =>{
+		dispatch({ type: USER_RESETDATA})
 		dispatch({ type: AUTH_LOGOUT })
 	}
 }
@@ -96,12 +98,3 @@ export const userEdit = (data,id)=>{
 		payload: http().patch(`/users/?id=${id}`,param)
 	})	
 }
-
-// export const forgotRequest = (email)=>{
-// 	const param = new URLSearchParams()
-// 	param.append('email', email)
-// 	return ({
-// 		type: 'AUTH_FORGOTREQUEST',
-// 		payload : http().post('/auth/forgotRequest', param)
-// 	})
-// }

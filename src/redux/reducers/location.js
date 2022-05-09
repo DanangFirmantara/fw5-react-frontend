@@ -11,6 +11,8 @@ export const LOCATION_CLEARLOADING = 'LOCATION_CLEARLOADING'
 export const LOCATION_SETERROR = 'LOCATION_SETERROR'
 export const LOCATION_CLEARERROR = 'LOCATION_CLEARERROR'
 export const LOCATION_RESETDATA = 'LOCATION_RESETDATA'
+export const LOCATION_CLEARMSG = 'LOCATION_CLEARMSG'
+
 
 const location = (state = initialState, action)=>{
 	switch(action.type){
@@ -31,6 +33,9 @@ const location = (state = initialState, action)=>{
 	}
 	case LOCATION_RESETDATA:{
 		return { ...initialState }
+	}
+	case LOCATION_CLEARMSG:{
+		return { ...state, errorMsg: ''}
 	}
 	default :{
 		return { ...state }

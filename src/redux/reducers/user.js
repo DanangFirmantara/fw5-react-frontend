@@ -14,6 +14,7 @@ export const USER_CLEARERROR = 'USER_CLEARERROR'
 export const USER_RESETDATA = 'USER_RESETDATA'
 export const USER_SETSUCCESS = 'USER_SETSUCCESS'
 export const USER_CLEARSUCCESS = 'USER_CLEARSUCCESS'
+export const USER_CLEARMSG = 'USER_CLEARMSG'
 
 const user = (state=initialState, action)=>{
 	switch(action.type){
@@ -40,6 +41,9 @@ const user = (state=initialState, action)=>{
 	}
 	case USER_RESETDATA:{
 		return { ...initialState }
+	}
+	case USER_CLEARMSG:{
+		return { ...state, successMsg: '', errorMsg: ''}
 	}
 	default:{
 		return {...state}

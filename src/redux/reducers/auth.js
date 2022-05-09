@@ -20,7 +20,7 @@ export const AUTH_GETTOKEN = 'AUTH_GETTOKEN'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
 export const AUTH_SETSUCCESS = 'AUTH_SETSUCCESS'
 export const AUTH_CLEARSUCCESS = 'AUTH_CLEARSUCCESS'
-
+export const AUTH_CLEARMSG = 'AUTH_CLEARMSG'
 
 const auth = (state=initialState, action)=>{
 	switch(action.type){
@@ -47,6 +47,9 @@ const auth = (state=initialState, action)=>{
 	}
 	case AUTH_CLEARERROR:{
 		return {...state, errorMsg: ''}
+	}
+	case AUTH_CLEARMSG:{
+		return { ...state, errorMsg: '', successMsg: ''}
 	}
 	case AUTH_LOGOUT:{
 		return { ...initialState } 

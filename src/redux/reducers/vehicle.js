@@ -11,9 +11,12 @@ const initialState = {
 	pIMotorBike : {},
 	pIBike : {},
 	pIPopular : {},
+	successMsg : '',
+	dataViewMore: []
 }
 
 export const VEHICLE_GETDATA = 'VEHICLE_GETDATA'
+export const VEHICLE_GETDATAVIEWMORE = 'VEHICLE_GETDATAVIEWMORE'
 export const VEHICLE_GETDATACATEGORY = 'VEHICLE_GETDATACATEGORY'
 export const VEHICLE_GETDATADETAIL = 'VEHICLE_GETDATADETAIL'
 export const VEHICLE_PICAR = 'VEHICLE_PICAR'
@@ -21,11 +24,16 @@ export const VEHICLE_PIMOTORBIKE = 'VEHICLE_PIMOTORBIKE'
 export const VEHICLE_PIBIKE = 'VEHICLE_PIBIKE'
 export const VEHICLE_SETLOADING = 'VEHICLE_SETLOADING'
 export const VEHICLE_CLEARLOADING = 'VEHICLE_CLEARLOADING'
+export const VEHICLE_SETSUCCESS = 'VEHICLE_SETSUCCESS'
+export const VEHICLE_CLEARSUCCESS = 'VEHICLE_CLEARSUCCESS'
 export const VEHICLE_SETERROR = 'VEHICLE_SETERROR'
 export const VEHICLE_CLEARERROR = 'VEHICLE_CLEARERROR'
 export const VEHICLE_RESETDATA = 'VEHICLE_RESETDATA'
+export const VEHICLE_RESETDATADETAIL = 'VEHICLE_RESETDATADETAIL'
 export const VEHICLE_GETPOPULAR = 'VEHICLE_GETPOPULAR'
 export const VEHICLE_PIPOPULAR = 'VEHICLE_PIPOPULAR'
+export const VEHICLE_CLEARMSG = 'VEHICLE_CLEARMSG'
+export const VEHICLE_UPDATEVEHICLE = 'VEHICLE_UPDATEVEHICLE'
 
 const vehicle = (state = initialState, action)=>{
 	switch(action.type){
@@ -59,6 +67,12 @@ const vehicle = (state = initialState, action)=>{
 	case VEHICLE_CLEARLOADING:{
 		return { ...state, isLoading : false }
 	}
+	case VEHICLE_SETSUCCESS : {
+		return { ...state, successMsg : action.payload }
+	}
+	case VEHICLE_CLEARSUCCESS: {
+		return { ...state, successMsg : '' }
+	}
 	case VEHICLE_SETERROR:{
 		return { ...state, errorMsg : action.payload }
 	}
@@ -67,6 +81,29 @@ const vehicle = (state = initialState, action)=>{
 	}
 	case VEHICLE_RESETDATA:{
 		return { ...initialState }
+	}
+	case VEHICLE_RESETDATADETAIL:{
+		return { ...state, dataDetail : {}}
+	}
+	case VEHICLE_UPDATEVEHICLE:{
+		console.log(action.payload, 'ini data update redux')
+		state.dataCategory.map((item, idx) =>{
+			if(item.id == action.payload.id){
+				state.dataCategory[idx] = action.payload
+			}
+		})
+		state.dataPopular.map((item, idx)=>{
+			if(item.id == action.payload.id){
+				state.dataPopular[idx] = action.payload
+			}
+		})
+		return { ...state}
+	}
+	case VEHICLE_GETDATAVIEWMORE : {
+		return {...state, dataViewMore : action.payload}
+	}
+	case VEHICLE_CLEARMSG:{
+		return { ...state, errorMsg: '', successMsg: ''}
 	}
 	default:{
 		return { ...state } 
