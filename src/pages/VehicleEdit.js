@@ -9,7 +9,7 @@ import {AiFillCamera} from 'react-icons/ai'
 import {BiTrash} from 'react-icons/bi'
 import LoadingScreen from '../components/LoadingScreen'
 import { resetMsg } from '../redux/actions/resetMsg'
-import { doUpdateVehicle, getVehicleById } from '../redux/actions/vehicle'
+import { doUpdateVehicle, doUpdateVehicleRedux, getVehicleById, getVehicleCategory, getVehiclePopular } from '../redux/actions/vehicle'
 
 export const VehicleEdit = () => {
 	const user = useSelector(state=> state.user)
@@ -55,6 +55,9 @@ export const VehicleEdit = () => {
 		dispatch(resetMsg())
 		if(vehicle.dataDetail.id !== parseInt(id)){
 			dispatch(getVehicleById(id))
+		} 
+		return function cleanup() {
+			dispatch(doUpdateVehicleRedux(vehicle.dataDetail))
 		}
 	},[dispatch])
 
@@ -196,11 +199,11 @@ export const VehicleEdit = () => {
 										</div>
 									</div>
 									<div className="d-flex justify-content-between">
-										<button className="icon-plus button-dark rounded bg-yellow fw-bolder fs-1" onClick={(e)=>decreament(e)}>-</button>
+										<button className="icon-plus button-dark rounded bg-yellow fw-bolder fs-1 button-third" onClick={(e)=>decreament(e)}>-</button>
 										<div name='stock' className="fw-bolder fs-0">
 											{changed.hasOwnProperty('stock') ? changed.stock : vehicle.dataDetail?.stock}
 										</div>
-										<button className="icon-plus rounded bg-yellow fw-bolder fs-1" onClick={(e)=>increament(e)}>+</button>
+										<button className="icon-plus rounded bg-yellow fw-bolder fs-1 button-fourth" onClick={(e)=>increament(e)}>+</button>
 									</div>
 							
 								</div>
@@ -208,7 +211,7 @@ export const VehicleEdit = () => {
 							<div className="d-flex justify-content-between row">
 								<div className="col-5">
 									<div className='d-flex position-relative align-items-center'>
-										<select className="button-height button-dark w-100 fw-bolder fs-4 shadow-dark form-select text-center" name='category'>
+										<select className="button-height button-third w-100 fw-bolder fs-4 shadow-dark form-select text-center" name='category'>
 											<option style={{display : 'none'}} className='py-2' value=''>Select category</option>
 											{category.data.length > 0 && category.data.map((obj)=>{
 												return (
@@ -216,12 +219,12 @@ export const VehicleEdit = () => {
 												)
 											})}
 										</select>
-										<div className='fa-solid fa-chevron-down position-absolute fs-2 end-0 me-5 custom-select yellow'></div>
+										<div className='fa-solid fa-chevron-down position-absolute fs-2 end-0 me-5 custom-select fourth'></div>
 									</div>
 								</div>
 								<div className="col">
-									<button className="button-height button-yellow w-100 fw-bolder fs-4 shadow-yellow" type='submit'>
-                        Save item
+									<button className="button-height button-fourth w-100 fw-bolder fs-4 shadow-yellow" type='submit'>
+                        Update vehicle
 									</button>
 								</div>
 							</div>

@@ -31,6 +31,7 @@ export const VEHICLE_RESETDATADETAIL = 'VEHICLE_RESETDATADETAIL'
 export const VEHICLE_GETPOPULAR = 'VEHICLE_GETPOPULAR'
 export const VEHICLE_PIPOPULAR = 'VEHICLE_PIPOPULAR'
 export const VEHICLE_CLEARMSG = 'VEHICLE_CLEARMSG'
+export const VEHICLE_UPDATEVEHICLE = 'VEHICLE_UPDATEVEHICLE'
 
 const vehicle = (state = initialState, action)=>{
 	switch(action.type){
@@ -81,6 +82,20 @@ const vehicle = (state = initialState, action)=>{
 	}
 	case VEHICLE_RESETDATADETAIL:{
 		return { ...state, dataDetail : {}}
+	}
+	case VEHICLE_UPDATEVEHICLE:{
+		console.log(action.payload, 'ini data update redux')
+		state.dataCategory.map((item, idx) =>{
+			if(item.id == action.payload.id){
+				state.dataCategory[idx] = action.payload
+			}
+		})
+		state.dataPopular.map((item, idx)=>{
+			if(item.id == action.payload.id){
+				state.dataPopular[idx] = action.payload
+			}
+		})
+		return { ...state}
 	}
 	case VEHICLE_CLEARMSG:{
 		return { ...state, errorMsg: '', successMsg: ''}
