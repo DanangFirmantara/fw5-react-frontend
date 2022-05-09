@@ -11,10 +11,12 @@ const initialState = {
 	pIMotorBike : {},
 	pIBike : {},
 	pIPopular : {},
-	successMsg : ''
+	successMsg : '',
+	dataViewMore: []
 }
 
 export const VEHICLE_GETDATA = 'VEHICLE_GETDATA'
+export const VEHICLE_GETDATAVIEWMORE = 'VEHICLE_GETDATAVIEWMORE'
 export const VEHICLE_GETDATACATEGORY = 'VEHICLE_GETDATACATEGORY'
 export const VEHICLE_GETDATADETAIL = 'VEHICLE_GETDATADETAIL'
 export const VEHICLE_PICAR = 'VEHICLE_PICAR'
@@ -96,6 +98,9 @@ const vehicle = (state = initialState, action)=>{
 			}
 		})
 		return { ...state}
+	}
+	case VEHICLE_GETDATAVIEWMORE : {
+		return {...state, dataViewMore : action.payload}
 	}
 	case VEHICLE_CLEARMSG:{
 		return { ...state, errorMsg: '', successMsg: ''}
