@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-unused-vars */
 import React, {useState, useEffect} from 'react'
 import LayoutLogin from '../components/LayoutLogin'
@@ -8,7 +9,7 @@ import {AiFillCamera} from 'react-icons/ai'
 import {BiTrash} from 'react-icons/bi'
 import LoadingScreen from '../components/LoadingScreen'
 import { resetMsg } from '../redux/actions/resetMsg'
-import { addVehicle, getVehicleById } from '../redux/actions/vehicle'
+import { doUpdateVehicle, getVehicleById } from '../redux/actions/vehicle'
 
 export const VehicleEdit = () => {
 	const user = useSelector(state=> state.user)
@@ -17,9 +18,9 @@ export const VehicleEdit = () => {
 	const vehicle = useSelector(state => state.vehicle)
 	const auth = useSelector(state=>state.auth)
 
-	const [dataSave, setDataSave] = useState({stock:0})
 	const [image, setImage] = useState()
 	const [error, setError] = useState('')
+	const [changed, setChanged] = useState({})
 
 	const {id} = useParams()
 
@@ -27,13 +28,27 @@ export const VehicleEdit = () => {
 
 	const decreament = (e)=>{
 		e.preventDefault()
-		if(dataSave.stock > 0){
-			setDataSave({...dataSave, stock: dataSave.stock-1})
+		console.log()
+		if(!changed.hasOwnProperty('stock')){
+			if(vehicle.dataDetail.stock > 0){
+				console.log(vehicle.dataDetail.stock - 1)
+				return setChanged({...changed, stock: vehicle.dataDetail.stock - 1})
+			}
+		} else{
+			if(changed.stock > 0){
+				console.log(changed.stock-1)
+				return setChanged({...changed, stock : changed.stock - 1})
+			}
 		}
 	}
 	const increament = (e)=>{
 		e.preventDefault()
-		setDataSave ({...dataSave, stock: dataSave.stock+1})
+		if(!changed.hasOwnProperty('stock')){
+			return setChanged({...changed, stock: vehicle.dataDetail.stock + 1})
+		} else {
+			return setChanged({...changed, stock : changed.stock + 1})
+		}
+		
 	}
 
 	useEffect(()=>{
@@ -45,44 +60,36 @@ export const VehicleEdit = () => {
 
 	const fileInputHandler = (e)=>{
 		e.preventDefault()
+		setError('')
 		const reader = new FileReader()
-		setDataSave({...dataSave, image: e.target.files[0]})
-		const image = e.target.files[0]
-		reader.readAsDataURL(image)
-		reader.onload =(e)=>{
-			setImage(e.target.result)
+		if(e.target.files[0].size > 2097152){
+			return setError('Max file 2 mb')
+		} else{
+			setChanged({...changed, image: e.target.files[0]})
+			const image = e.target.files[0]
+			reader.readAsDataURL(image)
+			reader.onload =(e)=>{
+				setImage(e.target.result)
+			}
 		}
 	}
 
-	const onCreate = (event)=>{
+	const onUpdate = (event)=>{
 		event.preventDefault()
-		setError('')
-		const name = event.target.elements['name'].value
 		const idLocation  = event.target.elements['location'].value
-		const description = event.target.elements['description'].value
-		const price = event.target.elements['price'].value
 		const idCategory = event.target.elements['category'].value
-		const data = {...dataSave,name, idLocation, description, price, idCategory}
-		let n = 7
-		Object.keys(data).forEach((item)=>{
-			if(data[item] === ''){
-				if(item === 'idCategory'){
-					return setError('Select category')
-				}
-				if( item === 'idLocation'){
-					return setError('Select location')
-				}
-				return setError(`Please fill ${item}`)
-			} else {
-				n--
-			}
-		})
-		if(n <= 0){
-			console.log(data)
-			// dispatch(addVehicle(data, auth.token))
-		} else{
-			return setError('Please Add image')
+		const name = event.target.elements['name'].value
+		const data = {...changed, idLocation, name}
+		if(parseInt(idCategory) !== vehicle.dataDetail.idCategory){
+			data['idCategory'] = idCategory
 		}
+		if(data.image){
+			if(data.image.size > 2097152){
+				return setError('Max file 2 mb')
+			}
+		}
+		console.log(data)
+		dispatch(doUpdateVehicle(vehicle.dataDetail.id, data, auth.token))
 	}
 	return (
 		<LayoutLogin>
@@ -124,23 +131,27 @@ export const VehicleEdit = () => {
 							<Link className="fa-solid fa-chevron-left icon dark fs-0 me-5" to='/'></Link>
 							<div className="fs-1 fw-bold text-dark">Edit vehicles</div>
 						</div>
-						<form id="create" onSubmit={onCreate}>
+						<form id="create" onSubmit={onUpdate}>
 							<div className="row mb-5">
 								<div className="col-7 g-0">
 									<div className="pe-5">
 										<div className="mb-5 position-relative d-flex ">
-											{vehicle.dataDetail?.image ? (
-												<img className='img-banner-5 rounded' src={vehicle.dataDetail.image}/>
-											) : (
-												<AiFillCamera className='img-banner-5 rounded bg-grey text-third'/>
-											)}
+											{image ? (
+												<img className='img-banner-5 rounded' src={image}/>
+											) : 
+												vehicle.dataDetail?.image ? (
+													<img className='img-banner-5 rounded' src={vehicle.dataDetail.image}/>
+												) : (
+													<AiFillCamera className='img-banner-5 rounded bg-grey text-third'/>
+												)
+											}
 											<div className='position-absolute end-0'>
 												<button className="icon-circle-3 rounded-circle button-fourth justify-content-center d-flex align-items-center position-relative">
 													{image ? (
 														<button 
 															onClick={()=> {
 																setImage()
-																delete dataSave.image
+																delete changed.image
 															}} 
 															className='bg-transparent border-0'>
 															<BiTrash />
@@ -161,7 +172,7 @@ export const VehicleEdit = () => {
 									</div>
 								</div>
 								<div className="col">
-									<input className='w-100 pb-2 border-0 border-bottom border-3 border-dark fs-4 fw-light mb-4' placeholder='Name (max up to 50 words) ' type='text' name='name' defaultValue={vehicle.dataDetail?.name}/>
+									<input className='w-100 pb-2 border-0 border-bottom border-3 border-dark fs-4 fw-light mb-4' placeholder='Name (max up to 50 words) ' type='text' name='name' defaultValue={vehicle.dataDetail?.name} onChange={(event) =>setChanged({...changed, name:event.target.value})}/>
 									<div className='w-100 pb-2 border-0 border-bottom border-3 border-dark  mb-4 position-relative d-flex align-items-center' placeholder='Location' type='text' name='location'>
 										<select className='w-100 border-0 fs-4 fw-light text-muted form-select py-0 px-0' type='text' placeholder='Select location' name='location'>
 											<option style={{display : 'none'}} className='py-2' value='' selected={vehicle.dataDetail?.idLocation}>Select location</option>
@@ -173,21 +184,21 @@ export const VehicleEdit = () => {
 										</select>
 										<div className='fa-solid fa-chevron-down position-absolute fs-2 end-0 mx-2 custom-select'></div>
 									</div>
-									<input className='w-100 pb-2 border-0 border-bottom border-3 border-dark fs-4 fw-light mb-4' placeholder='Description (max up to 150 words)' type='text' name='description' defaultValue={vehicle.dataDetail?.description}/>
-									<div className='pd-heading fs-4 mb-3' defaultValue={vehicle.dataDetail?.price}>Price :</div>
-									<input className='w-100 py-4 px-3 border-0 bg-grey rounded fs-4 fw-light mb-4' type='text' placeholder='Type the price' name='price' defaultValue={vehicle.dataDetail?.price}/>
+									<input className='w-100 pb-2 border-0 border-bottom border-3 border-dark fs-4 fw-light mb-4' placeholder='Description (max up to 150 words)' type='text' name='description' defaultValue={vehicle.dataDetail?.description} onChange={(event)=>setChanged({...changed,description: event.target.value})}/>
+									<div className='pd-heading fs-4 mb-3'>Price :</div>
+									<input className='w-100 py-4 px-3 border-0 bg-grey rounded fs-4 fw-light mb-4' type='text' placeholder='Type the price' name='price' defaultValue={vehicle.dataDetail?.price} onChange={(event)=>setChanged({...changed, price: event.target.value})}/>
 									<div className='pd-heading fs-4 mb-3'>Status :</div>
 									<div className='d-flex position-relative align-items-center mb-5'>
 										<div className='w-100 py-4 px-3 border-0 bg-grey rounded fs-4 fw-light'>
-											<div className={dataSave.stock === 0 ? 'text-danger' : 'text-success'}>
-												{dataSave.stock === 0 ? 'Full Booked' : 'Available'}
+											<div className={changed.hasOwnProperty('stock') ? changed.stock != 0 ? 'text-success' : 'text-danger' : vehicle.dataDetail?.status === 'Available' ? 'text-success' : 'text-danger'}>
+												{changed.hasOwnProperty('stock') ? changed.stock != 0 ? 'Available' : 'Full booked' : vehicle.dataDetail?.status}
 											</div>
 										</div>
 									</div>
 									<div className="d-flex justify-content-between">
 										<button className="icon-plus button-dark rounded bg-yellow fw-bolder fs-1" onClick={(e)=>decreament(e)}>-</button>
 										<div name='stock' className="fw-bolder fs-0">
-											{vehicle.dataDetail?.stock ? vehicle.dataDetail.stock : dataSave.stock}
+											{changed.hasOwnProperty('stock') ? changed.stock : vehicle.dataDetail?.stock}
 										</div>
 										<button className="icon-plus rounded bg-yellow fw-bolder fs-1" onClick={(e)=>increament(e)}>+</button>
 									</div>
