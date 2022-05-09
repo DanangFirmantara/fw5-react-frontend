@@ -2,19 +2,24 @@ import React, { useEffect } from 'react'
 import logo from '../assets/image/logo.png'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDataUser } from '../redux/actions/auth'
+import { doLogout, getDataUser } from '../redux/actions/auth'
 import profiles from '../assets/image/image 39.png'
 
 
 const NavbarHome = () => {
 	const auth = useSelector(state=>state.auth)
 	const dispatch = useDispatch()
+	const user = useSelector(state=>state.user)
 
 	useEffect(()=>{
 		if(auth.token){
 			dispatch(getDataUser(auth.token))
 		}
 	},[])
+
+	const onLogout = () =>{
+		dispatch(doLogout())
+	}
 
 	return (
 		<React.Fragment>
@@ -52,6 +57,11 @@ const NavbarHome = () => {
 							<li className="nav-item text-center">
 								<Link className="nav-link link-secondary mx-md-3 second" to="/about">About</Link>
 							</li>
+							{user.data?.role === 'Admin' && (
+								<li className="nav-item text-center">
+									<Link className="nav-link link-secondary mx-md-3 second" to="/vehicle">Add Vehicle</Link>
+								</li>
+							)}
 						</ul>
 						<div className="">
 							{!auth.token &&
@@ -70,7 +80,7 @@ const NavbarHome = () => {
 							}
 							{ auth.token &&
 								<div className='ms-3 d-flex align-items-center'>
-									<button onClick={()=>dispatch({type:'AUTH_LOGOUT'})} className='button-primer fs-5 py-2 text-center button-width fw-bold w-100'>
+									<button onClick={onLogout} className='button-primer fs-5 py-2 text-center button-width fw-bold w-100'>
 									Logout
 									</button>
 									<Link to="/history">

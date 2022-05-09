@@ -20,6 +20,7 @@ import { getDataUser } from './redux/actions/auth'
 import Test from './pages/Test'
 import ResetPassword from './pages/ResetPassword'
 import ResetPasswordUser from './pages/ResetPasswordUser'
+import ViewMore from './pages/ViewMore'
 
 
 export const App = () => {
@@ -53,6 +54,7 @@ export const App = () => {
 				<Route path='resetPasswordUser' element={<ResetPasswordUser />}/>
 				<Route path='forgotPassword' element={<ForgotPassword />}/>
 				<Route path='vehiclesType' element={<VehicleType />}/>
+				<Route path='viewMore/:filterBy' element={<ViewMore />}/>
 				<Route path='vehiclesType/:id' element={<VehicleDetail history = {history} />}/>
 				<Route path='reservation' element={<Reservation />}/>
 				<Route path='payment' element={<Payment />}/>

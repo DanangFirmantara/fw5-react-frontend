@@ -1,12 +1,17 @@
-import React from 'react'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react'
 import google from '../assets/image/google.png'
 import { Link } from 'react-router-dom'
 import logo from '../assets/image/logo.png'
 import { useDispatch, useSelector } from 'react-redux'
-import { userSignUp } from '../redux/actions/user'
+import { doSignUp, userSignUp } from '../redux/actions/user'
+import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai'
+import { Button } from 'react-bootstrap'
+import LoadingScreen from '../components/LoadingScreen'
 
 export const SignUp = () => {
 	const dispatch = useDispatch()
+	const [show, setShow] = useState()
 	const user = useSelector(state=>state.user)
 
 	const onSignUp = (event)=>{
@@ -14,10 +19,12 @@ export const SignUp = () => {
 		const username = event.target.elements['username'].value
 		const email = event.target.elements['email'].value
 		const password = event.target.elements['password'].value
-		dispatch(userSignUp(username,email,password))
+		const data = {username, email, password}
+		dispatch( doSignUp(data) )
 	}
 	return (
 		<>
+			{user.isLoading && (<LoadingScreen />)}
 			<div className='row g-0 vh-100 '>
 				<div className='col d-none d-xl-flex'>
 					<div className='img-1 img-side'></div>
@@ -25,13 +32,15 @@ export const SignUp = () => {
 				<div className='col'>
 					<div className='mx-6 my-5'>
 						<div className='pd-heading fs-0 mb-5 text-center text-xl-start'>Sign Up</div>
-						{user.isError &&
-								<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
-									{user.errorMsg}
-									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-								</div>
+						{user.errorMsg !== '' &&
+								(
+									<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
+										{user.errorMsg}
+										<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
+								)
 						}
-						{user.successMsg &&
+						{user.successMsg !== '' &&
 								<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
 									{user.successMsg}
 									<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -47,7 +56,12 @@ export const SignUp = () => {
 							<form onSubmit={onSignUp} id='signUp'>
 								<input  type='text' placeholder="Username" name='username' className='w-100 button-grey py-4 mb-5 px-4 fs-4'/>						
 								<input placeholder='Email' type='email' name='email' className='w-100 button-grey py-4 mb-5 px-4 fs-4'/>						
-								<input placeholder='Password' type='password' name='password' className='w-100 button-grey py-4 mb-5 px-4 fs-4'/>
+								<div className='position-relative align-items-center mb-5 d-flex'>
+									<input placeholder='Password' type={show ? 'text' : 'password'} name='password' className='w-100 button-grey py-4 px-4 fs-4'/>
+									<Button onClick={()=> setShow(!show)} className='position-absolute end-0 border-0 fs-1 d-flex align-items-center me-2 bg-transparent'>
+										{show? (<AiFillEye className='button-grey border-0 fs-0' />) : (<AiFillEyeInvisible className='button-grey border-0 fs-0' />)}
+									</Button>
+								</div>
 								<div>
 									<button className='button-third w-100 py-4 text-center fs-4 fw-bolder shadow-yellow-2' type='submit'>Sign Up</button>
 								</div>
