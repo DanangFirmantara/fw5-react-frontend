@@ -131,7 +131,7 @@ export const VehicleEdit = () => {
 							}
 						</div>
 						<div className='d-flex align-items-center mb-4'>
-							<Link className="fa-solid fa-chevron-left icon dark fs-0 me-5" to='/'></Link>
+							<Link className="fa-solid fa-chevron-left icon dark fs-0 me-5" to='/vehiclesType'></Link>
 							<div className="fs-1 fw-bold text-dark">Edit vehicles</div>
 						</div>
 						<form id="create" onSubmit={onUpdate}>

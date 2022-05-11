@@ -1,6 +1,6 @@
 import { dinamisUrl } from '../../helpers/dinamisUrl'
 import http from '../../helpers/http'
-import { VEHICLE_CLEARERROR, VEHICLE_CLEARLOADING, VEHICLE_CLEARSUCCESS, VEHICLE_GETDATA, VEHICLE_GETDATACATEGORY, VEHICLE_GETDATADETAIL, VEHICLE_GETDATASEARCH, VEHICLE_GETDATAVIEWMORE, VEHICLE_GETPOPULAR, VEHICLE_PIBIKE, VEHICLE_PICAR, VEHICLE_PIMOTORBIKE, VEHICLE_PIPOPULAR, VEHICLE_PISEARCH, VEHICLE_RESETDATA, VEHICLE_RESETDATADETAIL, VEHICLE_SETERROR, VEHICLE_SETLOADING, VEHICLE_SETSUCCESS, VEHICLE_UPDATEVEHICLE } from '../reducers/vehicle'
+import { VEHICLE_CLEARDATASEARCH, VEHICLE_CLEARERROR, VEHICLE_CLEARLOADING, VEHICLE_CLEARSUCCESS, VEHICLE_GETDATA, VEHICLE_GETDATACATEGORY, VEHICLE_GETDATADETAIL, VEHICLE_GETDATASEARCH, VEHICLE_GETDATAVIEWMORE, VEHICLE_GETPOPULAR, VEHICLE_PIBIKE, VEHICLE_PICAR, VEHICLE_PIMOTORBIKE, VEHICLE_PIPOPULAR, VEHICLE_PISEARCH, VEHICLE_PIVIEWMORE, VEHICLE_RESETDATA, VEHICLE_RESETDATADETAIL, VEHICLE_SETERROR, VEHICLE_SETLOADING, VEHICLE_SETSUCCESS, VEHICLE_UPDATEVEHICLE } from '../reducers/vehicle'
 
 
 
@@ -263,10 +263,14 @@ export const getViewMorePopular = () =>{
 			dispatch({ type: VEHICLE_SETLOADING })
 			dispatch({ type: VEHICLE_CLEARERROR })
 			dispatch({ type: VEHICLE_CLEARSUCCESS })
-			const { data } = await http().get('/popular/?limit=12')			
+			const { data } = await http().get('/popular/?limit=4')			
 			dispatch({
 				type : VEHICLE_GETDATAVIEWMORE,
 				payload : data.results
+			})
+			dispatch({
+				type : VEHICLE_PIVIEWMORE,
+				payload : data.pageInfo
 			})
 			dispatch({ type: VEHICLE_CLEARLOADING })
 		} catch(err){
@@ -293,10 +297,17 @@ export const getViewMoreCategory = (idCategory) =>{
 			dispatch({ type: VEHICLE_SETLOADING })
 			dispatch({ type: VEHICLE_CLEARERROR })
 			dispatch({ type: VEHICLE_CLEARSUCCESS })
-			const { data } = await http().get(`/list/?filterBy=${idCategory}&limit=12`)			
+			const { data } = await http().get(`/list/?filterBy=${idCategory}&limit=8`)			
 			dispatch({
 				type : VEHICLE_GETDATAVIEWMORE,
 				payload : data.results
+			})
+			dispatch({
+				type : VEHICLE_PIVIEWMORE,
+				payload : data.pageInfo
+			})
+			dispatch({
+				
 			})
 			dispatch({ type: VEHICLE_CLEARLOADING })
 		} catch(err){
@@ -324,7 +335,7 @@ export const doSearchVehicle = (dataSearch) =>{
 			dispatch({ type: VEHICLE_CLEARERROR })
 			dispatch({ type: VEHICLE_CLEARSUCCESS })
 			const url = dinamisUrl(dataSearch)
-			const { data } = await http().get(`/vehicles?${url}&limit=12`)			
+			const { data } = await http().get(`/vehicles?${url}&limit=8`)			
 			dispatch({
 				type : VEHICLE_GETDATASEARCH,
 				payload : data.results
@@ -337,6 +348,53 @@ export const doSearchVehicle = (dataSearch) =>{
 		} catch(err){
 			let payload = ''
 			if(err.response){
+				dispatch({
+					type : VEHICLE_CLEARDATASEARCH,
+				})
+				payload = err.response.data.message
+			} else{
+				payload = err.message
+			}
+			dispatch({
+				type: VEHICLE_SETERROR,
+				payload: payload
+			})
+			dispatch({
+				type: VEHICLE_CLEARLOADING
+			})
+		}
+	}
+}
+
+export const resetDataSearch = () =>{
+	return dispatch =>{
+		dispatch({ type : VEHICLE_CLEARDATASEARCH})
+	}
+}
+
+export const getNextData = (url) =>{
+	return async(dispatch) =>{
+		try{
+			dispatch({ type: VEHICLE_SETLOADING })
+			dispatch({ type: VEHICLE_CLEARERROR })
+			dispatch({ type: VEHICLE_CLEARSUCCESS })
+			url = url.split('/')[3]
+			const { data } = await http().get(url)			
+			dispatch({
+				type : VEHICLE_GETDATAVIEWMORE,
+				payload : data.results
+			})
+			dispatch({
+				type : VEHICLE_PIVIEWMORE,
+				payload : data.pageInfo
+			})
+			dispatch({ type: VEHICLE_CLEARLOADING })
+		} catch(err){
+			let payload = ''
+			if(err.response){
+				dispatch({
+					type : VEHICLE_CLEARDATASEARCH,
+				})
 				payload = err.response.data.message
 			} else{
 				payload = err.message

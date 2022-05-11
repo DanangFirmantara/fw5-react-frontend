@@ -5,13 +5,16 @@ import React , {useState, useEffect} from 'react'
 import { useNavigate, useSearchParams} from 'react-router-dom'
 import {default as axios} from 'axios'
 import defaultImage from '../assets/image/image 6.png'
-import { getVehiclePopular, searchVehicle, getFilterVehicle, getVehicleCategory, doSearchVehicle } from '../redux/actions/vehicle'
+import { getVehiclePopular, searchVehicle, getFilterVehicle, getVehicleCategory, doSearchVehicle, resetDataSearch } from '../redux/actions/vehicle'
 import { useSelector, connect, useDispatch } from 'react-redux'
 import LayoutHome from '../components/LayoutHome'
 import { getLocation } from '../redux/actions/location'
 import { getCategory } from '../redux/actions/category'
 import LoadingScreen from '../components/LoadingScreen'
 import defaultImg from '../assets/image/bike4.png'
+import { resetMsg } from '../redux/actions/resetMsg'
+import { VEHICLE_CLEARDATASEARCH } from '../redux/reducers/vehicle'
+import { Pagination } from 'react-bootstrap'
 
 
 export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
@@ -37,6 +40,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 	const dispatch = useDispatch()
 	// didmount
 	useEffect(async()=>{
+		setSearch({})
 		if(locationRedux.data.length === 0){
 			dispatch( getLocation() )
 		}
@@ -59,7 +63,6 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 		const idLocation = searchParams.get('idLocation')
 		const idCategory = searchParams.get('idCategory')
 		const sortType = searchParams.get('sortType')
-		console.log(idLocation)
 		const data = {}
 		let n = 0
 		if(name){
@@ -82,6 +85,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 			data['sortType'] = sortType
 			n++
 		}
+		console.log(data, 'ini data search')
 		if(n> 0){
 			setList(true)
 			console.log(data)
@@ -114,18 +118,22 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 		console.log(name)
 		if(name){
 			data['name'] = name
+			setSearch({...search, name})
 			n++
 		}
 		if(idCategory !== ''){
 			data['idCategory'] = idCategory
+			setSearch({...search, idCategory})
 			n++
 		}
 		if(idLocation !== ''){
 			data['idLocation'] = idLocation
+			setSearch({...search, idLocation})
 			n++
 		}
 		if(sortType !== ''){
 			data['sortType'] = sortType
+			setSearch({...search, sortType})
 			n++
 		}
 		if(n !== 0){
@@ -144,14 +152,18 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 		
 	}
 
-	const goBack = ()=>{
-		window.history.back()
+	const onBack = ()=>{
+		setList(false)
+		setSearch({})
+		setSearchParams()
+		dispatch(resetDataSearch())
 	}
 
 	const viewMore = (data) =>{
 		console.log(data, 'ini data routenya bg')
 		navigate(`/viewMore/${data}`)
 	}
+
 	return (
 		<LayoutHome>
 			{locationRedux.isLoading || vehicle.isLoading || category.isLoading ? (
@@ -163,14 +175,14 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 							<form className="" onSubmit={onSearch} id='search'>
 								<div className='row row-cols-1 row-cols-md-12'>
 									<div className='col col-md-4  '>
-										<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start"  autoComplete='off'/>
+										<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start"  autoComplete='off' defaultValue={search.hasOwnProperty('name') ? search.name : ''}/>
 									</div>
 									<div className='col col-md-2 '>
 										<select name='category' className='px-3 form-select rounded button-height text-center text-md-start'>
 											<option value='' style={{display: 'none'}} className='border border-2'>Select category</option>
 											{category.data.length > 0 && category.data.map((obj)=>{
 												return (
-													<option key={obj.name} selected={search?.idCategory == obj.id}  className='border border-2' value={obj.id}>{obj.name}</option>
+													<option key={obj.name} selected={search.hasOwnProperty('idCategory') && parseInt(search.idCategory) === obj.id}  className='border border-2' value={obj.id}>{obj.name}</option>
 												)
 											})}
 										</select>
@@ -180,7 +192,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 											<option value='' style={{display: 'none'}} className='border border-2'>Select location</option>
 											{locationRedux.data.length > 0 && locationRedux.data.map((obj)=>{
 												return (
-													<option key={obj.name} selected={search?.idLocation == obj.id}  className='border border-2' value={obj.id}>{obj.name}</option>
+													<option key={obj.name} selected={search.hasOwnProperty('idLocation') && parseInt(search.idLocation) === obj.id}  className='border border-2' value={obj.id}>{obj.name}</option>
 												)
 											})}
 										</select>
@@ -198,16 +210,23 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 								</div>
 							</form>
 						</div>
-						{vehicle.isError && 
-						<div className="alert alert-warning alert-dismissible fade show" role="alert">
-							{errorMsg}
-							<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						</div>
+						{vehicle.errorMsg !== '' &&
+								(
+									<div className="alert button-third shadow-dark alert-dismissible fade show text-center fs-5 fw-bold" role="alert">
+										{vehicle.errorMsg}
+										<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=> dispatch(resetMsg())}></button>
+									</div>
+								)
 						}
+						{list && (
+							<div className='d-flex align-items-center mb-4'>
+								<div className="fa-solid fa-chevron-left icon dark fs-2 me-4" style={{cursor:'pointer'}} onClick={() => onBack()}/>
+								<div className="fs-2 fw-bold text-dark">Vehicle type</div>
+							</div>
+						)}
 						{ list &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
 							<h1 className="pd-heading">Vehicles Search</h1>
-							<a href="#"><h5 className="third">view all &gt;</h5></a>
 						</div> }
 						<div className='position-relative d-flex align-items-center'>
 							<div className='row row-cols-md-2 row-cols-xl-4 row-cols-1 mb-xl-4 '>

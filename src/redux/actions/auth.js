@@ -8,7 +8,13 @@ import { AUTH_CLEARERROR,
 	AUTH_LOGOUT,
 	AUTH_SETSUCCESS
 } from '../reducers/auth'
+import { CATEGORY_RESETDATA } from '../reducers/category'
+import { HISTORY_RESETDATA } from '../reducers/history'
+import { LOCATION_RESETDATA } from '../reducers/location'
+import { PAYMENT_RESETDATA } from '../reducers/payment'
+import { RESERVATION_RESETDATA } from '../reducers/reservation'
 import { USER_RESETDATA } from '../reducers/user'
+import { VEHICLE_RESETDATA } from '../reducers/vehicle'
 
 export const doLogin = (username, password) =>{
 	return async (dispatch)=>{
@@ -47,6 +53,12 @@ export const doLogin = (username, password) =>{
 
 export const doLogout = () =>{
 	return dispatch =>{
+		dispatch({ type: VEHICLE_RESETDATA})
+		dispatch({ type : RESERVATION_RESETDATA})
+		dispatch({ type : CATEGORY_RESETDATA})
+		dispatch({ type : HISTORY_RESETDATA})
+		dispatch({ type : LOCATION_RESETDATA})
+		dispatch({ type : PAYMENT_RESETDATA})
 		dispatch({ type: USER_RESETDATA})
 		dispatch({ type: AUTH_LOGOUT })
 	}

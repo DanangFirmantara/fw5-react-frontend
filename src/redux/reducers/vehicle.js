@@ -14,7 +14,8 @@ const initialState = {
 	pIBike : {},
 	pIPopular : {},
 	successMsg : '',
-	dataViewMore: []
+	dataViewMore: [],
+	pIViewMore:{}
 }
 
 export const VEHICLE_GETDATA = 'VEHICLE_GETDATA'
@@ -22,8 +23,10 @@ export const VEHICLE_GETDATAVIEWMORE = 'VEHICLE_GETDATAVIEWMORE'
 export const VEHICLE_GETDATACATEGORY = 'VEHICLE_GETDATACATEGORY'
 export const VEHICLE_GETDATADETAIL = 'VEHICLE_GETDATADETAIL'
 export const VEHICLE_GETDATASEARCH = 'VEHICLE_GETDATASEARCH'
+export const VEHICLE_CLEARDATASEARCH = 'VEHICLE_CLEARDATASEARCH'
 export const VEHICLE_PISEARCH = 'VEHICLE_PISEARCH'
 export const VEHICLE_PICAR = 'VEHICLE_PICAR'
+export const VEHICLE_PIVIEWMORE = 'VEHICLE_PIVIEWMORE'
 export const VEHICLE_PIMOTORBIKE = 'VEHICLE_PIMOTORBIKE'
 export const VEHICLE_PIBIKE = 'VEHICLE_PIBIKE'
 export const VEHICLE_SETLOADING = 'VEHICLE_SETLOADING'
@@ -58,6 +61,9 @@ const vehicle = (state = initialState, action)=>{
 	}
 	case VEHICLE_GETDATASEARCH:{
 		return { ...state, dataSearch: action.payload }
+	}
+	case VEHICLE_CLEARDATASEARCH:{
+		return { ...state, dataSearch: []}
 	}
 	case VEHICLE_PISEARCH:{
 		return { ...state, pISearch: action.payload}
@@ -111,6 +117,9 @@ const vehicle = (state = initialState, action)=>{
 	}
 	case VEHICLE_GETDATAVIEWMORE : {
 		return {...state, dataViewMore : action.payload}
+	}
+	case VEHICLE_PIVIEWMORE:{
+		return { ...state, pIViewMore : action.payload}
 	}
 	case VEHICLE_CLEARMSG:{
 		return { ...state, errorMsg: '', successMsg: ''}

@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React , {useState, useEffect} from 'react'
-import { useNavigate, useParams, useSearchParams} from 'react-router-dom'
+import { useNavigate, useParams} from 'react-router-dom'
 import {default as axios} from 'axios'
 import defaultImage from '../assets/image/image 6.png'
 import { getVehiclePopular, searchVehicle, getFilterVehicle, getViewMorePopular, getViewMoreCategory } from '../redux/actions/vehicle'
@@ -10,9 +9,10 @@ import LayoutHome from '../components/LayoutHome'
 import { getLocation } from '../redux/actions/location'
 import LoadingScreen from '../components/LoadingScreen'
 import defaultImg from '../assets/image/bike4.png'
+import Pagination from '../components/Pagination'
 
 
-export const ViewMore = ({ searchVehicle}) => {
+export const ViewMore = () => {
 	const [ errorMsg, setErrorMsg] = useState(null)
 	const [ list, setList ] = useState(false)
 	
@@ -21,7 +21,6 @@ export const ViewMore = ({ searchVehicle}) => {
 	const [ pageList,setPageList ] = useState({})
 
 	const navigate = useNavigate()
-	let [searchParams, setSearchParams] = useSearchParams()
 
 	//new concept
 	const locationRedux = useSelector((state)=>state.location)
@@ -43,16 +42,6 @@ export const ViewMore = ({ searchVehicle}) => {
 		} else{
 			dispatch(getViewMoreCategory(filterBy))
 		}
-		const name = searchParams.get('name')
-		const location = searchParams.get('location')
-		const sortType = searchParams.get('sortType')
-		if( name || location || sortType ){
-			document.getElementById('search').elements['name'].value = name
-			document.getElementById('search').elements['location'].value = location
-			document.getElementById('search').elements['sortType'].value = sortType
-			const url = (name,location, sortType) => `http://localhost:5000/vehicles?page=1&name=${name}&location=${location}&sortType=${sortType}`
-			getDataSearch(url(name,location, sortType))
-		}
 	}, [dispatch])
 
 	const getDataSearch = async(url)=>{
@@ -68,18 +57,6 @@ export const ViewMore = ({ searchVehicle}) => {
 		}
 	}
 
-	const onSearch = async(event) =>{
-		event.preventDefault()
-		const name = event.target.elements['name'].value
-		const location = event.target.elements['location'].value
-		const sortType = event.target.elements['sortType'].value
-		setSearchParams({name, location, sortType})
-		const {value:{data:search}} = await searchVehicle(name,location,sortType)
-		setVehicleList(search.results)
-		setPageList(search.pageInfo)
-		setList(true)
-	}
-
 	const goToDetail = (id) =>{
 		if(user.data.role === 'Admin'){
 			navigate(`/vehicle/${id}`)
@@ -89,13 +66,10 @@ export const ViewMore = ({ searchVehicle}) => {
 		
 	}
 
-	const goBack = ()=>{
+	const onBack = ()=>{
 		window.history.back()
 	}
 
-	const viewMore = () =>{
-		navigate('/viewMore')
-	}
 	return (
 		<LayoutHome>
 			{locationRedux.isLoading || vehicle.isLoading || category.isLoading ? (
@@ -103,62 +77,10 @@ export const ViewMore = ({ searchVehicle}) => {
 			) : (
 				<main>
 					<div className="container g-0 my-md-5 my-4 px-5 px-md-0">
-						<div className="mb-5">
-							<form className="" onSubmit={onSearch} id='search'>
-								<div className='row row-cols-1 row-cols-md-12'>
-									<div className='col col-md-6 mb-4 '>
-										<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start" autoComplete='off'/>
-									</div>
-									<div className='col col-md-2 mb-4'>
-										<select name='location' className='px-3 form-select rounded button-height text-center text-md-start'>
-											<option value='' style={{display: 'none'}}>Select location</option>
-											<option value='jakarta'>Jakarta</option>
-											<option value='yogyakarta'>Yogyakarta</option>
-								
-										</select>
-									</div>
-									<div className='col col-md-2 mb-4'>
-										<select name='sortType' className='px-3 form-select rounded button-height text-center text-md-start '>
-											<option value='' style={{display: 'none'}}>Sort Type</option>
-											<option value='ASC'>A-Z</option>
-											<option value='DESC'>Z-A</option>
-										</select>
-									</div>
-									<div className='col col-md-2 d-flex justify-content-center'>
-										<button className="fa-solid fa-magnifying-glass text-dark bg-white border border-0 fs-1 d-flex align-items-center pb-lg-3 pb-0" type='submit' ></button>
-									</div>
-								</div>
-							</form>
+						<div className='d-flex align-items-center mb-4'>
+							<div className="fa-solid fa-chevron-left icon dark fs-2 me-4" style={{cursor:'pointer'}} onClick={() => onBack()}/>
+							<div className="fs-2 fw-bold text-dark">Vehicle type</div>
 						</div>
-						{vehicle.isError && 
-						<div className="alert alert-warning alert-dismissible fade show" role="alert">
-							{errorMsg}
-							<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						</div>
-						}
-						{ list && !vehicle.isError &&
-						<button className="d-flex align-items-center mb-3 my-4" onClick={goBack}>
-							<i className="fa-solid fa-chevron-left icon dark fs-4 me-3"></i>
-							<div className="fs-5 fw-bold text-dark">Vehicle Type</div>
-						</button>
-						}
-						{ list && !vehicle.isError && (
-							<>
-								<div className="d-flex justify-content-between align-items-center mb-5">
-									{category.data.length > 0 ? category.data.map((item) =>{
-										return (
-											<div key={String(item.id)}>
-												{item.idCategory === parseInt(filterBy) && (
-													<h1 className="pd-heading text-center text-md-start primer">{item.name}</h1>
-												)}
-											</div>
-										)
-									}) : (
-										<h1 className="pd-heading text-center text-md-start primer">Popular in town</h1>
-									)}
-								</div> 
-							</>
-						)}
 						<div className='d-flex position-relative align-items-center'>
 							<div className='row '>
 								{ list && !vehicle.isError && vehicleList.map((data) =>{
@@ -199,6 +121,7 @@ export const ViewMore = ({ searchVehicle}) => {
 								)
 							})}
 						</div>  }
+						<Pagination totalPage={vehicle.pIViewMore?.lastPage} pageInfo={vehicle.pIViewMore} activePage={vehicle.pIViewMore?.currentPage}/>
 						<div className='position-relative d-flex align-items-center'>
 							<div className='row row-cols-md-2 row-cols-xl-4 row-cols-1 mb-xl-4 '>
 								{vehicle.dataViewMore.length > 0 && vehicle.dataViewMore.map((item)=>{
