@@ -3,6 +3,8 @@ const initialState = {
 	data:[],
 	dataCategory : [],
 	dataDetail : {},
+	dataSearch : [],
+	pISearch : {},
 	pageInfo: {},
 	isLoading: false,
 	isError: false,
@@ -19,6 +21,8 @@ export const VEHICLE_GETDATA = 'VEHICLE_GETDATA'
 export const VEHICLE_GETDATAVIEWMORE = 'VEHICLE_GETDATAVIEWMORE'
 export const VEHICLE_GETDATACATEGORY = 'VEHICLE_GETDATACATEGORY'
 export const VEHICLE_GETDATADETAIL = 'VEHICLE_GETDATADETAIL'
+export const VEHICLE_GETDATASEARCH = 'VEHICLE_GETDATASEARCH'
+export const VEHICLE_PISEARCH = 'VEHICLE_PISEARCH'
 export const VEHICLE_PICAR = 'VEHICLE_PICAR'
 export const VEHICLE_PIMOTORBIKE = 'VEHICLE_PIMOTORBIKE'
 export const VEHICLE_PIBIKE = 'VEHICLE_PIBIKE'
@@ -51,6 +55,12 @@ const vehicle = (state = initialState, action)=>{
 	}
 	case VEHICLE_GETDATACATEGORY:{
 		return { ...state, dataCategory: [ ...state.dataCategory, ...action.payload ]}
+	}
+	case VEHICLE_GETDATASEARCH:{
+		return { ...state, dataSearch: action.payload }
+	}
+	case VEHICLE_PISEARCH:{
+		return { ...state, pISearch: action.payload}
 	}
 	case VEHICLE_PICAR:{
 		return { ...state, pICar: action.payload }

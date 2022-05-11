@@ -1,9 +1,11 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React , {useState, useEffect} from 'react'
 import { useNavigate, useSearchParams} from 'react-router-dom'
 import {default as axios} from 'axios'
 import defaultImage from '../assets/image/image 6.png'
-import { getVehiclePopular, searchVehicle, getFilterVehicle, getVehicleCategory } from '../redux/actions/vehicle'
+import { getVehiclePopular, searchVehicle, getFilterVehicle, getVehicleCategory, doSearchVehicle } from '../redux/actions/vehicle'
 import { useSelector, connect, useDispatch } from 'react-redux'
 import LayoutHome from '../components/LayoutHome'
 import { getLocation } from '../redux/actions/location'
@@ -17,7 +19,7 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 
 	const [ errorMsg, setErrorMsg] = useState(null)
 	const [ list, setList ] = useState(false)
-	
+	const [ search, setSearch ] = useState({})
 	
 	//vehicle list
 	const [ vehicleList, setVehicleList] = useState([])
@@ -54,15 +56,38 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 		}
 
 		const name = searchParams.get('name')
-		const location = searchParams.get('location')
+		const idLocation = searchParams.get('idLocation')
+		const idCategory = searchParams.get('idCategory')
 		const sortType = searchParams.get('sortType')
-		if( name || location || sortType ){
-			document.getElementById('search').elements['name'].value = name
-			document.getElementById('search').elements['location'].value = location
-			document.getElementById('search').elements['sortType'].value = sortType
-			const url = (name,location, sortType) => `http://localhost:5000/vehicles?page=1&name=${name}&location=${location}&sortType=${sortType}`
-			getDataSearch(url(name,location, sortType))
+		console.log(idLocation)
+		const data = {}
+		let n = 0
+		if(name){
+			setSearch({ ...search, name })
+			data['name'] = name
+			n++
 		}
+		if(idLocation){
+			setSearch({ ...search, idLocation })
+			data['idLocation'] = idLocation
+			n++
+		}
+		if(idCategory){
+			setSearch({ ...search, idCategory })
+			data['idCategory'] = idCategory
+			n++
+		}
+		if(sortType){
+			setSearch({ ...search, sortType})
+			data['sortType'] = sortType
+			n++
+		}
+		if(n> 0){
+			setList(true)
+			console.log(data)
+			await dispatch(doSearchVehicle(data))
+		}
+		
 	}, [dispatch])
 
 	const getDataSearch = async(url)=>{
@@ -80,14 +105,34 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 
 	const onSearch = async(event) =>{
 		event.preventDefault()
+		const data = {}
+		let n=0
 		const name = event.target.elements['name'].value
-		const location = event.target.elements['location'].value
+		const idCategory = event.target.elements['category'].value
+		const idLocation = event.target.elements['location'].value
 		const sortType = event.target.elements['sortType'].value
-		setSearchParams({name, location, sortType})
-		const {value:{data:search}} = await searchVehicle(name,location,sortType)
-		setVehicleList(search.results)
-		setPageList(search.pageInfo)
-		setList(true)
+		console.log(name)
+		if(name){
+			data['name'] = name
+			n++
+		}
+		if(idCategory !== ''){
+			data['idCategory'] = idCategory
+			n++
+		}
+		if(idLocation !== ''){
+			data['idLocation'] = idLocation
+			n++
+		}
+		if(sortType !== ''){
+			data['sortType'] = sortType
+			n++
+		}
+		if(n !== 0){
+			setSearchParams(data)
+			dispatch(doSearchVehicle(data))
+			setList(true)
+		}
 	}
 
 	const goToDetail = (id) =>{
@@ -117,26 +162,38 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 						<div className="mb-5">
 							<form className="" onSubmit={onSearch} id='search'>
 								<div className='row row-cols-1 row-cols-md-12'>
-									<div className='col col-md-6 mb-4 '>
-										<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start" autoComplete='off'/>
+									<div className='col col-md-4  '>
+										<input type="text" name='name' placeholder="Search vehicle (ex. cars, cars name)" className="form-control rounded button-height text-center text-md-start"  autoComplete='off'/>
 									</div>
-									<div className='col col-md-2 mb-4'>
-										<select name='location' className='px-3 form-select rounded button-height text-center text-md-start'>
-											<option value='' style={{display: 'none'}}>Select location</option>
-											<option value='jakarta'>Jakarta</option>
-											<option value='yogyakarta'>Yogyakarta</option>
-								
+									<div className='col col-md-2 '>
+										<select name='category' className='px-3 form-select rounded button-height text-center text-md-start'>
+											<option value='' style={{display: 'none'}} className='border border-2'>Select category</option>
+											{category.data.length > 0 && category.data.map((obj)=>{
+												return (
+													<option key={obj.name} selected={search?.idCategory == obj.id}  className='border border-2' value={obj.id}>{obj.name}</option>
+												)
+											})}
 										</select>
 									</div>
-									<div className='col col-md-2 mb-4'>
+									<div className='col col-md-2 '>
+										<select name='location' className='px-3 form-select rounded button-height text-center text-md-start'>
+											<option value='' style={{display: 'none'}} className='border border-2'>Select location</option>
+											{locationRedux.data.length > 0 && locationRedux.data.map((obj)=>{
+												return (
+													<option key={obj.name} selected={search?.idLocation == obj.id}  className='border border-2' value={obj.id}>{obj.name}</option>
+												)
+											})}
+										</select>
+									</div>
+									<div className='col col-md-2 '>
 										<select name='sortType' className='px-3 form-select rounded button-height text-center text-md-start '>
 											<option value='' style={{display: 'none'}}>Sort Type</option>
-											<option value='ASC'>A-Z</option>
-											<option value='DESC'>Z-A</option>
+											<option value='ASC' selected={search.hasOwnProperty('sortType') && search.sortType === 'ASC'}>A-Z</option>
+											<option value='DESC' selected={search.hasOwnProperty('sortType') && search.sortType === 'DESC'}>Z-A</option>
 										</select>
 									</div>
 									<div className='col col-md-2 d-flex justify-content-center'>
-										<button className="fa-solid fa-magnifying-glass text-dark bg-white border border-0 fs-1 d-flex align-items-center pb-lg-3 pb-0" type='submit' ></button>
+										<button className="button-third w-100 fs-3" type='submit' >Search</button>
 									</div>
 								</div>
 							</form>
@@ -147,51 +204,14 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 							<button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 						}
-						{ list && !vehicle.isError &&
-						<button className="d-flex align-items-center mb-3 my-4" onClick={goBack}>
-							<i className="fa-solid fa-chevron-left icon dark fs-4 me-3"></i>
-							<div className="fs-5 fw-bold text-dark">Vehicle Type</div>
-						</button>
-						}
-						{ list && !vehicle.isError &&
+						{ list &&
 						<div className="d-flex justify-content-between align-items-center mb-5">
-							<h1 className="pd-heading">Vehicles List</h1>
+							<h1 className="pd-heading">Vehicles Search</h1>
 							<a href="#"><h5 className="third">view all &gt;</h5></a>
-						</div> }
-						<div className='d-flex position-relative align-items-center'>
-							<div className='row '>
-								{ list && !vehicle.isError && vehicleList.map((data) =>{
-									return(
-										<div key={String(data.id + Math.random())} className='col' style={{cursor:'pointer'}} onClick={()=>goToDetail(data.id)}>
-											<div className='d-flex position-relative mb-4'>
-												<img src={data.image || defaultImage} alt={data.name} className="rounded img-thumbnail-2"></img>
-												<div className='card-name px-3'>
-													<div>{data.name}</div>
-													<div className='text-muted'>{data.location}</div>
-												</div>
-											</div>
-										</div>
-									)})}
-							</div>
-							{ !vehicle.isError && pageList.prev &&
-							<div className='position-absolute start-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
-								<button className='fa-solid fa-chevron-left icon fiveth fs-3' onClick={()=>getDataSearch(pageList.prev)}></button>
-							</div>
-							}
-							{ !vehicle.isError && pageList.next &&
-							<div className='position-absolute end-0 mx-3 bg-primer icon-circle-2 rounded-circle d-flex align-items-center justify-content-center'>
-								<button className='fa-solid fa-chevron-right fiveth fs-3 icon ' onClick={()=>getDataSearch(pageList.next)}></button>
-							</div>
-							}
-						</div>
-						{ !list && errorMsg == null &&
-						<div className="d-md-flex justify-content-between align-items-center mb-5 ">
-							<h1 className="pd-heading text-center text-md-start primer">Popular in Town</h1>
-							<div style={{cursor:'pointer'}} onClick={()=>viewMore('popular')}><h5 className="third text-center text-md-start">view all &gt;</h5></div>
 						</div> }
 						<div className='position-relative d-flex align-items-center'>
 							<div className='row row-cols-md-2 row-cols-xl-4 row-cols-1 mb-xl-4 '>
-								{vehicle.dataPopular.length > 0 && vehicle.dataPopular.map((item)=>{
+								{ list && vehicle.dataSearch.length > 0 && vehicle.dataSearch.map((item)=>{
 									return (
 										<div className='col mb-md-5' key={String(item.id + Math.random()) }  style={{cursor:'pointer'}} onClick={()=>goToDetail(item.id)}>
 											<div className="position-relative d-flex justify-content-center mb-5 mb-md-0  w-100">
@@ -208,7 +228,31 @@ export const VehicleType = ({getVehiclePopular, searchVehicle}) => {
 								})}
 							</div>
 						</div>
-						{category.data.length > 0 && 
+						{ !list && errorMsg == null &&
+						<div className="d-md-flex justify-content-between align-items-center mb-5 ">
+							<h1 className="pd-heading text-center text-md-start primer">Popular in Town</h1>
+							<div style={{cursor:'pointer'}} onClick={()=>viewMore('popular')}><h5 className="third text-center text-md-start">view all &gt;</h5></div>
+						</div> }
+						<div className='position-relative d-flex align-items-center'>
+							<div className='row row-cols-md-2 row-cols-xl-4 row-cols-1 mb-xl-4 '>
+								{ !list && vehicle.dataPopular.length > 0 && vehicle.dataPopular.map((item)=>{
+									return (
+										<div className='col mb-md-5' key={String(item.id + Math.random()) }  style={{cursor:'pointer'}} onClick={()=>goToDetail(item.id)}>
+											<div className="position-relative d-flex justify-content-center mb-5 mb-md-0  w-100">
+												<div className='d-flex position-relative'>
+													<img src={item.image || defaultImg } alt={item.id} className="rounded img-thumbnail-2" />
+													<div className="card-name">
+														<div>{item.name}</div>
+														<div className="text-muted">{item.location}</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									)
+								})}
+							</div>
+						</div>
+						{ !list && category.data.length > 0 && 
 							category.data.map((temp)=>{
 								return (
 									<>

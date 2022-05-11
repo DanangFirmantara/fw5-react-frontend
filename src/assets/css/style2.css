@@ -213,6 +213,11 @@ body{
    border: none;
    color: var(--second-color);
 }
+
+.button-third:hover{
+	background-color: #535353;
+}
+
 .button-fourth{
    border-radius: 10px;
    background-color: var(--fiveth-color);
